@@ -1,0 +1,13 @@
+services:
+  # ======== Services Exclusively for Local Setup  ========
+
+  database:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: documents
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
