@@ -6,8 +6,9 @@ from datetime import datetime
 from fastapi import FastAPI
 from loguru import logger
 
+from knowledge_service import ai_service
 from knowledge_service.jobs.sync_obsidian import sync_obsidian_vault
-from knowledge_service.models.answer import KnowledgeAnswer
+from knowledge_service.models.answer import KnowledgeAnswer, Source
 from knowledge_service.models.message import Message
 from knowledge_service.models.query import KnowledgeQuery
 
@@ -64,6 +65,19 @@ def get_general_knowledge(
 
     logger.debug(f"Request received to get general knowledge with query: {query}")
 
+    documents = ai_service.search_documents_database(query=query.query, top_k=5)
+    answers = [
+        KnowledgeAnswer(
+            content=document.content,
+            source=Source(
+                title=document.meta.get("source", "Unknown Source"),
+                link=document.meta.get("source", "Unknown Source"),
+                type=document.meta.get("type", "unknown"),
+            ),
+        )
+        for document in documents
+    ]
+
     return answers
 
 
@@ -73,9 +87,19 @@ def get_obsidian_knowledge(
     query: KnowledgeQuery,
 ) -> list[KnowledgeAnswer]:
     """Endpoint to retrieve knowledge from an Obsidian vault based on a query."""
-    # Placeholder implementation
-    answers: list[KnowledgeAnswer] = []
-
     logger.debug(f"Request received to get Obsidian knowledge with query: {query} for vault ID: {vault_id}")
+
+    documents = ai_service.search_documents_table(table=vault_id, query=query.query, top_k=5)
+    answers = [
+        KnowledgeAnswer(
+            content=document.content,
+            source=Source(
+                title=document.meta.get("source", "Unknown Source"),
+                link=document.meta.get("source", "Unknown Source"),
+                type="obsidian",
+            ),
+        )
+        for document in documents
+    ]
 
     return answers

@@ -8,10 +8,12 @@ including document embedding, splitting, and storage using PgvectorDocumentStore
 from haystack import Document, Pipeline
 from haystack.components.embedders import (
     AzureOpenAIDocumentEmbedder,
+    AzureOpenAITextEmbedder,
 )
 from haystack.components.preprocessors import DocumentSplitter
 from haystack.components.writers import DocumentWriter
 from haystack.utils import Secret
+from haystack_integrations.components.retrievers.pgvector import PgvectorEmbeddingRetriever
 from haystack_integrations.document_stores.pgvector import PgvectorDocumentStore
 from knowledge_service.settings import Settings
 
@@ -34,7 +36,8 @@ class AIService:
 
         Args:
             settings (dicopilot.settings.Settings): The settings object containing configuration values.
-            document_stores (dict[str, PgvectorDocumentStore]): A dictionary to hold PgvectorDocumentStore instances keyed by table name.
+            document_stores (dict[str, PgvectorDocumentStore]): A dictionary to hold PgvectorDocumentStore instances.
+
         """
         self._settings = settings
         self._document_stores = {}
@@ -104,6 +107,40 @@ class AIService:
 
         return DocumentWriter(document_store=document_store)
 
+    def get_text_embedder(self) -> AzureOpenAITextEmbedder:
+        """
+        Create and return an AzureOpenAITextEmbedder instance configured with the current settings.
+
+        Returns:
+            AzureOpenAITextEmbedder: An instance of the text embedder.
+
+        """
+        return AzureOpenAITextEmbedder(
+            api_key=Secret.from_token(self._settings.azure_openai_embeddings_api_key),
+            api_version=self._settings.azure_openai_embeddings_api_version,
+            azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
+            azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
+        )
+
+    def get_document_retriever(self, table: str, top_k: int = 5) -> PgvectorEmbeddingRetriever:
+        """
+        Create and return a PgvectorEmbeddingRetriever instance for the specified table.
+
+        Args:
+            table (str): The name of the table to be used for the document store.
+            top_k (int, optional): The number of top results to return during retrieval. Defaults to 5.
+
+        Returns:
+            PgvectorEmbeddingRetriever: An instance of the PgvectorEmbeddingRetriever component.
+
+        """
+        if table not in self._document_stores:
+            self.add_document_store(table)
+
+        document_store = self._document_stores[table]
+
+        return PgvectorEmbeddingRetriever(document_store=document_store, top_k=top_k)
+
     def create_document_pipeline(self, table: str) -> Pipeline:
         """
         Create and return a document processing pipeline for the specified table.
@@ -138,6 +175,55 @@ class AIService:
             documents (list[Document]): A list of Document objects to be processed.
 
         """
-
         pipeline = self.create_document_pipeline(table)
         pipeline.run({"splitter": {"documents": documents}})
+
+    def search_documents_table(self, table: str, query: str, top_k: int = 5) -> list[Document]:
+        """
+        Search for documents in the specified table using a query string.
+
+        Args:
+            table (str): The name of the table to search in.
+            query (str): The query string to search for.
+            top_k (int, optional): The number of top results to return. Defaults to 5.
+
+        Returns:
+            list[Document]: A list of Document objects matching the search query.
+
+        """
+        text_embedder = self.get_text_embedder()
+        retriever = self.get_document_retriever(table, top_k=top_k)
+
+        query_pipeline = Pipeline()
+        query_pipeline.add_component("text_embedder", text_embedder)
+        query_pipeline.add_component("retriever", retriever)
+
+        query_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
+
+        search_results = query_pipeline.run({"text_embedder": {"text": query}})
+
+        documents: list[Document] = search_results["retriever"]["documents"]
+
+        return documents
+
+    def search_documents_database(self, query: str, top_k: int = 5) -> list[Document]:
+        """
+        Search for documents across all tables in the document store using a query string.
+
+        Args:
+            query (str): The query string to search for.
+            top_k (int, optional): The number of top results to return from each table. Defaults to 5.
+
+        Returns:
+            list[Document]: A list of Document objects matching the search query across all tables.
+        """
+        all_documents = []
+        for source in self._settings.obsidian_sources:
+            source_table_name = source.id
+            documents = self.search_documents_table(source_table_name, query, top_k=top_k)
+            all_documents.extend(documents)
+
+        all_documents.sort(key=lambda doc: doc.score if doc.score is not None else float("-inf"), reverse=True)
+        all_documents = all_documents[:top_k]
+
+        return all_documents
