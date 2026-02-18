@@ -3,9 +3,12 @@
 from datetime import datetime
 
 from fastapi import FastAPI
+from logger import setup_logger
+from loguru import logger
 from models.answer import KnowledgeAnswer
 from models.message import Message
 from models.query import KnowledgeQuery
+from settings import Settings
 
 description = """
 This is the knowledge service for the Sinfo 2025 workshop.
@@ -17,6 +20,9 @@ The service supports two main functionalities:
 
 The knowledge answers are returned with their content and source information.
 """
+
+settings = Settings()
+setup_logger(settings)
 
 app = FastAPI(
     title="Knowledge Service",
@@ -32,6 +38,8 @@ def read_root() -> Message:
     timestamp = datetime.now().isoformat()
     message = Message(content=content, timestamp=timestamp)
 
+    logger.debug("Request received at root endpoint")
+
     return message
 
 
@@ -41,6 +49,8 @@ def sync_obsidian(vault_id: str) -> Message:
     content = f"Syncing Obsidian vault with ID has been triggered: {vault_id}"
     timestamp = datetime.now().isoformat()
     message = Message(content=content, timestamp=timestamp)
+
+    logger.debug(f"Request received to sync Obsidian vault with ID: {vault_id}")
 
     return message
 
@@ -53,6 +63,8 @@ def get_general_knowledge(
     # Placeholder implementation
     answers: list[KnowledgeAnswer] = []
 
+    logger.debug(f"Request received to get general knowledge with query: {query}")
+
     return answers
 
 
@@ -64,5 +76,7 @@ def get_obsidian_knowledge(
     """Endpoint to retrieve knowledge from an Obsidian vault based on a query."""
     # Placeholder implementation
     answers: list[KnowledgeAnswer] = []
+
+    logger.debug(f"Request received to get Obsidian knowledge with query: {query} for vault ID: {vault_id}")
 
     return answers

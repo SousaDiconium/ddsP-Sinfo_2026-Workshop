@@ -1,1 +1,1 @@
-# This file marks the models directory as a Python package.
+"""Models package for the knowledge service."""

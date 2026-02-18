@@ -1,0 +1,4 @@
+log_level: DEBUG
+obsidian_sources:
+  - id: vault-1
+    location: /path/to/obsidian/vault-1
