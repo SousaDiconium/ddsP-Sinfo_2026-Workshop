@@ -27,19 +27,17 @@ class AIService:
 
     _settings: Settings
     _document_stores: dict[str, PgvectorDocumentStore]
-    _document_processing_pipelines: dict[str, Pipeline]
 
     def __init__(self, settings: Settings) -> None:
         """
-        Initialize the AIService with the provided settings.
+        Initialize the AIService with the provided settings and set up internal data structures.
 
         Args:
             settings (dicopilot.settings.Settings): The settings object containing configuration values.
-
+            document_stores (dict[str, PgvectorDocumentStore]): A dictionary to hold PgvectorDocumentStore instances keyed by table name.
         """
         self._settings = settings
         self._document_stores = {}
-        self._document_processing_pipelines = {}
 
     def add_document_store(self, table_name: str, *, recreate_table: bool = False) -> PgvectorDocumentStore:
         """
@@ -92,7 +90,7 @@ class AIService:
 
     def get_document_writer(self, table: str) -> DocumentWriter:
         """
-        Get an instance of the DocumentWriter component for the specified table.
+        Create and return a DocumentWriter instance for the specified table.
 
         Args:
             table (str): The name of the table to be used for the document store.
@@ -101,15 +99,14 @@ class AIService:
             DocumentWriter: An instance of the DocumentWriter component.
 
         """
-        if table not in self._document_stores:
-            self.add_document_store(table)
-
+        self.add_document_store(table, recreate_table=True)
         document_store = self._document_stores[table]
+
         return DocumentWriter(document_store=document_store)
 
-    def add_document_pipeline(self, table: str) -> Pipeline:
+    def create_document_pipeline(self, table: str) -> Pipeline:
         """
-        Add a document processing pipeline for the specified table.
+        Create and return a document processing pipeline for the specified table.
 
         Args:
             table (str): The name of the table to be used for the document store.
@@ -130,8 +127,6 @@ class AIService:
         document_pipeline.connect("splitter", "embedder")
         document_pipeline.connect("embedder", "writer")
 
-        self._document_processing_pipelines[table] = document_pipeline
-
         return document_pipeline
 
     def process_documents(self, table: str, documents: list[Document]) -> None:
@@ -143,8 +138,6 @@ class AIService:
             documents (list[Document]): A list of Document objects to be processed.
 
         """
-        if table not in self._document_processing_pipelines:
-            self._document_processing_pipelines[table] = self.add_document_pipeline(table)
 
-        pipeline = self._document_processing_pipelines[table]
+        pipeline = self.create_document_pipeline(table)
         pipeline.run({"splitter": {"documents": documents}})
