@@ -1,4 +1,5 @@
 """Defines the settings for the knowledge service application."""
+
 from pathlib import Path
 
 from pydantic import Field
@@ -11,7 +12,7 @@ resources_path = current_path.parent / "resources"
 class SettingsSource(BaseSettings):
     """
     Represents a source of knowledge for the application, such as an Obsidian vault.
-    
+
     Attributes:
         id (str): A unique identifier for the knowledge source.
         location (str): The file system path or URL where the knowledge source is located.

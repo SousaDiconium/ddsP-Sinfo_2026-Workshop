@@ -1,14 +1,15 @@
 """Defines the main application for the knowledge service."""
 
+import asyncio
 from datetime import datetime
 
 from fastapi import FastAPI
-from logger import setup_logger
 from loguru import logger
-from models.answer import KnowledgeAnswer
-from models.message import Message
-from models.query import KnowledgeQuery
-from settings import Settings
+
+from knowledge_service.jobs.sync_obsidian import sync_obsidian_vault
+from knowledge_service.models.answer import KnowledgeAnswer
+from knowledge_service.models.message import Message
+from knowledge_service.models.query import KnowledgeQuery
 
 description = """
 This is the knowledge service for the Sinfo 2025 workshop.
@@ -20,9 +21,6 @@ The service supports two main functionalities:
 
 The knowledge answers are returned with their content and source information.
 """
-
-settings = Settings()
-setup_logger(settings)
 
 app = FastAPI(
     title="Knowledge Service",
@@ -44,13 +42,14 @@ def read_root() -> Message:
 
 
 @app.get("/sync/obsidian/{vault_id}", summary="Sync Obsidian Vault", response_model=Message)
-def sync_obsidian(vault_id: str) -> Message:
+async def sync_obsidian(vault_id: str) -> Message:
     """Endpoint to trigger syncing of an Obsidian vault."""
     content = f"Syncing Obsidian vault with ID has been triggered: {vault_id}"
     timestamp = datetime.now().isoformat()
     message = Message(content=content, timestamp=timestamp)
 
     logger.debug(f"Request received to sync Obsidian vault with ID: {vault_id}")
+    asyncio.create_task(sync_obsidian_vault(vault_id))
 
     return message
 

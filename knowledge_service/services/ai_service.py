@@ -1,0 +1,150 @@
+"""
+AI service module.
+
+This module provides the AIService class for managing AI-related operations,
+including document embedding, splitting, and storage using PgvectorDocumentStore.
+"""
+
+from haystack import Document, Pipeline
+from haystack.components.embedders import (
+    AzureOpenAIDocumentEmbedder,
+)
+from haystack.components.preprocessors import DocumentSplitter
+from haystack.components.writers import DocumentWriter
+from haystack.utils import Secret
+from haystack_integrations.document_stores.pgvector import PgvectorDocumentStore
+from knowledge_service.settings import Settings
+
+
+class AIService:
+    """
+    Service class for managing AI-related operations.
+
+    This class provides methods to create document embedders, text embedders,
+    document splitters, and manage PgvectorDocumentStore instances for storing
+    and retrieving documents.
+    """
+
+    _settings: Settings
+    _document_stores: dict[str, PgvectorDocumentStore]
+    _document_processing_pipelines: dict[str, Pipeline]
+
+    def __init__(self, settings: Settings) -> None:
+        """
+        Initialize the AIService with the provided settings.
+
+        Args:
+            settings (dicopilot.settings.Settings): The settings object containing configuration values.
+
+        """
+        self._settings = settings
+        self._document_stores = {}
+        self._document_processing_pipelines = {}
+
+    def add_document_store(self, table_name: str, *, recreate_table: bool = False) -> PgvectorDocumentStore:
+        """
+        Create and add a PgvectorDocumentStore for the specified table name.
+
+        Args:
+            table_name (str): The name of the table for which to create the document store.
+            recreate_table (bool, optional): Whether to recreate the table if it exists. Defaults to False.
+
+        Returns:
+            PgvectorDocumentStore: The created document store instance.
+
+        """
+        document_store = PgvectorDocumentStore(
+            connection_string=Secret.from_token(self._settings.postgres_connection_string),
+            table_name=table_name,
+            hnsw_index_name=f"{table_name}_hnsw_index",
+            keyword_index_name=f"{table_name}_keyword_index",
+            embedding_dimension=self._settings.azure_openai_embeddings_embedding_dimension,
+            recreate_table=recreate_table,
+        )
+        self._document_stores[table_name] = document_store
+
+        return document_store
+
+    def get_document_splitter(self) -> DocumentSplitter:
+        """
+        Create and return a DocumentSplitter configured to split documents by words.
+
+        Returns:
+            DocumentSplitter: An instance configured with split_by="word", split_length=100, and split_overlap=30.
+
+        """
+        return DocumentSplitter(split_by="word", split_length=100, split_overlap=30)
+
+    def get_document_embedder(self) -> AzureOpenAIDocumentEmbedder:
+        """
+        Create and return an AzureOpenAIDocumentEmbedder instance configured with the current settings.
+
+        Returns:
+            AzureOpenAIDocumentEmbedder: An instance of the document embedder.
+
+        """
+        return AzureOpenAIDocumentEmbedder(
+            api_key=Secret.from_token(self._settings.azure_openai_embeddings_api_key),
+            api_version=self._settings.azure_openai_embeddings_api_version,
+            azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
+            azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
+        )
+
+    def get_document_writer(self, table: str) -> DocumentWriter:
+        """
+        Get an instance of the DocumentWriter component for the specified table.
+
+        Args:
+            table (str): The name of the table to be used for the document store.
+
+        Returns:
+            DocumentWriter: An instance of the DocumentWriter component.
+
+        """
+        if table not in self._document_stores:
+            self.add_document_store(table)
+
+        document_store = self._document_stores[table]
+        return DocumentWriter(document_store=document_store)
+
+    def add_document_pipeline(self, table: str) -> Pipeline:
+        """
+        Add a document processing pipeline for the specified table.
+
+        Args:
+            table (str): The name of the table to be used for the document store.
+
+        Returns:
+            Pipeline: The created document processing pipeline.
+
+        """
+        document_splitter = self.get_document_splitter()
+        document_embedder = self.get_document_embedder()
+        document_writer = self.get_document_writer(table)
+
+        document_pipeline = Pipeline()
+        document_pipeline.add_component("splitter", document_splitter)
+        document_pipeline.add_component("embedder", document_embedder)
+        document_pipeline.add_component("writer", document_writer)
+
+        document_pipeline.connect("splitter", "embedder")
+        document_pipeline.connect("embedder", "writer")
+
+        self._document_processing_pipelines[table] = document_pipeline
+
+        return document_pipeline
+
+    def process_documents(self, table: str, documents: list[Document]) -> None:
+        """
+        Process documents through the document processing pipeline for splitting, embedding, and storage.
+
+        Args:
+            table (str): The name of the table to be used for the document store.
+            documents (list[Document]): A list of Document objects to be processed.
+
+        """
+        if table not in self._document_processing_pipelines:
+            self._document_processing_pipelines[table] = self.add_document_pipeline(table)
+
+        pipeline = self._document_processing_pipelines[table]
+        pipeline.run({"splitter": {"documents": documents}})

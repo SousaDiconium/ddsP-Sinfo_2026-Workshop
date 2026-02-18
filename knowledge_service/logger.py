@@ -10,7 +10,8 @@ import logging
 import sys
 
 from loguru import logger
-from settings import Settings
+
+from knowledge_service.settings import Settings
 
 
 class InterceptHandler(logging.Handler):
@@ -57,8 +58,7 @@ def setup_logger(settings: Settings) -> None:
 
     # Add Loguru handler with your preferred format
     log_format = (
-        "{time:YYYY-MM-DD HH:mm:ss.SSS}  {level: <5} {process} --- "
-        "[{thread.name}] {name}.{function}:{line} : {message}"
+        "{time:YYYY-MM-DD HH:mm:ss.SSS}  {level: <5} {process} --- [{thread.name}] {name}.{function}:{line} : {message}"
     )
     logger.add(
         sys.stderr,
