@@ -9,9 +9,8 @@ import inspect
 import logging
 import sys
 
+from knowledge_service.utils.settings import Settings
 from loguru import logger
-
-from knowledge_service.settings import Settings
 
 
 class InterceptHandler(logging.Handler):

@@ -1,4 +1,4 @@
 log_level: DEBUG
 obsidian_sources:
   - id: sinfo-generic
-    location: /Users/rodrigo.sousa@diconium.com/Desktop/Code/Sinfo 2025/ddsP-Sinfo_2025-Workshop/obsidian-vaults/test-sinfo-vault
+    location: ../../obsidian-vaults/test-sinfo-vault

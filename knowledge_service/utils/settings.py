@@ -2,11 +2,11 @@
 
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, computed_field
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict, YamlConfigSettingsSource
 
 current_path = Path(__file__)
-resources_path = current_path.parent / "resources"
+resources_path = current_path.parent.parent / "resources"
 
 
 class SettingsSource(BaseSettings):
@@ -21,6 +21,21 @@ class SettingsSource(BaseSettings):
 
     id: str
     location: str
+
+    @computed_field # type: ignore[prop-decorator]
+    @property
+    def location_path(self) -> Path:
+        """
+        Compute the absolute path for the 'location' field.
+
+        If the provided location is a relative path, it will be resolved against the resources directory.
+        """
+        p = Path(self.location)
+
+        if not p.is_absolute():
+            p = (resources_path / p).resolve()
+
+        return p
 
 
 class Settings(BaseSettings):

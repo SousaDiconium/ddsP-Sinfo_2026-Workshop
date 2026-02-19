@@ -60,7 +60,6 @@ ignore = ["D203", "D212", "D211", "COM812", "ISC001"]
 convention = "google"
 
 [tool.mypy]
-files = ["main.py", "models"]
 python_version = "3.12"
 plugins = ["pydantic.mypy"]
 check_untyped_defs = true

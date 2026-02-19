@@ -15,7 +15,7 @@ from haystack.components.writers import DocumentWriter
 from haystack.utils import Secret
 from haystack_integrations.components.retrievers.pgvector import PgvectorEmbeddingRetriever
 from haystack_integrations.document_stores.pgvector import PgvectorDocumentStore
-from knowledge_service.settings import Settings
+from knowledge_service.utils.settings import Settings
 
 
 class AIService:
@@ -216,6 +216,7 @@ class AIService:
 
         Returns:
             list[Document]: A list of Document objects matching the search query across all tables.
+
         """
         all_documents = []
         for source in self._settings.obsidian_sources:
