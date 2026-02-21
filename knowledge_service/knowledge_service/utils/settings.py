@@ -22,7 +22,7 @@ class SettingsSource(BaseSettings):
     id: str
     location: str
 
-    @computed_field # type: ignore[prop-decorator]
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def location_path(self) -> Path:
         """

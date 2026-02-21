@@ -28,10 +28,10 @@ build-backend = "hatchling.build"
 package = true
 
 [tool.hatch.build]
-packages = ["main.py", "models"]
+packages = ["knowledge_service"]
 
 [tool.ruff]
-src = ["main.py", "models"]
+src = ["knowledge_service"]
 line-length = 120
 target-version = "py311"
 
