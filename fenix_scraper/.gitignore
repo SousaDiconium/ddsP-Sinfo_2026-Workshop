@@ -1,0 +1,11 @@
+# Environment Files
+.env
+!.env.example
+
+# Virtual environment
+.venv
+
+# Caches from utilities
+__pycache__
+.mypy_cache
+.ruff_cache
