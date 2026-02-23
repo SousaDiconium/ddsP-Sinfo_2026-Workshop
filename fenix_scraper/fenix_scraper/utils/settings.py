@@ -9,6 +9,29 @@ current_path = Path(__file__)
 resources_path = current_path.parent.parent / "resources"
 
 
+class SubjectSubPageSettings(BaseSettings):
+    """Settings for a specific subject sub-page within a course."""
+
+    name: str = Field(..., description="The name of the subject sub-page (e.g., 'initial-page', 'announcements').")
+    url_suffix: str = Field(
+        ..., description="The URL suffix for the subject sub-page (e.g., '/pagina-inicial', '/anuncios')."
+    )
+
+
+class SubjectSettings(BaseSettings):
+    """Settings for a specific subject within a course."""
+
+    subject_url: str = Field(..., description="The URL of the Fenix subject page to scrape.")
+    sub_pages: list[SubjectSubPageSettings] = Field(..., description="List of sub-pages within the subject.")
+
+
+class CourseSettings(BaseSettings):
+    """Settings for a specific course."""
+
+    course_url: str = Field(..., description="The URL of the Fenix course page to scrape.")
+    subjects: list[SubjectSettings] = Field(..., description="List of subjects within the course.")
+
+
 class Settings(BaseSettings):
     """
     Settings for the application.
@@ -45,4 +68,6 @@ class Settings(BaseSettings):
     log_level: str = Field("INFO", description="The logging level for the application.")
 
     # Fenix scraper settings
-    courses: list[str] = Field(..., description="List of Fenix course URLs to scrape.")
+    courses: list[CourseSettings] = Field(
+        ..., description="List of courses to scrape, each with its own URL and subjects."
+    )

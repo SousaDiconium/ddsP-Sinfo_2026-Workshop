@@ -7,7 +7,8 @@ from loguru import logger
 from tqdm import tqdm
 
 from fenix_scraper import settings
-from fenix_scraper.scrapers.course_scraper import scrape
+from fenix_scraper.scrapers.course_scraper import scrape as scrape_course
+from fenix_scraper.scrapers.subject_scraper import scrape as scrape_subject
 
 logger.info("Starting Fenix Scraper...")
 
@@ -25,11 +26,11 @@ parser.add_argument(
 args = parser.parse_args()
 
 output_path = Path(args.output_folder)
-# Process the courses from settigns
-for course_url in tqdm(settings.courses, desc="Scraping courses"):
-    logger.info(f"Scraping course: {course_url}")
+# Process the courses from settings
+for course in tqdm(settings.courses, desc="Scraping courses"):
+    logger.info(f"Scraping course: {course.course_url}")
+    course_path = scrape_course(output_path, course.course_url)
 
-    try:
-        scrape(output_path, course_url)
-    except Exception as e:
-        logger.error(f"Error scraping course {course_url}: {e}")
+    for subject in tqdm(course.subjects, desc="Scraping subjects"):
+        logger.info(f"Scraping subject: {subject.subject_url}")
+        scrape_subject(course_path, subject.subject_url, subject.sub_pages)

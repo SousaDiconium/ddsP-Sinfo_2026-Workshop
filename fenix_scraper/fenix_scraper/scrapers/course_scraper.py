@@ -29,6 +29,32 @@ def _get_course_id_from_url(course_url: str) -> str:
         raise ValueError(f"Invalid course URL format: {course_url}") from None
 
 
+def _get_course_header(soup: BeautifulSoup) -> str:
+    """
+    Extract the course header from the given BeautifulSoup object.
+
+    Args:
+        soup (BeautifulSoup): The BeautifulSoup object containing the HTML content of the course page.
+
+    Returns:
+        str: The extracted course header.
+
+    """
+    course_header = soup.find("h2", class_="site-header")
+    if course_header is None:
+        raise ValueError("Course header not found")
+
+    children = course_header.findChildren()
+    if not children:
+        raise ValueError("Course header has no children")
+
+    text = getattr(children[0], "text", None)
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError("Course header child text is missing or invalid")
+
+    return text.strip()
+
+
 def _scrape_generic_content(soup: BeautifulSoup) -> str:
     """
     Scrape generic content from the given BeautifulSoup object and convert it to markdown format.
@@ -70,10 +96,7 @@ def _scrape_course_description(output_path: Path, course_id: str, course_url: st
     write_path = output_path / "📄 01 - Course Description.md"
 
     soup = parse_html(page_url)
-    course_header = soup.find("h2", class_="site-header")
-    if course_header is None:
-        raise ValueError("Course header not found")
-    course_name = course_header.findChildren()[0].text.strip()
+    course_name = _get_course_header(soup)
 
     course_content_markdown = _scrape_generic_content(soup)
 
@@ -101,10 +124,7 @@ def _scrape_announcements(output_path: Path, course_id: str, course_url: str) ->
     write_path = output_path / "📄 02 - Announcements.md"
 
     soup = parse_html(page_url)
-    course_header = soup.find("h2", class_="site-header")
-    if course_header is None:
-        raise ValueError("Course header not found")
-    course_name = course_header.findChildren()[0].text.strip()
+    course_name = _get_course_header(soup)
     course_content_markdown = _scrape_generic_content(soup)
 
     tags = [course_id, "course", "description"]
@@ -131,10 +151,7 @@ def _scrape_admission_requirements(output_path: Path, course_id: str, course_url
     write_path = output_path / "📄 03 - Admission Requirements.md"
 
     soup = parse_html(page_url)
-    course_header = soup.find("h2", class_="site-header")
-    if course_header is None:
-        raise ValueError("Course header not found")
-    course_name = course_header.findChildren()[0].text.strip()
+    course_name = _get_course_header(soup)
     course_content_markdown = _scrape_generic_content(soup)
 
     tags = [course_id, "course", "admission-requirements"]
@@ -161,10 +178,7 @@ def _scrape_master_transition(output_path: Path, course_id: str, course_url: str
     write_path = output_path / "📄 04 - Master Transition.md"
 
     soup = parse_html(page_url)
-    course_header = soup.find("h2", class_="site-header")
-    if course_header is None:
-        raise ValueError("Course header not found")
-    course_name = course_header.findChildren()[0].text.strip()
+    course_name = _get_course_header(soup)
     course_content_markdown = _scrape_generic_content(soup)
 
     tags = [course_id, "course", "master-transition"]
@@ -177,13 +191,16 @@ def _scrape_master_transition(output_path: Path, course_id: str, course_url: str
     write_markdown(write_path, tags, metadata, course_content_markdown)
 
 
-def scrape(output_path: Path, course_url: str) -> None:
+def scrape(output_path: Path, course_url: str) -> Path:
     """
     Scrape course information from the given Fenix course URL.
 
     Args:
         output_path (Path): The directory where the scraped course information will be saved.
         course_url (str): The URL of the Fenix course page to scrape.
+
+    Returns:
+        Path: The path to the directory where the scraped course information is saved.
 
     """
     course_id = _get_course_id_from_url(course_url).upper()
@@ -194,3 +211,5 @@ def scrape(output_path: Path, course_url: str) -> None:
     _scrape_announcements(course_directory, course_id, course_url)
     _scrape_admission_requirements(course_directory, course_id, course_url)
     _scrape_master_transition(course_directory, course_id, course_url)
+
+    return course_directory

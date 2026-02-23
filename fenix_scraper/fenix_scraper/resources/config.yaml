@@ -1,3 +1,29 @@
 log_level: DEBUG
 courses:
-  - https://fenix.tecnico.ulisboa.pt/cursos/leic-a
+  - course_url: https://fenix.tecnico.ulisboa.pt/cursos/leic-a
+    subjects:
+      - subject_url: https://fenix.tecnico.ulisboa.pt/disciplinas/FP451795/2017-2018/1-semestre
+        sub_pages:
+          - name: Evaluation
+            url_suffix: /avaliacao
+          - name: Bibliographic References
+            url_suffix: /bibliografia
+          - name: Evaluation Methods
+            url_suffix: /metodos-de-avaliacao
+          - name: Objectives
+            url_suffix: /objectivos
+          - name: Syllabus
+            url_suffix: /programa
+          - name: Shifts
+            url_suffix: /turnos
+          - name: Python Installation
+            url_suffix: /instalacao-python
+          - name: Class Planning
+            url_suffix: /planeamento-das-aulas
+          - name: Projects
+            url_suffix: /projetos
+          - name: Solution 1st Exam
+            url_suffix: /solucao-exame
+          - name: Solution 2nd Exam
+            url_suffix: /soucao-do-segundo-exame
+
