@@ -16,6 +16,10 @@ class SubjectSubPageSettings(BaseSettings):
     url_suffix: str = Field(
         ..., description="The URL suffix for the subject sub-page (e.g., '/pagina-inicial', '/anuncios')."
     )
+    blacklisted_attachments: list[str] = Field(
+        default_factory=list,
+        description="List of attachment urls that should be ignored when scraping this sub-page.",
+    )
 
 
 class SubjectSettings(BaseSettings):

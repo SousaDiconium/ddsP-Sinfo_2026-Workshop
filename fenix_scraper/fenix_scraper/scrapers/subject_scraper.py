@@ -146,5 +146,7 @@ def scrape(output_path: Path, subject_url: str, subject_subpages: list[SubjectSu
     _scrape_subject_initial_page(subject_directory, subject_id, subject_url)
     for sub_page in enumerate(tqdm(subject_subpages, desc="Scraping subject sub-pages")):
         sub_page_key = sub_page[1].name.lower().replace(" ", "-")
-        visitor = PageVisitor(domain_url, attachments_directory, sub_page_key)
+        sub_page_excluded_attachments = sub_page[1].blacklisted_attachments
+
+        visitor = PageVisitor(domain_url, attachments_directory, sub_page_key, sub_page_excluded_attachments)
         _scrape_subject_sub_page(subject_directory, subject_id, subject_url, sub_page, visitor)

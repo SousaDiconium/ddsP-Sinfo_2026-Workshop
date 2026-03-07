@@ -11,8 +11,15 @@ class PageVisitor:
     domain_url: str
     attachments_directory: Path
     page_key: str
+    blacklisted_attachments: list[str]
 
-    def __init__(self, domain_url: str, attachments_directory: Path, page_key: str) -> None:
+    def __init__(
+        self,
+        domain_url: str,
+        attachments_directory: Path,
+        page_key: str,
+        blacklisted_attachments: list[str] | None = None,
+    ) -> None:
         """
         PageVisitor initialization with the necessary information to handle links and attachments.
 
@@ -20,11 +27,13 @@ class PageVisitor:
             domain_url (str): The base URL of the domain to resolve relative links.
             attachments_directory (Path): The directory where attachments will be saved.
             page_key (str): A unique key for the page, used in naming attachments.
+            blacklisted_attachments (list[str], optional): A list of attachment URLs to ignore. Defaults to None.
 
         """
         self.domain_url = domain_url
         self.attachments_directory = attachments_directory
         self.page_key = page_key
+        self.blacklisted_attachments = blacklisted_attachments or []
 
     def visit_link(self, ctx: object, href: str, text: str, title: str) -> dict[str, str]:
         """
@@ -53,6 +62,9 @@ class PageVisitor:
         filename = href.split("/")[-1]
         new_filename = f"{self.page_key}_{filename}"
         save_path = self.attachments_directory / new_filename
+
+        if href in self.blacklisted_attachments:
+            return {"type": "continue"}
 
         try:
             download_attachment(href, save_path)
