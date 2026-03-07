@@ -4,10 +4,12 @@ import os
 from pathlib import Path
 
 from bs4 import BeautifulSoup
-from fenix_scraper.parsers.html import parse_html
+from fenix_scraper.scrapers.generic_page_visitor import PageVisitor
+from fenix_scraper.scrapers.generic_scraper import scrape_generic_content
 from fenix_scraper.utils.settings import SubjectSubPageSettings
+from fenix_scraper.utils.web_utils import parse_html
 from fenix_scraper.writers.markdown import write_markdown
-from html_to_markdown import ConversionOptions, convert
+from tqdm import tqdm
 
 
 def _get_subject_id_from_url(subject_url: str) -> str:
@@ -56,33 +58,6 @@ def _get_subject_header(soup: BeautifulSoup) -> str:
     return text.strip()
 
 
-def _scrape_generic_content(soup: BeautifulSoup) -> str:
-    """
-    Scrape generic content from the given BeautifulSoup object and convert it to markdown format.
-
-    Args:
-        soup (BeautifulSoup): The BeautifulSoup object containing the HTML content to scrape.
-
-    Returns:
-        str: The scraped content in markdown format.
-
-    """
-    blacklisted_ids = ["myModal"]
-
-    content_block = soup.find("div", id="content-block")
-    if content_block is None:
-        raise ValueError("content-block div not found")
-
-    children = [child for child in content_block.find_all(recursive=False) if child.get("id") not in blacklisted_ids]
-    content = "".join(str(child) for child in children)
-
-    options = ConversionOptions(
-        heading_style="atx",
-        list_indent_width=2,
-    )
-    return convert(str(content), options)
-
-
 def _scrape_subject_initial_page(output_path: Path, subject_id: str, subject_url: str) -> None:
     """
     Scrape the subject initial page from the given Fenix subject URL and save it as a markdown file.
@@ -99,7 +74,7 @@ def _scrape_subject_initial_page(output_path: Path, subject_id: str, subject_url
     soup = parse_html(page_url)
     subject_name = _get_subject_header(soup)
 
-    subject_content_markdown = _scrape_generic_content(soup)
+    subject_content_markdown = scrape_generic_content(soup, visitor=None)
 
     tags = [subject_id, "subject", "initial-page"]
     metadata = {
@@ -112,7 +87,11 @@ def _scrape_subject_initial_page(output_path: Path, subject_id: str, subject_url
 
 
 def _scrape_subject_sub_page(
-    output_path: Path, subject_id: str, subject_url: str, sub_page: tuple[int, SubjectSubPageSettings]
+    output_path: Path,
+    subject_id: str,
+    subject_url: str,
+    sub_page: tuple[int, SubjectSubPageSettings],
+    visitor: PageVisitor,
 ) -> None:
     """
     Scrape a specific subject sub-page from the given Fenix subject URL and save it as a markdown file.
@@ -123,6 +102,7 @@ def _scrape_subject_sub_page(
         subject_url (str): The URL of the Fenix subject page to scrape.
         sub_page (tuple[int, SubjectSubPageSettings]): A tuple containing the index and settings for the
             subject sub-pageto scrape.
+        visitor (PageVisitor): The visitor instance to handle link processing during scraping.
 
     """
     sub_page_index, sub_page_settings = sub_page
@@ -132,7 +112,7 @@ def _scrape_subject_sub_page(
     soup = parse_html(page_url)
     subject_name = _get_subject_header(soup)
 
-    subject_content_markdown = _scrape_generic_content(soup)
+    subject_content_markdown = scrape_generic_content(soup, visitor)
 
     tags = [subject_id, "subject", sub_page_settings.name.lower().replace(" ", "-")]
     metadata = {
@@ -154,10 +134,17 @@ def scrape(output_path: Path, subject_url: str, subject_subpages: list[SubjectSu
         subject_subpages (list[SubjectSubPageSettings]): List of sub-pages within the subject.
 
     """
+    domain_url = "/".join(subject_url.split("/")[:3])
+
     subject_id = _get_subject_id_from_url(subject_url).upper()
     subject_directory = output_path / f"📁 Subject: {subject_id}"
     os.makedirs(subject_directory, exist_ok=True)
 
+    attachments_directory = subject_directory / "📁 Attachments"
+    os.makedirs(attachments_directory, exist_ok=True)
+
     _scrape_subject_initial_page(subject_directory, subject_id, subject_url)
-    for sub_page in enumerate(subject_subpages):
-        _scrape_subject_sub_page(subject_directory, subject_id, subject_url, sub_page)
+    for sub_page in enumerate(tqdm(subject_subpages, desc="Scraping subject sub-pages")):
+        sub_page_key = sub_page[1].name.lower().replace(" ", "-")
+        visitor = PageVisitor(domain_url, attachments_directory, sub_page_key)
+        _scrape_subject_sub_page(subject_directory, subject_id, subject_url, sub_page, visitor)

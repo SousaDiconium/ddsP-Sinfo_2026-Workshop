@@ -4,9 +4,9 @@ import os
 from pathlib import Path
 
 from bs4 import BeautifulSoup
-from fenix_scraper.parsers.html import parse_html
+from fenix_scraper.scrapers.generic_scraper import scrape_generic_content
+from fenix_scraper.utils.web_utils import parse_html
 from fenix_scraper.writers.markdown import write_markdown
-from html_to_markdown import ConversionOptions, convert
 
 
 def _get_course_id_from_url(course_url: str) -> str:
@@ -55,33 +55,6 @@ def _get_course_header(soup: BeautifulSoup) -> str:
     return text.strip()
 
 
-def _scrape_generic_content(soup: BeautifulSoup) -> str:
-    """
-    Scrape generic content from the given BeautifulSoup object and convert it to markdown format.
-
-    Args:
-        soup (BeautifulSoup): The BeautifulSoup object containing the HTML content to scrape.
-
-    Returns:
-        str: The scraped content in markdown format.
-
-    """
-    blacklisted_ids = ["myModal"]
-
-    content_block = soup.find("div", id="content-block")
-    if content_block is None:
-        raise ValueError("content-block div not found")
-
-    children = [child for child in content_block.find_all(recursive=False) if child.get("id") not in blacklisted_ids]
-    content = "".join(str(child) for child in children)
-
-    options = ConversionOptions(
-        heading_style="atx",
-        list_indent_width=2,
-    )
-    return convert(str(content), options)
-
-
 def _scrape_course_description(output_path: Path, course_id: str, course_url: str) -> None:
     """
     Scrape the course description from the given Fenix course URL and save it as a markdown file.
@@ -98,7 +71,7 @@ def _scrape_course_description(output_path: Path, course_id: str, course_url: st
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
 
-    course_content_markdown = _scrape_generic_content(soup)
+    course_content_markdown = scrape_generic_content(soup, visitor=None)
 
     tags = [course_id, "course", "description"]
     metadata = {
@@ -125,7 +98,7 @@ def _scrape_announcements(output_path: Path, course_id: str, course_url: str) ->
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
-    course_content_markdown = _scrape_generic_content(soup)
+    course_content_markdown = scrape_generic_content(soup, visitor=None)
 
     tags = [course_id, "course", "description"]
     metadata = {
@@ -152,7 +125,7 @@ def _scrape_admission_requirements(output_path: Path, course_id: str, course_url
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
-    course_content_markdown = _scrape_generic_content(soup)
+    course_content_markdown = scrape_generic_content(soup, visitor=None)
 
     tags = [course_id, "course", "admission-requirements"]
     metadata = {
@@ -179,7 +152,7 @@ def _scrape_master_transition(output_path: Path, course_id: str, course_url: str
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
-    course_content_markdown = _scrape_generic_content(soup)
+    course_content_markdown = scrape_generic_content(soup, visitor=None)
 
     tags = [course_id, "course", "master-transition"]
     metadata = {

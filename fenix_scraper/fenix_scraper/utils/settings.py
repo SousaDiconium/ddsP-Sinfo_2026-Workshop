@@ -71,3 +71,6 @@ class Settings(BaseSettings):
     courses: list[CourseSettings] = Field(
         ..., description="List of courses to scrape, each with its own URL and subjects."
     )
+
+    # Secrets
+    jsession_id: str = Field(..., description="The JSESSIONID cookie value for authenticating with Fenix.")
