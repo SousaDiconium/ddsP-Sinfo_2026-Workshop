@@ -12,6 +12,7 @@ dependencies = [
     "pgvector-haystack==5.3.0",
     "pydantic==2.12.3",
     "pydantic-settings==2.13.0",
+    "pymupdf4llm>=0.3.4",
 ]
 
 [dependency-groups]

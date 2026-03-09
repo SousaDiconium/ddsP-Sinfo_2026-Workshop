@@ -8,6 +8,7 @@ including methods for syncing the vault and loading documents.
 from collections.abc import Generator
 from pathlib import Path
 
+import pymupdf4llm # type: ignore
 from haystack import Document
 from knowledge_service.utils.settings import Settings, SettingsSource
 from loguru import logger
@@ -79,9 +80,15 @@ class ObsidianLoader:
                     meta={"source": str(file_path)},
                 )
 
-        else:
-            logger.warning(f"Unsupported file type '{extension}' for file '{file_path}'. Skipping.")
-            return None
+        if extension in {".pdf"}:
+            markdown_content = pymupdf4llm.to_markdown(file_path)
+            return Document(
+                content=markdown_content,
+                meta={"source": str(file_path)},
+            )
+
+        logger.warning(f"Unsupported file type '{extension}' for file '{file_path}'. Skipping.")
+        return None
 
     def load_documents(self, vault_id: str) -> Generator[Document, None, None]:
         """

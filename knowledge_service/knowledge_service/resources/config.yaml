@@ -1,4 +1,6 @@
 log_level: DEBUG
 obsidian_sources:
   - id: sinfo-generic
-    location: ../../obsidian-vaults/test-sinfo-vault
+    location: ../../../obsidian-vaults/test-sinfo-vault
+  - id: sinfo-fenix
+    location: ../../../obsidian-vaults/test-sinfo-fenix-vault
