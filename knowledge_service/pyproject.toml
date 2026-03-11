@@ -1,18 +1,18 @@
 [project]
 name = "knowledge-service"
 version = "0.1.0"
-description = "Add your description here"
+description = "Knowledge service to provision knowledge sources based on user queries"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi[standard]==0.129.0",
     "haystack-ai==2.19.0",
     "loguru==0.7.3",
     "pgvector==0.4.2",
     "pgvector-haystack==5.3.0",
-    "pydantic==2.12.3",
-    "pydantic-settings==2.13.0",
-    "pymupdf4llm>=0.3.4",
+    "pydantic==2.12.5",
+    "pydantic-settings==2.13.1",
+    "pymupdf4llm==0.3.4",
 ]
 
 [dependency-groups]

@@ -21,6 +21,7 @@ class SettingsSource(BaseSettings):
 
     id: str
     location: str
+    description: str
 
     @computed_field  # type: ignore[prop-decorator]
     @property

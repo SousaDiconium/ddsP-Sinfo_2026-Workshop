@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 
 
-class Source(BaseModel):
+class SourceDTO(BaseModel):
     """
     Represents the source of the knowledge answer.
 
@@ -19,15 +19,15 @@ class Source(BaseModel):
     link: str
 
 
-class KnowledgeAnswer(BaseModel):
+class KnowledgeAnswerDTO(BaseModel):
     """
     Represents a knowledge answer.
 
     Attributes:
         content (str): The content of the answer.
-        source (Source): The source of the answer.
+        source (SourceDTO): The source of the answer.
 
     """
 
     content: str
-    source: Source
+    source: SourceDTO

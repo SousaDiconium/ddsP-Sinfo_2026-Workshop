@@ -8,7 +8,7 @@ including methods for syncing the vault and loading documents.
 from collections.abc import Generator
 from pathlib import Path
 
-import pymupdf4llm # type: ignore
+import pymupdf4llm  # type: ignore
 from haystack import Document
 from knowledge_service.utils.settings import Settings, SettingsSource
 from loguru import logger

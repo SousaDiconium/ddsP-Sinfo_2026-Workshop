@@ -2,5 +2,12 @@ log_level: DEBUG
 obsidian_sources:
   - id: sinfo-generic
     location: ../../../obsidian-vaults/test-sinfo-vault
+    description: >
+      Vault containing general information about Sinfo.
+      Sinfo is a student organization at Instituto Superior Técnico that organizes events, workshops, and projects related to software development and technology.
+      This vault includes a variety of documents and notes related to Sinfo's activities.
   - id: sinfo-fenix
     location: ../../../obsidian-vaults/test-sinfo-fenix-vault
+    description: >
+      Vault with information scraped directly from Fenix, the internal course management system for Instituto Superior Técnico.
+      Contains course descriptions, schedules, projects, staffing and other relevant academic information.

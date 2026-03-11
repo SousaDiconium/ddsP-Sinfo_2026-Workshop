@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 
 
-class KnowledgeQuery(BaseModel):
+class KnowledgeQueryDTO(BaseModel):
     """
     Represents a knowledge query.
 

@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 
 
-class Message(BaseModel):
+class MessageDTO(BaseModel):
     """
     Represents a message in the conversation.
 
