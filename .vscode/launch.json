@@ -5,7 +5,7 @@
       "name": "Knowledge Service",
       "type": "debugpy",
       "request": "launch",
-      "python": "${workspaceFolder}/knowledge_service/.venv/bin/python",
+      "python": "${workspaceFolder}/.venv/bin/python",
       "module": "uvicorn",
       "args": [
         "knowledge_service.main:app",
