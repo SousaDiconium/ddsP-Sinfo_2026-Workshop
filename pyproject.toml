@@ -1,0 +1,30 @@
+[project]
+name = "sinfo-2026-workshop"
+version = "0.1.0"
+description = ""
+authors = [
+    { name = "diconium GmbH", email = "gpm__diconium-gpt@mydiconium.onmicrosoft.com" },
+]
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fenix_scraper",
+    "knowledge_service",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+    "fenix_scraper",
+    "knowledge_service",
+]
+
+[tool.uv.sources]
+fenix_scraper = { workspace = true }
+knowledge_service = { workspace = true }
+
+[tool.pytest.ini_options]
+# Prevent pytest from collecting workspace tests when run from root
+# Run tests per package instead: cd workspace/backend && pytest
+norecursedirs = ["workspace", ".*", "build", "dist", "node_modules", "__pycache__"]
