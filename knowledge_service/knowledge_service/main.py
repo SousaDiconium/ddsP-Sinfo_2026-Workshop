@@ -13,7 +13,7 @@ from knowledge_service.models.message import Message
 from knowledge_service.models.query import KnowledgeQuery
 
 description = """
-This is the knowledge service for the Sinfo 2025 workshop.
+This is the knowledge service for the Sinfo 2026 workshop.
 It provides endpoints to retrieve knowledge from a knowledge base.
 
 The service supports two main functionalities:
@@ -33,7 +33,7 @@ app = FastAPI(
 @app.get("/", summary="Welcome Message", response_model=Message)
 def read_root() -> Message:
     """Root endpoint that returns a welcome message."""
-    content = "Hello everyone @ Sinfo 2025!"
+    content = "Hello everyone @ Sinfo 2026!"
     timestamp = datetime.now().isoformat()
     message = Message(content=content, timestamp=timestamp)
 
