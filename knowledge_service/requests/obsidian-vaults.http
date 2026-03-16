@@ -1,0 +1,22 @@
+@baseUrl=http://127.0.0.1:8000
+
+### List Obsidian Vaults
+GET {{baseUrl}}/obsidian-vaults
+Content-Type: application/json
+
+### Sync Obsidian Vault
+@vaultId=sinfo-generic
+
+GET {{baseUrl}}/obsidian-vaults/{{vaultId}}/sync
+Content-Type: application/json
+
+### Get Knowledge from Obsidian Vault
+@vaultId=sinfo-generic
+@query="What is Sinfo?"
+
+POST {{baseUrl}}/obsidian-vaults/{{vaultId}}/knowledge
+Content-Type: application/json
+
+{
+  "query": {{query}}
+}
