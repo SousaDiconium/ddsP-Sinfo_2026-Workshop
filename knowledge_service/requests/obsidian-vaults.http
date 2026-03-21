@@ -1,22 +1,54 @@
-@baseUrl=http://127.0.0.1:8000
+@baseUrl = http://127.0.0.1:8000
 
-### List Obsidian Vaults
+###############################################################################
+# Obsidian Vaults - Manage and query your knowledge bases
+#
+# Available vault IDs:
+#   - sinfo-generic  (general Sinfo information)
+#   - sinfo-fenix    (academic data scraped from Fenix)
+###############################################################################
+
+@vaultId = sinfo-generic
+
+
+### 1. List all available Obsidian Vaults
+# Returns the id, location and description of every configured vault.
 GET {{baseUrl}}/obsidian-vaults
 Content-Type: application/json
 
-### Sync Obsidian Vault
-@vaultId=sinfo-generic
 
+### 2. Sync an Obsidian Vault (triggers indexing)
+# Reads all files in the vault, splits them into chunks, generates embeddings
+# via Azure OpenAI, and stores them in the pgvector database.
+# This runs asynchronously - the response confirms the job was triggered.
 GET {{baseUrl}}/obsidian-vaults/{{vaultId}}/sync
 Content-Type: application/json
 
-### Get Knowledge from Obsidian Vault
-@vaultId=sinfo-generic
-@query="What is Sinfo?"
 
+### 3. Query knowledge from a vault
+# Performs a semantic search over the indexed vault documents.
+# Change the "query" value below to ask your own question!
 POST {{baseUrl}}/obsidian-vaults/{{vaultId}}/knowledge
 Content-Type: application/json
 
 {
-  "query": {{query}}
+  "query": "What is Sinfo?"
+}
+
+
+### 4. Query knowledge - try a different question
+POST {{baseUrl}}/obsidian-vaults/{{vaultId}}/knowledge
+Content-Type: application/json
+
+{
+  "query": "When and where does Sinfo 2026 take place?"
+}
+
+
+### 5. Query knowledge from the Fenix vault
+POST {{baseUrl}}/obsidian-vaults/sinfo-fenix/knowledge
+Content-Type: application/json
+
+{
+  "query": "What subjects are part of the LEIC-A course?"
 }

@@ -1,0 +1,33 @@
+@baseUrl = http://127.0.0.1:8000
+
+###############################################################################
+# Documents - Browse the indexed document embeddings stored in pgvector
+#
+# Use these endpoints to inspect what has been indexed after syncing a vault.
+# The table name matches the vault ID used during sync (e.g. "sinfo-generic").
+###############################################################################
+
+@tableName = sinfo-generic
+
+
+### 1. List all document tables
+# Shows every embedding table in the database along with its document count.
+# Each table corresponds to a synced vault.
+GET {{baseUrl}}/document-tables
+Content-Type: application/json
+
+
+### 2. List sources in a table (paginated)
+# A "source" is the original file (e.g. a markdown note) that was chunked
+# and embedded. Use page & page_size query params to paginate.
+GET {{baseUrl}}/document-tables/{{tableName}}/sources?page=1&page_size=10
+Content-Type: application/json
+
+
+### 3. List documents for a specific source (paginated)
+# Replace the source_id below with an actual value from the previous request.
+# Each document is a text chunk with its embedding metadata.
+@sourceId = b4e08bc3babdb564f4ef9879696e6cee3bb883695c11176d5d296026205dd469
+
+GET {{baseUrl}}/document-tables/{{tableName}}/sources/{{sourceId}}/documents?page=1&page_size=10
+Content-Type: application/json
