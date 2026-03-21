@@ -1,0 +1,226 @@
+{
+  "main": {
+    "id": "30f10f2ac2469365",
+    "type": "split",
+    "children": [
+      {
+        "id": "8be5efa7955ee57e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "aba6937f958daa23",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/projects_proj220171111.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "projects_proj220171111"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f5f8321634ec4933",
+    "type": "split",
+    "children": [
+      {
+        "id": "7cf13f6bb34f4bb4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7f7eb8969fe1480e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "731a7f3e2ce631ec",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "d4331068c23a54ec",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 543.5
+  },
+  "right": {
+    "id": "50f8623f818d3c16",
+    "type": "split",
+    "children": [
+      {
+        "id": "297631dcf19d0220",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "962d3e9b19eba493",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/projects_proj220171111.pdf",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for projects_proj220171111"
+            }
+          },
+          {
+            "id": "b8231bbd20a622e7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 01 - Initial Page.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 📄 01 - Initial Page"
+            }
+          },
+          {
+            "id": "e9446af03d41caa9",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "b1bb88d77ae9e4b4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d29820b11836423f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 01 - Initial Page.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 📄 01 - Initial Page"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "aba6937f958daa23",
+  "lastOpenFiles": [
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/projects_proj220171117.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/python-installation_python3.3.2Installation4Mac.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/solution-2nd-exam_Sol Exame 310118.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/solution-1st-exam_Sol Exame 120118.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/python-installation_python3.3.2Installation4Windows.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/projects_proj220171111.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/projects_proj1.2017_18.20171014.pdf",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/class-planning_Planeamento 2017-18.pdf",
+    "🗂️ Course: LEIC-A/📄 01 - Course Description.md",
+    "Untitled.canvas",
+    "🗂️ Course: LEIC-A/📄 02 - Announcements.md",
+    "🗂️ Course: LEIC-A/📄 03 - Admission Requirements.md",
+    "🗂️ Course: LEIC-A/📄 04 - Master Transition.md",
+    "Untitled.base",
+    "Untitled 1.canvas",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 10 - Projects.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 01 - Initial Page.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 11 - Solution 1st Exam.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 09 - Class Planning.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 07 - Shifts.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 05 - Objectives.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 02 - Evaluation.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 03 - Bibliographic References.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 08 - Python Installation.md",
+    "python3.3.2Installation4Mac.pdf.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 12 - Solution 2nd Exam.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/projects_proj220171117.pdf.png",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/class-planning_Planeamento 2017-18.pdf.png",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/python-installation_python3.3.2Installation4Windows.pdf.png",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📁 Attachments/python-installation_python3.3.2Installation4Mac.pdf.png",
+    "spaces-view/view/2448131363642.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 06 - Syllabus.md",
+    "🗂️ Course: LEIC-A/📁 Subject: FP451795/📄 04 - Evaluation Methods.md",
+    "🗂️ Course: LEIC-A/📄 04 - Curricular Plan.md",
+    "🗂️ Course: Leic-a/📄 Announcements.md",
+    "🗂️ Course: Leic-a/📄 Course Description.md",
+    "2026-02-22.md",
+    "🗂️ Course: Leic-a/📄 Description.md",
+    "Welcome.md"
+  ]
+}
