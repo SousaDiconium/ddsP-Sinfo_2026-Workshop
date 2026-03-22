@@ -15,6 +15,13 @@ from knowledge_service.models.document import (
 )
 from knowledge_service.models.document_source import PaginatedDocumentSourceDTO
 from knowledge_service.models.document_table import DocumentTableDTO
+from knowledge_service.models.embedding import (
+    EmbeddingCompareRequestDTO,
+    EmbeddingCompareResponseDTO,
+    EmbeddingRequestDTO,
+    EmbeddingResponseDTO,
+    EmbeddingSimilarityPairDTO,
+)
 from knowledge_service.models.message import MessageDTO
 from knowledge_service.models.query import KnowledgeQueryDTO
 from knowledge_service.models.vault_info import VaultInfoDTO
@@ -192,4 +199,75 @@ def list_documents_for_source(
         total=total_documents,
         page=page,
         page_size=page_size,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Embedding endpoints
+# ---------------------------------------------------------------------------
+
+
+@app.post(
+    "/embeddings",
+    summary="Generate Embedding",
+    response_model=EmbeddingResponseDTO,
+    tags=["Embeddings"],
+)
+def generate_embedding(request: EmbeddingRequestDTO) -> EmbeddingResponseDTO:
+    """Endpoint to generate an embedding vector for a single text string."""
+    logger.debug(f"Request received to generate embedding for text: {request.text[:80]}...")
+
+    embedding = ai_service.embed_text(request.text)
+
+    return EmbeddingResponseDTO(
+        text=request.text,
+        embedding=embedding,
+        dimensions=len(embedding),
+    )
+
+
+@app.post(
+    "/embeddings/compare",
+    summary="Compare Embeddings",
+    response_model=EmbeddingCompareResponseDTO,
+    tags=["Embeddings"],
+)
+def compare_embeddings(request: EmbeddingCompareRequestDTO) -> EmbeddingCompareResponseDTO:
+    """Endpoint to embed multiple texts and compute pairwise cosine similarity."""
+    logger.debug(f"Request received to compare embeddings for {len(request.texts)} texts")
+
+    embeddings_data: list[EmbeddingResponseDTO] = []
+    vectors: list[list[float]] = []
+
+    for text in request.texts:
+        embedding = ai_service.embed_text(text)
+        vectors.append(embedding)
+        embeddings_data.append(
+            EmbeddingResponseDTO(
+                text=text,
+                embedding=embedding,
+                dimensions=len(embedding),
+            )
+        )
+
+    # Compute pairwise cosine similarities
+    similarities: list[EmbeddingSimilarityPairDTO] = []
+    for i in range(len(request.texts)):
+        for j in range(i + 1, len(request.texts)):
+            dot_product = sum(a * b for a, b in zip(vectors[i], vectors[j], strict=True))
+            magnitude_a = sum(a * a for a in vectors[i]) ** 0.5
+            magnitude_b = sum(b * b for b in vectors[j]) ** 0.5
+            cosine_sim = dot_product / (magnitude_a * magnitude_b) if magnitude_a and magnitude_b else 0.0
+
+            similarities.append(
+                EmbeddingSimilarityPairDTO(
+                    text_a=request.texts[i],
+                    text_b=request.texts[j],
+                    similarity=round(cosine_sim, 6),
+                )
+            )
+
+    return EmbeddingCompareResponseDTO(
+        embeddings=embeddings_data,
+        similarities=similarities,
     )

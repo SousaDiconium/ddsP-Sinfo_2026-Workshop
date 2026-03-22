@@ -178,6 +178,27 @@ class AIService:
         pipeline = self.create_document_pipeline(table)
         pipeline.run({"splitter": {"documents": documents}})
 
+    def embed_text(self, text: str) -> list[float]:
+        """
+        Generate an embedding vector for a single text string.
+
+        Args:
+            text (str): The text to embed.
+
+        Returns:
+            list[float]: The embedding vector for the input text.
+
+        """
+        text_embedder = self.get_text_embedder()
+
+        pipeline = Pipeline()
+        pipeline.add_component("text_embedder", text_embedder)
+
+        result = pipeline.run({"text_embedder": {"text": text}})
+        embedding: list[float] = result["text_embedder"]["embedding"]
+
+        return embedding
+
     def search_documents_table(self, table: str, query: str, top_k: int = 5) -> list[Document]:
         """
         Search for documents in the specified table using a query string.

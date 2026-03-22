@@ -9,6 +9,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "fenix_scraper",
     "knowledge_service",
+    "frontend",
 ]
 
 [tool.uv]
@@ -18,11 +19,13 @@ package = false
 members = [
     "fenix_scraper",
     "knowledge_service",
+    "frontend",
 ]
 
 [tool.uv.sources]
 fenix_scraper = { workspace = true }
 knowledge_service = { workspace = true }
+frontend = { workspace = true }
 
 [tool.pytest.ini_options]
 # Prevent pytest from collecting workspace tests when run from root

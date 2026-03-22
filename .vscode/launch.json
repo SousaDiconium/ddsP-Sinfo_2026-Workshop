@@ -15,6 +15,21 @@
         "PYTHONPATH": "${workspaceFolder}/knowledge_service"
       },
       "justMyCode": false
+    },
+    {
+      "name": "Frontend",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "module": "streamlit",
+      "args": [
+        "run",
+        "${workspaceFolder}/frontend/frontend/app.py"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/frontend"
+      },
+      "justMyCode": false
     }
   ]
 }

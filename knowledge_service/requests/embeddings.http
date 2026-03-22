@@ -1,0 +1,45 @@
+@baseUrl = http://127.0.0.1:8000
+
+###############################################################################
+# Embeddings - Generate and compare embedding vectors
+#
+# These endpoints let you explore how text is converted into vectors
+# and how similar/different texts relate to each other in embedding space.
+###############################################################################
+
+
+### 1. Generate an embedding for a single text
+POST {{baseUrl}}/embeddings
+Content-Type: application/json
+
+{
+  "text": "What is Sinfo?"
+}
+
+
+### 2. Compare embeddings of multiple texts
+# Returns each embedding plus pairwise cosine similarity scores.
+# Try mixing similar and unrelated sentences to see the difference!
+POST {{baseUrl}}/embeddings/compare
+Content-Type: application/json
+
+{
+  "texts": [
+    "What is Sinfo?",
+    "Tell me about the tech conference in Lisbon",
+    "How do I cook pasta?"
+  ]
+}
+
+
+### 3. Compare semantically similar sentences
+POST {{baseUrl}}/embeddings/compare
+Content-Type: application/json
+
+{
+  "texts": [
+    "Machine learning is a subset of artificial intelligence",
+    "AI includes techniques like deep learning and neural networks",
+    "The weather in Lisbon is sunny today"
+  ]
+}
