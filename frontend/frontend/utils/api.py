@@ -21,6 +21,24 @@ def _post(path: str, json: dict[str, Any] | None = None) -> Any:  # noqa: ANN401
     return resp.json()
 
 
+def _delete(path: str) -> Any:  # noqa: ANN401
+    """Perform a DELETE request to the API."""
+    resp = requests.delete(f"{BASE_URL}{path}", timeout=30)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def _post_file(path: str, file_bytes: bytes, filename: str) -> Any:  # noqa: ANN401
+    """Perform a POST request with a multipart file upload."""
+    resp = requests.post(
+        f"{BASE_URL}{path}",
+        files={"file": (filename, file_bytes)},
+        timeout=120,
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
 # -- General ------------------------------------------------------------------
 
 
@@ -42,20 +60,45 @@ def sync_vault(vault_id: str) -> dict[str, Any]:
     return cast(dict[str, Any], _get(f"/obsidian-vaults/{vault_id}/sync"))
 
 
-def query_vault(vault_id: str, query: str) -> list[dict[str, Any]]:
-    """Query knowledge from an Obsidian vault."""
-    return cast(
-        list[dict[str, Any]],
-        _post(f"/obsidian-vaults/{vault_id}/knowledge", json={"query": query}),
-    )
-
-
-# -- Documents ----------------------------------------------------------------
+# -- Document Tables ----------------------------------------------------------
 
 
 def list_document_tables() -> list[dict[str, Any]]:
     """List all document tables."""
     return cast(list[dict[str, Any]], _get("/document-tables"))
+
+
+def create_table(table_name: str) -> dict[str, Any]:
+    """Create an empty document table."""
+    return cast(
+        dict[str, Any],
+        _post("/document-tables", json={"table_name": table_name}),
+    )
+
+
+def delete_table(table_name: str) -> dict[str, Any]:
+    """Delete a document table."""
+    return cast(dict[str, Any], _delete(f"/document-tables/{table_name}"))
+
+
+def upload_document(
+    table_name: str,
+    file_bytes: bytes,
+    filename: str,
+) -> dict[str, Any]:
+    """Upload a file into a document table for ingestion."""
+    return cast(
+        dict[str, Any],
+        _post_file(f"/document-tables/{table_name}/documents", file_bytes, filename),
+    )
+
+
+def query_table(table_name: str, query: str) -> list[dict[str, Any]]:
+    """Query knowledge from a document table via semantic search."""
+    return cast(
+        list[dict[str, Any]],
+        _post(f"/document-tables/{table_name}/knowledge", json={"query": query}),
+    )
 
 
 def list_document_sources(

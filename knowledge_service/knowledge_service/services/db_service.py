@@ -48,6 +48,38 @@ class DatabaseService:
             )
             return bool(result.scalar())
 
+    def create_table(self, table_name: str) -> None:
+        """Create an empty document table with pgvector columns and indexes."""
+        self._validate_table_name(table_name)
+        if self.check_table_exists(table_name):
+            raise ValueError(f"Table '{table_name}' already exists.")
+
+        with self._engine.connect() as connection:
+            connection.execute(
+                text(f"""
+                CREATE TABLE "{table_name}" (
+                    id VARCHAR(128) PRIMARY KEY,
+                    embedding VECTOR,
+                    content TEXT,
+                    blob_data BYTEA,
+                    blob_meta JSONB,
+                    blob_mime_type VARCHAR(255),
+                    meta JSONB
+                )
+                """)  # noqa: S608
+            )
+            connection.commit()
+
+    def drop_table(self, table_name: str) -> None:
+        """Drop a document table and its associated indexes."""
+        self._validate_table_name(table_name)
+        if not self.check_table_exists(table_name):
+            raise ValueError(f"Table '{table_name}' does not exist.")
+
+        with self._engine.connect() as connection:
+            connection.execute(text(f'DROP TABLE IF EXISTS "{table_name}" CASCADE'))  # noqa: S608
+            connection.commit()
+
     def list_tables(self) -> list[DocumentTableDTO]:
         """Return a list of all table names, and their document count, in the database."""
         with self._engine.connect() as connection:

@@ -1,10 +1,10 @@
 @baseUrl = http://127.0.0.1:8000
 
 ###############################################################################
-# Documents - Browse the indexed document embeddings stored in pgvector
+# Document Tables - Create, manage, query, and browse document tables
 #
-# Use these endpoints to inspect what has been indexed after syncing a vault.
-# The table name matches the vault ID used during sync (e.g. "sinfo-generic").
+# Tables are the core storage for document embeddings in pgvector.
+# They can be created from Obsidian vault syncs or manually via the API.
 ###############################################################################
 
 @tableName = sinfo-generic
@@ -12,21 +12,67 @@
 
 ### 1. List all document tables
 # Shows every embedding table in the database along with its document count.
-# Each table corresponds to a synced vault.
 GET {{baseUrl}}/document-tables
 Content-Type: application/json
 
 
-### 2. List sources in a table (paginated)
-# A "source" is the original file (e.g. a markdown note) that was chunked
-# and embedded. Use page & page_size query params to paginate.
+### 2. Create an empty document table
+# Creates a new pgvector table with the required schema and indexes.
+POST {{baseUrl}}/document-tables
+Content-Type: application/json
+
+{
+  "table_name": "{{tableName}}"
+}
+
+
+### 3. Delete a document table
+# Drops the table and all associated indexes. This is irreversible!
+DELETE {{baseUrl}}/document-tables/{{tableName}}
+Content-Type: application/json
+
+
+### 4. Upload a document file into a table
+# Accepts a file (.md, .txt, or .pdf), processes it through the ingestion
+# pipeline (split + embed), and appends the chunks to the specified table.
+POST {{baseUrl}}/document-tables/{{tableName}}/documents
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="example.md"
+Content-Type: text/markdown
+
+# Example Document
+This is a test document for the workshop.
+------boundary--
+
+
+### 5. Query knowledge from a document table
+# Performs a semantic search over the indexed documents in the table.
+POST {{baseUrl}}/document-tables/{{tableName}}/knowledge
+Content-Type: application/json
+
+{
+  "query": "What is Sinfo?"
+}
+
+
+### 6. Query knowledge - try a different question
+POST {{baseUrl}}/document-tables/sinfo-fenix/knowledge
+Content-Type: application/json
+
+{
+  "query": "What subjects are part of the LEIC-A course?"
+}
+
+
+### 7. List sources in a table (paginated)
 GET {{baseUrl}}/document-tables/{{tableName}}/sources?page=1&page_size=10
 Content-Type: application/json
 
 
-### 3. List documents for a specific source (paginated)
+### 8. List documents for a specific source (paginated)
 # Replace the source_id below with an actual value from the previous request.
-# Each document is a text chunk with its embedding metadata.
 @sourceId = b4e08bc3babdb564f4ef9879696e6cee3bb883695c11176d5d296026205dd469
 
 GET {{baseUrl}}/document-tables/{{tableName}}/sources/{{sourceId}}/documents?page=1&page_size=10

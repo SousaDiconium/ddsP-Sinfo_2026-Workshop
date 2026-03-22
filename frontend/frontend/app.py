@@ -37,7 +37,8 @@ st.divider()
 # ---------------------------------------------------------------------------
 st.subheader("What's inside?")
 
-nav_col1, nav_col2, nav_col3 = st.columns(3)
+nav_col1, nav_col2 = st.columns(2)
+nav_col3, nav_col4 = st.columns(2)
 
 with nav_col1:
     st.markdown(
@@ -45,7 +46,7 @@ with nav_col1:
         <div class="card" style="text-align: center;">
             <div style="font-size: 2.5em;">🧠</div>
             <h4>Knowledge Base</h4>
-            <p>Sync vaults, ask questions, get answers from your documents via semantic search.</p>
+            <p>Sync vaults, ask questions, get answers via semantic search.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -57,7 +58,7 @@ with nav_col2:
         <div class="card" style="text-align: center;">
             <div style="font-size: 2.5em;">📄</div>
             <h4>Document Explorer</h4>
-            <p>Peek inside the vector database. See how documents are chunked, embedded, and stored.</p>
+            <p>Browse the vector database. See chunks, embeddings, and metadata.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -69,7 +70,19 @@ with nav_col3:
         <div class="card" style="text-align: center;">
             <div style="font-size: 2.5em;">🚀</div>
             <h4>Embedding Playground</h4>
-            <p>Type sentences, watch them become vectors, and explore meaning in 3D space.</p>
+            <p>Turn sentences into vectors and explore meaning in 3D space.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+with nav_col4:
+    st.markdown(
+        """
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 2.5em;">🗄️</div>
+            <h4>Table Management</h4>
+            <p>Create tables, delete them, and upload files for ingestion.</p>
         </div>
         """,
         unsafe_allow_html=True,
