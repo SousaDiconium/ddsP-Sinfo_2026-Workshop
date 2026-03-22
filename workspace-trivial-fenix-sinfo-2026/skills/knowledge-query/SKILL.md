@@ -49,11 +49,14 @@ Send the user's question to the most relevant document table to retrieve matchin
 - **Body:**
   ```json
   {
-    "query": "<user's question here>"
+    "query": "<user's question here>",
+    "top_k": 5
   }
   ```
 
 Replace `{tableName}` with the table name from Step 1 (e.g. `sinfo-generic`, `sinfo-fenix`).
+
+**The `top_k` parameter** controls how many document chunks are returned (1–50, default 5).
 
 The response is a JSON array of knowledge chunks. Each chunk has:
 - `content` — a passage of text from the indexed documents
@@ -61,13 +64,31 @@ The response is a JSON array of knowledge chunks. Each chunk has:
 - `source.link` — link to the source document
 - `source.type` — the type of source (e.g. `document-table`)
 
+#### Adjusting top_k
+
+Use `top_k` adaptively based on the nature of the query:
+
+| Situation | Recommended top_k |
+|---|---|
+| Focused, specific question (e.g. "When is SINFO?") | `5` (default) |
+| Moderately broad question (e.g. "What topics does SINFO cover?") | `10` |
+| Open-ended or summary request (e.g. "Tell me everything about...") | `15–20` |
+| Exhaustive/comprehensive request from the user | `25–50` |
+| Initial results feel incomplete or don't fully answer the question | Re-query with a higher `top_k` |
+
+**Best practice — iterate rather than over-fetch:**
+- Start with the default (`top_k: 5`) for most queries
+- If the retrieved chunks don't contain enough information to answer fully, **re-query with a higher `top_k`** (e.g. 10, then 15)
+- This avoids wasting tokens on irrelevant chunks for simple questions while still allowing comprehensive answers when needed
+- Tell the user when you're fetching more context: "Let me search for more results..."
+
 ### Step 3 — Synthesize and Respond
 
 Using the retrieved knowledge chunks as context, answer the user's question in a clear, concise way.
 
 - Combine information from multiple chunks if needed
 - Always list the sources at the end of your response, using the `source.title` field (show only the filename, not the full path)
-- If the chunks do not contain enough information to answer the question, say so clearly
+- If the chunks do not contain enough information to answer the question even after increasing `top_k`, say so clearly
 - If no relevant table exists, suggest the user sync a vault or ingest documents first
 
 ## Expected Output Format

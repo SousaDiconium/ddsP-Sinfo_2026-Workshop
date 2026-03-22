@@ -289,7 +289,7 @@ def query_document_table(
     if not db_service.check_table_exists(table_name):
         raise HTTPException(status_code=404, detail=f"Table '{table_name}' does not exist.")
 
-    documents = ai_service.search_documents_table(table=table_name, query=query.query, top_k=5)
+    documents = ai_service.search_documents_table(table=table_name, query=query.query, top_k=query.top_k)
     answers = [
         KnowledgeAnswerDTO(
             content=document.content,

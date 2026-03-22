@@ -93,11 +93,14 @@ def upload_document(
     )
 
 
-def query_table(table_name: str, query: str) -> list[dict[str, Any]]:
+def query_table(table_name: str, query: str, top_k: int = 5) -> list[dict[str, Any]]:
     """Query knowledge from a document table via semantic search."""
     return cast(
         list[dict[str, Any]],
-        _post(f"/document-tables/{table_name}/knowledge", json={"query": query}),
+        _post(
+            f"/document-tables/{table_name}/knowledge",
+            json={"query": query, "top_k": top_k},
+        ),
     )
 
 

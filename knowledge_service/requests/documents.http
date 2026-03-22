@@ -47,22 +47,25 @@ This is a test document for the workshop.
 ------boundary--
 
 
-### 5. Query knowledge from a document table
+### 5. Query knowledge from a document table (default top_k=5)
 # Performs a semantic search over the indexed documents in the table.
+# top_k controls how many chunks are returned (1-50, default 5).
 POST {{baseUrl}}/document-tables/{{tableName}}/knowledge
 Content-Type: application/json
 
 {
-  "query": "What is Sinfo?"
+  "query": "What is Sinfo?",
+  "top_k": 5
 }
 
 
-### 6. Query knowledge - try a different question
+### 6. Query knowledge - broad question with more context (top_k=15)
 POST {{baseUrl}}/document-tables/sinfo-fenix/knowledge
 Content-Type: application/json
 
 {
-  "query": "What subjects are part of the LEIC-A course?"
+  "query": "Tell me everything about the LEIC-A course",
+  "top_k": 15
 }
 
 

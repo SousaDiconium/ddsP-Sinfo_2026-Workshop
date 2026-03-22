@@ -143,6 +143,44 @@ else:
         key="knowledge_query_input",
     )
 
+    top_k = st.slider(
+        "Chunks to retrieve (top_k)",
+        min_value=1,
+        max_value=50,
+        value=5,
+        help="How many document chunks to retrieve. Use 5 for focused questions, 15-20 for broad ones.",
+        key="knowledge_top_k",
+    )
+
+    if st.button("🔍 Search", use_container_width=True, type="primary"):
+        if not query_text.strip():
+            st.warning("Please enter a question first!")
+        else:
+            with st.spinner("Searching through the knowledge base..."):
+                try:
+                    results = api.query_table(
+                        query_table_name,
+                        query_text,
+                        top_k=top_k,
+                    )
+                except Exception as exc:
+                    st.error(f"Query failed: {exc}")
+                    results = []
+
+            if not results:
+                st.info("No results found. Is the table synced?")
+            else:
+                st.markdown(f"**✨ {len(results)} result(s) found!**")
+                for i, result in enumerate(results):
+                    source = result.get("source", {})
+                    with st.expander(
+                        f"📄 Result {i + 1} — {source.get('title', 'Unknown source')}",
+                        expanded=(i == 0),
+                    ):
+                        st.markdown(result.get("content", ""))
+                        st.divider()
+                        st.caption(f"📌 Source: {source.get('title', 'N/A')} | Type: {source.get('type', 'N/A')}")
+
     if st.button("🔍 Search", use_container_width=True, type="primary"):
         if not query_text.strip():
             st.warning("Please enter a question first!")
