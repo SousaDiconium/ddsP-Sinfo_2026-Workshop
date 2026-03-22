@@ -24,5 +24,5 @@ read -r _
 # 4. Take a snapshot of the page
 SNAPSHOT=$(openclaw browser --browser-profile "$PROFILE" snapshot --json)
 
-# 5. Parse the HTML for subjects (Python required)
-echo "$SNAPSHOT" | python3 "$(dirname "$0")/parse_subjects.py"
+# 5. Parse the HTML for subjects (uses project venv via uv)
+echo "$SNAPSHOT" | uv run python "$(dirname "$0")/parse_subjects.py"

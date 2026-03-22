@@ -1,12 +1,12 @@
 ---
 name: knowledge-query
-description: Instructions for querying knowledge from Obsidian vaults via the knowledge service API, and optionally syncing vaults. Use this skill when the user asks questions that should be answered from the knowledge base, or explicitly asks to sync a vault.
+description: 'Instructions for querying knowledge from document tables via semantic search. Use this skill when the user asks questions that should be answered from the knowledge base.'
 user-invocable: false
 ---
 
 # Knowledge Query Skill
 
-This skill provides instructions for interacting with the knowledge service to answer user questions using content stored in Obsidian vaults.
+This skill provides instructions for querying the knowledge base. Document tables contain indexed, embedded text chunks that can be searched semantically.
 
 ## Base URL
 
@@ -16,38 +16,35 @@ http://127.0.0.1:8000
 
 ## Task
 
-Answer the user's question by fetching relevant knowledge chunks from the appropriate Obsidian vault and synthesizing a response with cited sources.
+Answer the user's question by finding and retrieving relevant knowledge chunks from the appropriate document table, then synthesizing a clear response with cited sources.
 
 ## Instructions
 
-### Step 1 — List Available Vaults
+### Step 1 — List Available Document Tables
 
-Fetch the list of vaults to understand what knowledge is available and determine which vault best matches the user's question.
+Fetch the list of document tables to see what knowledge is available for querying.
 
 - **Method:** `GET`
-- **URL:** `http://127.0.0.1:8000/obsidian-vaults`
+- **URL:** `http://127.0.0.1:8000/document-tables`
 - **Headers:** `Content-Type: application/json`
 
-Each vault in the response has:
-- `id` — used in subsequent requests (e.g. `sinfo-generic`, `sinfo-fenix`)
-- `location` — path to the vault on disk
-- `description` — what the vault contains; use this to decide which vault to query
+Each table in the response has:
+- `source` — the table name (used in the query URL)
+- `document_count` — how many text chunks are indexed in this table
 
-**Known vaults (as of March 2026):**
+Tables can originate from:
+- **Obsidian vault syncs** — use the `vault-management` skill to list configured vaults and understand where data came from
+- **File uploads** — documents uploaded via the `knowledge-ingest` skill
+- **Agent ingestion** — content the agent scraped and ingested (e.g. from Fenix browsing)
 
-| ID | Description |
-|----|-------------|
-| `sinfo-generic` | General information about Sinfo — the student-led tech conference at Instituto Superior Técnico. Use for questions about the event, mission, schedule, speakers, networking, etc. |
-| `sinfo-fenix` | Academic information scraped from Fenix (IST's course management system). Use for questions about courses, subjects, schedules, projects, and evaluations. |
-
-> Choose the vault whose description best matches the user's question. If uncertain, prefer `sinfo-generic` for general questions and `sinfo-fenix` for academic/course-related questions.
+> If you need more context about which vault a table came from, invoke the `vault-management` skill to list configured vaults — vault IDs match table names.
 
 ### Step 2 — Query Knowledge
 
-Send the user's question to the selected vault to retrieve relevant document chunks.
+Send the user's question to the most relevant document table to retrieve matching chunks.
 
 - **Method:** `POST`
-- **URL:** `http://127.0.0.1:8000/obsidian-vaults/{vaultId}/knowledge`
+- **URL:** `http://127.0.0.1:8000/document-tables/{tableName}/knowledge`
 - **Headers:** `Content-Type: application/json`
 - **Body:**
   ```json
@@ -56,10 +53,13 @@ Send the user's question to the selected vault to retrieve relevant document chu
   }
   ```
 
+Replace `{tableName}` with the table name from Step 1 (e.g. `sinfo-generic`, `sinfo-fenix`).
+
 The response is a JSON array of knowledge chunks. Each chunk has:
-- `content` — a passage of text from the vault
-- `source.title` — the file path of the source document
+- `content` — a passage of text from the indexed documents
+- `source.title` — the file path or name of the source document
 - `source.link` — link to the source document
+- `source.type` — the type of source (e.g. `document-table`)
 
 ### Step 3 — Synthesize and Respond
 
@@ -68,16 +68,7 @@ Using the retrieved knowledge chunks as context, answer the user's question in a
 - Combine information from multiple chunks if needed
 - Always list the sources at the end of your response, using the `source.title` field (show only the filename, not the full path)
 - If the chunks do not contain enough information to answer the question, say so clearly
-
-### Step 4 — Sync (ONLY when explicitly requested)
-
-> **WARNING:** Do NOT sync automatically. Only trigger a sync if the user explicitly asks to sync a vault (e.g. "sync the vault", "refresh the knowledge base").
-
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8000/obsidian-vaults/{vaultId}/sync`
-- **Headers:** `Content-Type: application/json`
-
-The response confirms that the sync has been triggered. After syncing, you may re-query if the user wants an updated answer.
+- If no relevant table exists, suggest the user sync a vault or ingest documents first
 
 ## Expected Output Format
 
@@ -91,8 +82,9 @@ The response confirms that the sync has been triggered. After syncing, you may r
 
 ## Notes
 
-- Always perform Step 1 (list vaults) before querying, so you understand what's available and pick the right vault
-- Never trigger a sync unless the user explicitly requests it — syncing may be slow or cause side effects
-- Use the `description` of each vault to route the question correctly; do not guess vault IDs
-- Source titles are full file paths — strip down to just the filename (e.g. `Welcome.md`) when presenting to the user
+- Always perform Step 1 (list tables) before querying, so you pick the right table
+- Choose the table whose content best matches the user's question
+- For general SINFO questions, prefer `sinfo-generic`; for academic/course questions, prefer `sinfo-fenix`
+- Source titles may be full file paths — strip down to just the filename (e.g. `Welcome.md`) when presenting to the user
 - The knowledge response may contain overlapping chunks from the same document; deduplicate sources in the output
+- If the user asks to sync a vault or manage tables, delegate to the `vault-management` or `knowledge-ingest` skills respectively
