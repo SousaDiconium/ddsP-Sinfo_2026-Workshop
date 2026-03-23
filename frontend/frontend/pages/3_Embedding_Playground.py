@@ -158,11 +158,11 @@ st.session_state["embed_entries"] = updated_entries
 
 btn_col1, btn_col2 = st.columns([1, 1])
 with btn_col1:
-    if len(entries) < 8 and st.button("➕  Add sentence", width="stretch"):
+    if len(entries) < 8 and st.button("➕  Add sentence", use_container_width=True):
         st.session_state["embed_entries"].append(("", ""))
         st.rerun()
 with btn_col2:
-    compare_clicked = st.button("🚀  Compare Embeddings", width="stretch", type="primary")
+    compare_clicked = st.button("🚀  Compare Embeddings", use_container_width=True, type="primary")
 
 st.divider()
 

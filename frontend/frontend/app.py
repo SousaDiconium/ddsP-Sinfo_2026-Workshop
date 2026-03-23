@@ -95,7 +95,7 @@ st.divider()
 # ---------------------------------------------------------------------------
 st.subheader("Is the backend alive?")
 
-if st.button("🔌  Check Connection", width="content"):
+if st.button("🔌  Check Connection", use_container_width=False):
     with st.spinner("Pinging the API..."):
         try:
             data = api.get_welcome()
