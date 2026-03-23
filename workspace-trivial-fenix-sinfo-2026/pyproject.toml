@@ -4,8 +4,8 @@ version = "0.1.0"
 description = "OpenClaw workspace scripts for Trivial Fenix agent"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "beautifulsoup4>=4.14.0",
-    "html-to-markdown>=2.25.0",
+    "beautifulsoup4==4.14.3",
+    "html-to-markdown==2.25.1",
 ]
 
 [tool.uv]
