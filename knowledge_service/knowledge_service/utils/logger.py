@@ -66,20 +66,11 @@ def setup_logger(settings: Settings) -> None:
         colorize=False,
     )
 
-    # Intercept standard logging (including uvicorn, fastapi, etc.)
-    class InterceptHandler(logging.Handler):
-        def emit(self, record: logging.LogRecord) -> None:
-            # Get corresponding Loguru level if it exists
-            try:
-                level = logger.level(record.levelname).name
-            except ValueError:
-                level = str(record.levelno)
-            logger.opt(depth=6, exception=record.exc_info).log(level, record.getMessage())
-
     # Patch root logger
     logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
 
     # Patch Uvicorn loggers
-    for uvicorn_logger in ("uvicorn", "uvicorn.error", "uvicorn.access"):
-        logging.getLogger(uvicorn_logger).handlers = [InterceptHandler()]
-        logging.getLogger(uvicorn_logger).propagate = False
+    for uvicorn_logger_key in ("uvicorn", "uvicorn.error", "uvicorn.access"):
+        uvicorn_logger = logging.getLogger(uvicorn_logger_key)
+        uvicorn_logger.handlers = [InterceptHandler()]
+        uvicorn_logger.propagate = False
