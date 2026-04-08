@@ -1,6 +1,17 @@
 # 🚀 GETTING READY for the Workshop
 
-Welcome! We’re excited to have you join us. This page will help you get set up before the workshop. If you run into any trouble, don’t worry—support will be provided at the workshop! But if you get things ready in advance, we’ll have more time for cool projects and hands-on fun. 😎
+Welcome! We’re excited to have you join us. This page will help you get set up before the workshop. If you run into any trouble, don’t worry. Support will be provided at the workshop! But if you get things ready in advance, we’ll have more time for cool projects and hands-on fun. 😎
+
+## ⚡ Quick Setup Scripts (Optional)
+
+Want to get a quick overview of what you need and maybe install everything in one go? We’ve got you covered! There are setup scripts for both macOS and Windows that will check for the main tools and help you install them automatically.
+
+- **macOS:** [`setup-resources/setup_macos.sh`](setup-resources/setup_macos.sh)
+- **Windows:** [`setup-resources/setup_windows.ps1`](setup-resources/setup_windows.ps1)
+
+Just run the script for your system and follow the prompts. It’s a fast way to get started, especially if you’re comfortable with scripts or just want to check what’s missing.
+
+**But don’t worry!** The main, recommended way is to follow the step-by-step guide below for each tool. This gives you more control, helps you understand what’s happening, and makes it easier to troubleshoot if anything goes sideways. The scripts are just here for your convenience—use whichever approach you prefer!
 
 ## 📚 Table of Contents
 
@@ -36,9 +47,9 @@ Welcome! We’re excited to have you join us. This page will help you get set up
 	Git is a tool to manage and share code (version control). It lets you download, update, and collaborate on code with others.
 
 - **🛠️ How do I install it?**  
-	- **Windows:** [Download Git](https://git-scm.com/download/win) and run the installer.
-	- **macOS:** Run `brew install git` (if you have Homebrew) or [download here](https://git-scm.com/download/mac).
-	- **Linux:** Run `sudo apt install git` or `sudo dnf install git`.
+	- **Windows:** [Download Git](https://git-scm.com/install/windows) and run the installer.
+	- **macOS:** Run `brew install git` or check the following [page](https://git-scm.com/install/mac).
+	- **Linux:** Run `sudo apt-get install git`.
 
 - **🔎 How do I check it worked?**  
 	Open a terminal and run:  

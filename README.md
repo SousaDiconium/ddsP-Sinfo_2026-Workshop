@@ -1,10 +1,10 @@
-# 🪶 Trivial Fenix — SINFO 33 Workshop
+# 🪶 Trivial Fenix - SINFO 33 Workshop
 
-> **AI-Powered Knowledge Assistant** — Built by [diconium](https://diconium.com) for [SINFO 33](https://sinfo.org) at [Instituto Superior Tecnico](https://tecnico.ulisboa.pt), April 2026.
+> **AI-Powered Knowledge Assistant** - Built by [diconium](https://diconium.com) for [SINFO 33](https://sinfo.org) at [Instituto Superior Tecnico](https://tecnico.ulisboa.pt), April 2026.
 
 This project demonstrates how to build an AI-powered personal assistant that can scrape, index, and answer questions about academic content using **Retrieval-Augmented Generation (RAG)**.
 
-Students will explore how text is chunked, embedded into high-dimensional vectors, stored in a vector database, and retrieved via semantic search — all through a hands-on dashboard and an AI agent.
+Students will explore how text is chunked, embedded into high-dimensional vectors, stored in a vector database, and retrieved via semantic search, all through a hands-on dashboard and an AI agent.
 
 ---
 
