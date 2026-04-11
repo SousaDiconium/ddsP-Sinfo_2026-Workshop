@@ -203,10 +203,18 @@ class TestGetDocumentRetriever:
 class TestProcessDocuments:
     def test_runs_pipeline_and_returns_written_count(self, ai_service: AIService, mocker: MockerFixture) -> None:
         # given
-        documents = [Document(content="doc1"), Document(content="doc2")]
+        mock_splitter = mocker.MagicMock()
+        mocker.patch.object(ai_service, "get_document_splitter", return_value=mock_splitter)
+        mock_embedder = mocker.MagicMock()
+        mocker.patch.object(ai_service, "get_document_embedder", return_value=mock_embedder)
+        mock_writer = mocker.MagicMock()
+        mocker.patch.object(ai_service, "get_document_writer", return_value=mock_writer)
+
         mock_pipeline = mocker.MagicMock()
         mock_pipeline.run.return_value = {"writer": {"documents_written": 2}}
-        mocker.patch.object(ai_service, "create_document_pipeline", return_value=mock_pipeline)
+        mocker.patch("knowledge_service.services.ai_service.Pipeline", return_value=mock_pipeline)
+
+        documents = [Document(content="doc1"), Document(content="doc2")]
 
         # when
         result = ai_service.process_documents("my_table", documents)
@@ -215,17 +223,43 @@ class TestProcessDocuments:
         assert result == 2
         mock_pipeline.run.assert_called_once_with({"splitter": {"documents": documents}})
 
-    def test_returns_zero_when_pipeline_result_is_empty(self, ai_service: AIService, mocker: MockerFixture) -> None:
+
+class TestEmbedText:
+    def test_runs_pipeline_and_returns_embedding(self, ai_service: AIService, mocker: MockerFixture) -> None:
         # given
+        mock_embedder = mocker.MagicMock()
+        mocker.patch.object(ai_service, "get_text_embedder", return_value=mock_embedder)
+
+        expected_embedding = [0.1, 0.2, 0.3]
         mock_pipeline = mocker.MagicMock()
-        mock_pipeline.run.return_value = {}
-        mocker.patch.object(ai_service, "create_document_pipeline", return_value=mock_pipeline)
+        mock_pipeline.run.return_value = {"text_embedder": {"embedding": expected_embedding}}
+        mocker.patch("knowledge_service.services.ai_service.Pipeline", return_value=mock_pipeline)
 
         # when
-        result = ai_service.process_documents("my_table", [])
+        result = ai_service.embed_text("some text")
 
         # then
-        assert result == 0
+        assert result == expected_embedding
+        mock_pipeline.run.assert_called_once_with({"text_embedder": {"text": "some text"}})
+
+
+class TestSearchDocumentsTable:
+    def test_runs_pipeline_and_returns_documents(self, ai_service: AIService, mocker: MockerFixture) -> None:
+        # given
+        mock_retriever = mocker.MagicMock()
+        mocker.patch.object(ai_service, "get_document_retriever", return_value=mock_retriever)
+
+        expected_docs = [Document(content="doc1"), Document(content="doc2")]
+        mock_pipeline = mocker.MagicMock()
+        mock_pipeline.run.return_value = {"retriever": {"documents": expected_docs}}
+        mocker.patch("knowledge_service.services.ai_service.Pipeline", return_value=mock_pipeline)
+
+        # when
+        result = ai_service.search_documents_table("my_table", "query", top_k=3)
+
+        # then
+        assert result == expected_docs
+        mock_pipeline.run.assert_called_once_with({"text_embedder": {"text": "query"}})
 
 
 class TestSearchDocumentsDatabase:

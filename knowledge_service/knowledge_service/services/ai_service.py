@@ -142,16 +142,17 @@ class AIService:
 
         return PgvectorEmbeddingRetriever(document_store=document_store, top_k=top_k)
 
-    def create_document_pipeline(self, table: str, *, recreate_table: bool = True) -> Pipeline:
+    def process_documents(self, table: str, documents: list[Document], *, recreate_table: bool = True) -> int:
         """
-        Create and return a document processing pipeline for the specified table.
+        Process documents through the document processing pipeline for splitting, embedding, and storage.
 
         Args:
             table (str): The name of the table to be used for the document store.
+            documents (list[Document]): A list of Document objects to be processed.
             recreate_table (bool): Whether to drop and recreate the table. Defaults to True.
 
         Returns:
-            Pipeline: The created document processing pipeline.
+            int: The number of document chunks written to the store.
 
         """
         document_splitter = self.get_document_splitter()
@@ -166,23 +167,7 @@ class AIService:
         document_pipeline.connect("splitter", "embedder")
         document_pipeline.connect("embedder", "writer")
 
-        return document_pipeline
-
-    def process_documents(self, table: str, documents: list[Document], *, recreate_table: bool = True) -> int:
-        """
-        Process documents through the document processing pipeline for splitting, embedding, and storage.
-
-        Args:
-            table (str): The name of the table to be used for the document store.
-            documents (list[Document]): A list of Document objects to be processed.
-            recreate_table (bool): Whether to drop and recreate the table. Defaults to True.
-
-        Returns:
-            int: The number of document chunks written to the store.
-
-        """
-        pipeline = self.create_document_pipeline(table, recreate_table=recreate_table)
-        result = pipeline.run({"splitter": {"documents": documents}})
+        result = document_pipeline.run({"splitter": {"documents": documents}})
         return int(result.get("writer", {}).get("documents_written", 0))
 
     def embed_text(self, text: str) -> list[float]:
