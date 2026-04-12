@@ -1,24 +1,35 @@
-"""Document Explorer page - Browse tables, sources, and document chunks."""
+"""Act 4: Explore the Data — Browse document chunks, embeddings, and metadata."""
 
 import json
 
 import streamlit as st
 from frontend.utils import api
-from frontend.utils.layout import setup_page
-
-setup_page("Document Explorer")
 
 # ---------------------------------------------------------------------------
 # Header
 # ---------------------------------------------------------------------------
-st.markdown("<h1>📄 Document Explorer</h1>", unsafe_allow_html=True)
-st.caption("Peek behind the curtain — see how your documents are chunked, embedded, and stored in pgvector.")
+st.markdown("<h1>📄 Explore the Data</h1>", unsafe_allow_html=True)
+st.caption("Peek behind the curtain — see how documents are chunked, embedded, and stored in pgvector.")
+
+st.markdown(
+    """
+    <div class="card">
+        <h4 style="color: #009de0; margin-top: 0;">🔬 What You're Looking At</h4>
+        <p>Each document you synced or uploaded was split into <b>chunks</b> (overlapping text windows).
+        Each chunk has a unique <b>embedding</b> — a 3072-dimensional vector representing its meaning.
+        This page lets you browse those chunks and inspect the raw embedding numbers.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.divider()
 
 # ---------------------------------------------------------------------------
 # Document Tables
 # ---------------------------------------------------------------------------
 st.subheader("Document Tables")
-st.caption("Each table corresponds to a synced Obsidian vault.")
+st.caption("Each table corresponds to a synced vault or uploaded document set.")
 
 try:
     tables = api.list_document_tables()
@@ -27,10 +38,9 @@ except Exception as exc:
     st.stop()
 
 if not tables:
-    st.info("No document tables found. Head to **Knowledge Base** and sync a vault first!")
+    st.info("No document tables found. Head to **Building Knowledge** and sync a vault first!")
     st.stop()
 
-# Show table metrics as styled cards
 cols = st.columns(len(tables))
 for idx, table in enumerate(tables):
     with cols[idx]:
@@ -60,7 +70,6 @@ selected_table = st.selectbox("Select a table", options=table_names, key="explor
 if not selected_table:
     st.stop()
 
-# Pagination for sources
 src_col1, src_col2 = st.columns([3, 1])
 with src_col2:
     src_page = st.number_input("Page", min_value=1, value=1, key="src_page")
@@ -81,7 +90,6 @@ if not sources:
     st.info("No sources found in this table.")
     st.stop()
 
-# Show sources as selectable list — display title, track by id
 source_options = {s.get("id", "unknown"): s.get("title", s.get("id", "Unknown")) for s in sources}
 selected_source_id = st.selectbox(
     "Select a source",
@@ -96,7 +104,7 @@ if not selected_source_id:
 st.divider()
 
 # ---------------------------------------------------------------------------
-# Browse document chunks for a source
+# Browse document chunks
 # ---------------------------------------------------------------------------
 st.subheader("🔬 Document Chunks")
 st.caption(f"Inspecting: **{source_options.get(selected_source_id, selected_source_id)}**")
@@ -123,32 +131,23 @@ if not documents:
 
 for i, doc in enumerate(documents):
     chunk_num = (doc_page - 1) * 5 + i + 1
-    with st.expander(
-        f"🧩 Chunk {chunk_num} of {total_docs}",
-        expanded=(i == 0),
-    ):
-        # Content
+    with st.expander(f"🧩 Chunk {chunk_num} of {total_docs}", expanded=(i == 0)):
         st.markdown("**Content:**")
         st.text(doc.get("content", "No content"))
 
-        # Metadata
         meta = doc.get("meta", {})
         if meta:
             st.markdown("**Metadata:**")
             st.json(meta)
 
-        # Embedding preview
         embedding = doc.get("embedding")
         if embedding and isinstance(embedding, list):
             st.markdown(f"**🔢 Embedding** — {len(embedding)} dimensions")
-            # Show first 10 values as a preview
             preview = embedding[:10]
             st.code(
                 f"[{', '.join(f'{v:.6f}' for v in preview)}, ... ] ({len(embedding)} dims total)",
                 language=None,
             )
-
-            # Show distribution of embedding values
             with st.popover("📊 View full embedding stats"):
                 st.markdown(
                     f"""

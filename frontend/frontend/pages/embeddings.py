@@ -1,4 +1,4 @@
-"""Embedding Playground page - 3D visualization and similarity comparison."""
+"""Act 2: Embeddings — What they are, and an interactive 3D playground."""
 
 from typing import Any
 
@@ -6,11 +6,137 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 from frontend.utils import api
-from frontend.utils.layout import setup_page
 from frontend.utils.theme import ACCENT_GREEN, ACCENT_ORANGE, ACCENT_RED, IST_BLUE
 from sklearn.decomposition import PCA
 
-setup_page("Embedding Playground")
+# ---------------------------------------------------------------------------
+# Header
+# ---------------------------------------------------------------------------
+st.markdown("<h1>🔢 Embeddings</h1>", unsafe_allow_html=True)
+st.caption("Turn sentences into vectors and watch meaning come alive in 3D space.")
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Educational intro
+# ---------------------------------------------------------------------------
+st.subheader("📖 What are Embeddings?")
+
+intro_col1, intro_col2 = st.columns(2)
+
+with intro_col1:
+    st.markdown(
+        """
+        <div class="card">
+            <h4 style="color: #009de0; margin-top: 0;">🔢 Vectors of Meaning</h4>
+            <p>An <b>embedding</b> is a list of numbers (a vector) that captures the <em>meaning</em>
+            of a piece of text. A neural network reads the text and outputs, for example, 3072 numbers —
+            one per dimension. Similar texts produce similar vectors.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+with intro_col2:
+    st.markdown(
+        """
+        <div class="card">
+            <h4 style="color: #00c896; margin-top: 0;">📐 Cosine Similarity</h4>
+            <p>To compare two embeddings we measure the <b>angle</b> between them — cosine similarity.
+            A score of <b>1.0</b> means identical meaning; <b>0.0</b> means completely unrelated.
+            This is how the knowledge base finds the most relevant chunks for your question.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.markdown(
+    """
+    <div class="card">
+        <h4 style="color: #f59e0b; margin-top: 0;">🔭 Why 3D?</h4>
+        <p>Our embeddings live in <b>3072 dimensions</b> — impossible to visualise directly.
+        We use <b>PCA</b> (Principal Component Analysis) to squash those 3072 numbers down to 3,
+        preserving as much of the original structure as possible.
+        Points that are close together in 3D were close together in 3072D.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Haystack pipeline section
+# ---------------------------------------------------------------------------
+st.subheader("⚙️ Under the Hood — The Haystack Pipeline")
+st.markdown(
+    """
+    This page calls the backend's **`embed_text`** endpoint, which runs a one-step
+    [Haystack](https://haystack.deepset.ai/) pipeline. Haystack is an open-source framework
+    for building LLM-powered applications — you wire together **components** into a **pipeline**
+    and Haystack handles data flow between them.
+    Here the pipeline has a single component: it takes your raw text string, sends it to
+    **Azure OpenAI**, and returns a 3 072-dimensional embedding vector.
+    """
+)
+
+st.markdown(
+    """
+    <div style="overflow-x: auto; padding: 16px 0 4px;">
+    <svg viewBox="0 0 530 140" xmlns="http://www.w3.org/2000/svg"
+         style="width:100%; max-width:560px; display:block; margin:0 auto; font-family:sans-serif;">
+      <defs>
+        <marker id="p2ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
+        </marker>
+        <style>
+          @keyframes p2flow { to { stroke-dashoffset: -13; } }
+          .p2fl { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                  animation: p2flow 0.5s linear infinite; }
+          .p2nd { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
+          .p2nc { fill:rgba(0,157,224,.12); stroke:#009de0; stroke-width:1.5; }
+          .p2t1 { font-size:20px; text-anchor:middle; dominant-baseline:middle; font-weight:700; }
+          .p2t2 { font-size:15px; text-anchor:middle; dominant-baseline:middle; font-weight:600; }
+          .p2t3 { font-size:10px; text-anchor:middle; dominant-baseline:middle; opacity:.60; font-style:italic; }
+        </style>
+      </defs>
+
+      <!-- Node 1: Input Text (data node, green) -->
+      <rect x="15"  y="18" width="140" height="90" rx="10" class="p2nd"/>
+      <text x="85"  y="44"  class="p2t1" fill="#00c896">📝</text>
+      <text x="85"  y="72"  class="p2t2" fill="#00c896">Input Text</text>
+      <text x="85"  y="92"  class="p2t3" fill="#00c896">str · plain text</text>
+
+      <!-- Arrow 1 -->
+      <path d="M 155,63 L 195,63" class="p2fl" marker-end="url(#p2ah)"/>
+
+      <!-- Node 2: Text Embedder (component, blue) -->
+      <rect x="195" y="18" width="140" height="90" rx="10" class="p2nc"/>
+      <text x="265" y="44"  class="p2t1" fill="#009de0">🤖</text>
+      <text x="265" y="72"  class="p2t2" fill="#009de0">Text Embedder</text>
+      <text x="265" y="92"  class="p2t3" fill="#009de0">AzureOpenAITextEmbedder</text>
+
+      <!-- Arrow 2 -->
+      <path d="M 335,63 L 375,63" class="p2fl" marker-end="url(#p2ah)"/>
+
+      <!-- Node 3: Embedding Vector (data node, green) -->
+      <rect x="375" y="18" width="140" height="90" rx="10" class="p2nd"/>
+      <text x="445" y="44"  class="p2t1" fill="#00c896">🔢</text>
+      <text x="445" y="72"  class="p2t2" fill="#00c896">Embedding Vector</text>
+      <text x="445" y="92"  class="p2t3" fill="#00c896">list[float] · 3 072 dims</text>
+    </svg>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Playground
+# ---------------------------------------------------------------------------
+st.markdown("<h2>🚀 Embedding Playground</h2>", unsafe_allow_html=True)
+st.caption("Type sentences, turn them into 3072-dimensional vectors, and explore meaning in 3D.")
 
 # Colors for up to 8 texts in the 3D plot
 POINT_COLORS = [
@@ -50,40 +176,11 @@ def _similarity_label(sim: float) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Header
-# ---------------------------------------------------------------------------
-st.markdown("<h1>🚀 Embedding Playground</h1>", unsafe_allow_html=True)
-st.caption("Type sentences, turn them into 3072-dimensional vectors, and watch meaning come alive in 3D.")
-
-# ---------------------------------------------------------------------------
-# Explanation
-# ---------------------------------------------------------------------------
-with st.expander("💡 What are embeddings?", expanded=False):
-    st.markdown(
-        """
-        **Embeddings** are high-dimensional vectors (in our case, **3072 dimensions!**)
-        that capture the *meaning* of text. They're generated by a neural network
-        (Azure OpenAI `text-embedding-3-large`).
-
-        **Think of it like this:**
-        - Each sentence gets a unique "address" in a 3072-dimensional space
-        - Sentences about similar topics live in the same "neighborhood"
-        - We measure closeness using **cosine similarity** (1.0 = same meaning, 0.0 = unrelated)
-        - To visualize this, we use **PCA** to squash 3072D down to 3D
-
-        **Pro tip:** Try mixing similar and completely unrelated sentences to see the effect!
-        """
-    )
-
-st.divider()
-
-# ---------------------------------------------------------------------------
 # Input area
 # ---------------------------------------------------------------------------
 st.subheader("✏️ Input Sentences")
 st.caption("Add 2-8 sentences. Give each a short label for the graph, then write the full text.")
 
-# Default entries: (label, text)
 _DEFAULTS = [
     (
         "SINFO conference",
@@ -120,14 +217,12 @@ if "embed_entries" not in st.session_state:
 
 entries = st.session_state["embed_entries"]
 
-# Render inputs — each entry is a visual card: colored header row + text area
 updated_entries: list[tuple[str, str]] = []
 for i in range(len(entries)):
     dot = _DOT_EMOJIS[i] if i < len(_DOT_EMOJIS) else "⚪"
     color = POINT_COLORS[i % len(POINT_COLORS)]
 
     with st.container(border=True):
-        # Header row: dot + label + remove
         header_left, header_right = st.columns([9, 1])
         with header_left:
             lbl = st.text_input(
@@ -142,7 +237,6 @@ for i in range(len(entries)):
                 st.session_state["embed_entries"] = [e for j, e in enumerate(entries) if j != i]
                 st.rerun()
 
-        # Full-width text area
         txt = st.text_area(
             f"Sentence {i + 1}",
             value=entries[i][1],
@@ -152,7 +246,8 @@ for i in range(len(entries)):
             height=80,
         )
 
-    updated_entries.append((lbl.strip(), txt.strip()))
+    if lbl and txt:
+        updated_entries.append((lbl.strip(), txt.strip()))
 
 st.session_state["embed_entries"] = updated_entries
 
@@ -170,7 +265,6 @@ st.divider()
 # Results
 # ---------------------------------------------------------------------------
 if compare_clicked:
-    # Filter out entries with empty text
     valid_entries = [(lbl or f"Sentence {i + 1}", txt) for i, (lbl, txt) in enumerate(updated_entries) if txt]
 
     if len(valid_entries) < 2:
@@ -191,7 +285,6 @@ if compare_clicked:
     st.session_state["embed_valid_texts"] = _texts
     st.session_state["embed_valid_labels"] = _labels
 
-# Show results from session state (persists across reruns)
 result: dict[str, Any] | None = st.session_state.get("embed_result")
 valid_texts: list[str] | None = st.session_state.get("embed_valid_texts")
 valid_labels: list[str] | None = st.session_state.get("embed_valid_labels")
@@ -212,12 +305,10 @@ if result is None or valid_texts is None:
 embeddings_data = result.get("embeddings", [])
 similarities = result.get("similarities", [])
 
-# Build a text -> label lookup (the API returns full texts, we want to show labels)
 text_to_label: dict[str, str] = {}
 if valid_labels:
     for txt, lbl in zip(valid_texts, valid_labels, strict=True):
         text_to_label[txt] = lbl
-# Fallback: use truncated text as label
 for e in embeddings_data:
     if e["text"] not in text_to_label:
         text_to_label[e["text"]] = e["text"][:30] + "..."
@@ -228,7 +319,6 @@ for e in embeddings_data:
 st.subheader("🌌 3D Embedding Space")
 st.caption("3072 dimensions → 3D via PCA. Points that are close together share similar meaning.")
 
-# Extract embedding vectors
 vectors = [e["embedding"] for e in embeddings_data]
 full_texts = [e["text"] for e in embeddings_data]
 point_labels = [text_to_label.get(t, t[:30]) for t in full_texts]
@@ -237,11 +327,6 @@ if len(vectors) < 2:
     st.warning("Need at least 2 embeddings to visualize.")
     st.stop()
 
-# PCA reduction to 3D
-# N centered points span at most N-1 dimensions, so we can only extract
-# min(3, N-1) meaningful principal components.  For any missing dimensions
-# we add a small amount of jitter so the points still look like they live in
-# 3D space rather than collapsing to a line or plane.
 matrix = np.array(vectors)
 meaningful_dims = min(3, max(len(vectors) - 1, 1))
 pca = PCA(n_components=meaningful_dims)
@@ -254,12 +339,10 @@ if coords.shape[1] < 3:
     jitter = rng.normal(scale=jitter_scale, size=(coords.shape[0], 3 - coords.shape[1]))
     coords = np.concatenate([coords, jitter], axis=1)
 
-# Build 3D scatter plot
 fig = go.Figure()
 
 for i, (plabel, coord, full_text) in enumerate(zip(point_labels, coords, full_texts, strict=True)):
     color = POINT_COLORS[i % len(POINT_COLORS)]
-
     fig.add_trace(
         go.Scatter3d(
             x=[coord[0]],
@@ -276,20 +359,16 @@ for i, (plabel, coord, full_text) in enumerate(zip(point_labels, coords, full_te
         )
     )
 
-# Draw lines between each pair colored by similarity
 for pair in similarities:
     text_a = pair["text_a"]
     text_b = pair["text_b"]
     sim = pair["similarity"]
-
     idx_a = full_texts.index(text_a)
     idx_b = full_texts.index(text_b)
     label_a = text_to_label.get(text_a, "")
     label_b = text_to_label.get(text_b, "")
-
     line_color = _similarity_color(sim)
     opacity = 0.2 + 0.6 * sim
-
     fig.add_trace(
         go.Scatter3d(
             x=[coords[idx_a][0], coords[idx_b][0]],
@@ -320,7 +399,6 @@ fig.update_layout(
 
 st.plotly_chart(fig, width="stretch")
 
-# Explained variance info
 explained = pca.explained_variance_ratio_
 total_explained = sum(explained) * 100
 pca_parts = [f"PC{i + 1}: {v * 100:.1f}%" for i, v in enumerate(explained)]
@@ -337,11 +415,9 @@ st.divider()
 # ---------------------------------------------------------------------------
 # Similarity scores
 # ---------------------------------------------------------------------------
-st.subheader("📏 Similarity Score")
+st.subheader("📏 Similarity Scores")
 st.caption(
-    "Cosine similarity between each pair of sentences. "
-    "Ranges from 0 (completely unrelated) to 1 (identical meaning). "
-    "Higher score = more similar."
+    "Cosine similarity between each pair of sentences. Ranges from 0 (completely unrelated) to 1 (identical meaning)."
 )
 
 for pair in similarities:
@@ -351,7 +427,6 @@ for pair in similarities:
     label_b = text_to_label.get(pair["text_b"], pair["text_b"][:40])
     sim_label = _similarity_label(sim)
     pct = max(0, min(100, sim * 100))
-
     st.markdown(
         f"""
         <div class="sim-card">
@@ -388,14 +463,12 @@ for i, emb in enumerate(embeddings_data):
     with st.expander(f"{dot}  {plabel}"):
         st.markdown(f"**Full text:** {emb['text']}")
         st.markdown(f"**Dimensions:** `{emb['dimensions']}`")
-
         vec = emb["embedding"]
         st.markdown("**First 20 values** (out of 3072):")
         st.code(
             ", ".join(f"{v:.6f}" for v in vec[:20]) + f"  ... ({len(vec)} total)",
             language=None,
         )
-
         st.markdown("**Vector statistics:**")
         arr = np.array(vec)
         stat_cols = st.columns(4)

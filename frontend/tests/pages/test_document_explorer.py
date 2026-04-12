@@ -3,7 +3,7 @@ from pathlib import Path
 from pytest_mock import MockerFixture
 from streamlit.testing.v1 import AppTest
 
-PAGE_FILE = str(Path(__file__).parent.parent.parent / "frontend" / "pages" / "2_Document_Explorer.py")
+PAGE_FILE = str(Path(__file__).parent.parent.parent / "frontend" / "pages" / "explore_data.py")
 
 
 class TestDocumentExplorerPage:
@@ -47,14 +47,3 @@ class TestDocumentExplorerPage:
 
         # then
         assert not at.exception
-
-    def test_renders_sidebar_branding(self, mocker: MockerFixture) -> None:
-        # given
-        mocker.patch("frontend.utils.api.list_document_tables", return_value=[])
-
-        # when
-        at = AppTest.from_file(PAGE_FILE)
-        at.run()
-
-        # then
-        assert "Trivial Fenix" in at.sidebar.markdown[0].value

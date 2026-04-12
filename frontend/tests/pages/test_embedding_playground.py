@@ -2,7 +2,7 @@ from pathlib import Path
 
 from streamlit.testing.v1 import AppTest
 
-PAGE_FILE = str(Path(__file__).parent.parent.parent / "frontend" / "pages" / "3_Embedding_Playground.py")
+PAGE_FILE = str(Path(__file__).parent.parent.parent / "frontend" / "pages" / "embeddings.py")
 
 
 class TestEmbeddingPlaygroundPage:
@@ -39,11 +39,3 @@ class TestEmbeddingPlaygroundPage:
 
         # then — default entries provide text areas
         assert len(at.text_area) >= 1
-
-    def test_renders_sidebar_branding(self) -> None:
-        # when
-        at = AppTest.from_file(PAGE_FILE)
-        at.run(timeout=30)
-
-        # then
-        assert "Trivial Fenix" in at.sidebar.markdown[0].value

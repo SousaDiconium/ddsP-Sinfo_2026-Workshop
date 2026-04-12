@@ -5,18 +5,8 @@ import streamlit as st
 from frontend.utils.theme import apply_theme
 
 
-def setup_page(title: str) -> None:
-    """Apply shared page config, theme, and sidebar to any page."""
-    st.set_page_config(
-        page_title=f"{title} | Trivial Fenix",
-        page_icon="https://sinfo.org/favicon.ico",
-        layout="wide",
-        initial_sidebar_state="expanded",
-    )
-
-    apply_theme()
-
-    # -- Sidebar branding (shown on every page) ------------------------------
+def apply_sidebar() -> None:
+    """Render shared sidebar branding. Called once from the navigation controller (app.py)."""
     st.sidebar.markdown(
         """
         <div style="text-align: center; padding: 12px 0 8px 0;">
@@ -41,3 +31,20 @@ def setup_page(title: str) -> None:
         """,
         unsafe_allow_html=True,
     )
+
+
+def setup_page(title: str) -> None:
+    """
+    Configure page for standalone execution (used in tests and direct file runs).
+
+    In navigation mode (via app.py), page config and sidebar are handled centrally.
+    This function is kept for backward compatibility with standalone page execution.
+    """
+    st.set_page_config(
+        page_title=f"{title} | Trivial Fenix",
+        page_icon="https://sinfo.org/favicon.ico",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
+    apply_theme()
+    apply_sidebar()
