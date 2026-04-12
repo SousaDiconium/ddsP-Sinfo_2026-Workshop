@@ -95,7 +95,7 @@ class DatabaseService:
             table_counts = []
             for table in tables:
                 count_result = connection.execute(text(f'SELECT COUNT(*) FROM "{table}"'))  # noqa: S608 - safe since table name is returned from the database directly
-                count = count_result.scalar()
+                count = count_result.scalar() or 0
                 table_counts.append(DocumentTableDTO(source=table, document_count=count))
             return table_counts
 
