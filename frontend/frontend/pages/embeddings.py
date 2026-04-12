@@ -183,29 +183,29 @@ st.caption("Add 2-8 sentences. Give each a short label for the graph, then write
 
 _DEFAULTS = [
     (
-        "SINFO conference",
+        "SINFO Conference",
         "SINFO is the largest student-run tech conference in Portugal,"
         " held annually at Instituto Superior Tecnico in Lisbon.",
     ),
     (
-        "IST tech week",
+        "IST Tech Week",
         "Every year, thousands of engineering students gather in Lisbon"
         " for a week of tech talks, workshops, and networking at IST.",
     ),
     (
-        "RAG overview",
+        "RAG Overview",
         "Retrieval-Augmented Generation combines a vector search over"
         " document embeddings with a large language model to answer"
         " questions using real sources.",
     ),
     (
-        "RAG pipeline",
+        "RAG Pipeline",
         "RAG pipelines first retrieve relevant text chunks from a"
         " database and then feed them as context to an LLM for"
         " grounded answers.",
     ),
     (
-        "Pasta recipe",
+        "Pasta Recipe",
         "The best recipe for homemade pasta starts with 100 grams of"
         " flour per egg, kneaded for ten minutes until the dough is"
         " smooth and elastic.",
