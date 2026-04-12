@@ -50,12 +50,7 @@ class AIService:
             AzureOpenAITextEmbedder: An instance of the text embedder.
 
         """
-        return AzureOpenAITextEmbedder(
-            api_key=Secret.from_token(self._settings.azure_openai_embeddings_api_key),
-            api_version=self._settings.azure_openai_embeddings_api_version,
-            azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
-            azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
-        )
+        raise NotImplementedError("Text embedder is not implemented yet.")
 
     def add_document_store(self, table_name: str, *, recreate_table: bool = False) -> PgvectorDocumentStore:
         """
@@ -89,7 +84,7 @@ class AIService:
             DocumentSplitter: An instance configured with split_by="word", split_length=100, and split_overlap=30.
 
         """
-        return DocumentSplitter(split_by="word", split_length=100, split_overlap=30)
+        raise NotImplementedError("Document splitter is not implemented yet.")
 
     def get_document_embedder(self) -> AzureOpenAIDocumentEmbedder:
         """
@@ -99,12 +94,7 @@ class AIService:
             AzureOpenAIDocumentEmbedder: An instance of the document embedder.
 
         """
-        return AzureOpenAIDocumentEmbedder(
-            api_key=Secret.from_token(self._settings.azure_openai_embeddings_api_key),
-            api_version=self._settings.azure_openai_embeddings_api_version,
-            azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
-            azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
-        )
+        raise NotImplementedError("Document embedder is not implemented yet.")
 
     def get_document_writer(self, table: str, *, recreate_table: bool = True) -> DocumentWriter:
         """
@@ -118,10 +108,7 @@ class AIService:
             DocumentWriter: An instance of the DocumentWriter component.
 
         """
-        self.add_document_store(table, recreate_table=recreate_table)
-        document_store = self._document_stores[table]
-
-        return DocumentWriter(document_store=document_store)
+        raise NotImplementedError("Document writer is not implemented yet.")
 
     def get_document_retriever(self, table: str, top_k: int = 5) -> PgvectorEmbeddingRetriever:
         """
@@ -135,12 +122,7 @@ class AIService:
             PgvectorEmbeddingRetriever: An instance of the PgvectorEmbeddingRetriever component.
 
         """
-        if table not in self._document_stores:
-            self.add_document_store(table)
-
-        document_store = self._document_stores[table]
-
-        return PgvectorEmbeddingRetriever(document_store=document_store, top_k=top_k)
+        raise NotImplementedError("Document retriever is not implemented yet.")
 
     def embed_text(self, text: str) -> list[float]:
         """
@@ -153,13 +135,13 @@ class AIService:
             list[float]: The embedding vector for the input text.
 
         """
-        text_embedder = self.get_text_embedder()
-
         pipeline = Pipeline()
-        pipeline.add_component("text_embedder", text_embedder)
 
-        result = pipeline.run({"text_embedder": {"text": text}})
-        embedding: list[float] = result["text_embedder"]["embedding"]
+        # Add components to the pipeline in the correct order: text_embedder
+        result = {}  # replace with actual pipeline execution under this line once components are implemented
+        # result = pipeline.run({"text_embedder": {"text": text}})
+        embedding = [0.0, 1.0, 0.5]  # replace with actual embedding result from pipeline execution once implemented
+        # embedding: list[float] = result["text_embedder"]["embedding"]
 
         return embedding
 
@@ -176,19 +158,12 @@ class AIService:
             int: The number of document chunks written to the store.
 
         """
-        document_splitter = self.get_document_splitter()
-        document_embedder = self.get_document_embedder()
-        document_writer = self.get_document_writer(table, recreate_table=recreate_table)
-
         document_pipeline = Pipeline()
-        document_pipeline.add_component("splitter", document_splitter)
-        document_pipeline.add_component("embedder", document_embedder)
-        document_pipeline.add_component("writer", document_writer)
 
-        document_pipeline.connect("splitter", "embedder")
-        document_pipeline.connect("embedder", "writer")
+        # Add components to the pipeline in the correct order: splitter -> embedder -> writer
+        result = {}  # replace with actual pipeline execution under this line once components are implemented
+        # result = document_pipeline.run({"splitter": {"documents": documents}})
 
-        result = document_pipeline.run({"splitter": {"documents": documents}})
         return int(result.get("writer", {}).get("documents_written", 0))
 
     def search_documents_table(self, table: str, query: str, top_k: int = 5) -> list[Document]:
@@ -204,18 +179,13 @@ class AIService:
             list[Document]: A list of Document objects matching the search query.
 
         """
-        text_embedder = self.get_text_embedder()
-        retriever = self.get_document_retriever(table, top_k=top_k)
-
         query_pipeline = Pipeline()
-        query_pipeline.add_component("text_embedder", text_embedder)
-        query_pipeline.add_component("retriever", retriever)
 
-        query_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
-
-        search_results = query_pipeline.run({"text_embedder": {"text": query}})
-
-        documents: list[Document] = search_results["retriever"]["documents"]
+        # Add components to the pipeline in the correct order: text_embedder -> retriever
+        search_results = {}  # replace with actual pipeline execution under this line once components are implemented
+        # search_results = query_pipeline.run({"text_embedder": {"text": query}})
+        documents = []  # replace with actual documents result from pipeline execution once implemented
+        # documents: list[Document] = search_results["retriever"]["documents"]
 
         return documents
 
