@@ -25,8 +25,8 @@ st.markdown(
 st.markdown(
     """
     <div style="overflow-x: auto; padding: 16px 0 8px;">
-    <svg viewBox="0 0 560 395" xmlns="http://www.w3.org/2000/svg"
-         style="width:100%; max-width:620px; display:block; margin:0 auto; font-family:sans-serif;">
+    <svg viewBox="0 0 600 395" xmlns="http://www.w3.org/2000/svg"
+         style="width:100%; max-width:660px; display:block; margin:0 auto; font-family:sans-serif;">
       <defs>
         <marker id="rfah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
@@ -60,8 +60,8 @@ st.markdown(
       </defs>
 
       <!-- Phase strip backgrounds -->
-      <rect x="8" y="8"   width="544" height="112" rx="10" class="ps1"/>
-      <rect x="8" y="132" width="544" height="255" rx="10" class="ps2"/>
+      <rect x="8" y="8"   width="584" height="112" rx="10" class="ps1"/>
+      <rect x="8" y="132" width="584" height="255" rx="10" class="ps2"/>
 
       <!-- Phase labels -->
       <text x="22" y="27" class="rfph" fill="#00c896">📦  PHASE 1 — Build Knowledge  (offline · done in Act 3)</text>
