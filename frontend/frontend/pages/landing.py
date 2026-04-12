@@ -54,9 +54,9 @@ def act_chip(icon: str, num: str, title: str, color: str = "#009de0") -> str:
         f'<div style="text-align:center; padding:0.75rem 0.5rem;'
         f" background:rgba(128,128,128,0.06); border:1px solid rgba(128,128,128,0.15);"
         f' border-radius:10px; height:100%;">'
-        f'<div style="font-size:1.6em; line-height:1.2;">{icon}</div>'
-        f'<div style="font-size:0.75em; color:{color}; font-weight:600; margin:2px 0;">Act {num}</div>'
-        f'<div style="font-size:0.82em; line-height:1.3;">{title}</div>'
+        f'<div style="font-size:1.8em; line-height:1.2;">{icon}</div>'
+        f'<div style="font-size:0.9em; color:{color}; font-weight:600; margin:4px 0 2px;">Act {num}</div>'
+        f'<div style="font-size:1em; line-height:1.3; font-weight:500;">{title}</div>'
         f"</div>"
     )
 
