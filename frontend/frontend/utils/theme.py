@@ -71,6 +71,16 @@ CUSTOM_CSS = """
         opacity: 0.55;
     }
 
+    /* Navigation group: hide the blank first-group label, add spacing between groups */
+    [data-testid="stSidebarNavSeparator"]:first-of-type {
+        display: none !important;
+    }
+    [data-testid="stSidebarNavSeparator"] {
+        margin-top: 1rem !important;
+        padding-top: 0.75rem !important;
+        border-top: 1px solid rgba(128,128,128,0.2) !important;
+    }
+
     /* Pipeline diagram */
     .pipeline-diagram {
         font-family: monospace;

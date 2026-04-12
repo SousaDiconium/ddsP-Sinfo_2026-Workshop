@@ -19,44 +19,62 @@ st.markdown(
 
 st.markdown(
     """
-    This workshop walks you through building an AI-powered knowledge assistant from scratch,
-    using **RAG** (Retrieval-Augmented Generation). Each act introduces a new concept and
-    lets you interact with the running system live.
+    This workshop walks you through building an AI-powered knowledge assistant from scratch using
+    **RAG** (Retrieval-Augmented Generation), then extends it into a **personal AI agent**
+    running locally on your machine. Use the sidebar to navigate between acts.
     """
 )
 
 st.divider()
 
 # ---------------------------------------------------------------------------
-# Workshop acts overview
+# Acts overview — compact chips
 # ---------------------------------------------------------------------------
 st.subheader("🗺️ Workshop Acts")
 
-acts = [
-    (
-        "🔌",
-        "1 — APIs &amp; REST",
-        "Learn what APIs and REST are, see a live architecture diagram, and ping the backend.",
-    ),
-    ("🔢", "2 — Embeddings", "Turn sentences into vectors and explore meaning in 3D space."),
-    ("🏗️", "3 — Building Knowledge", "Create tables, sync Obsidian vaults, and upload documents for ingestion."),
-    ("📄", "4 — Explore the Data", "Peek inside the vector database — chunks, embeddings, and metadata."),
-    ("🤖", "5 — RAG in Action", "Ask questions and get semantically-grounded answers from your knowledge base."),
+rag_acts = [
+    ("🔌", "1", "APIs & REST"),
+    ("🔢", "2", "Embeddings"),
+    ("🏗️", "3", "Build Knowledge"),
+    ("📄", "4", "Explore Data"),
+    ("🤖", "5", "RAG in Action"),
 ]
 
-col1, col2 = st.columns(2)
-for i, (icon, title, desc) in enumerate(acts):
-    with col1 if i % 2 == 0 else col2:
-        st.markdown(
-            f"""
-            <div class="card" style="text-align: center;">
-                <div style="font-size: 2em;">{icon}</div>
-                <h4>{title}</h4>
-                <p>{desc}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+oc_acts = [
+    ("🐾", "6", "Meet OpenClaw"),
+    ("⚙️", "7", "Configure"),
+    ("📁", "8", "Workspace"),
+    ("🛠️", "9", "Simple Skills"),
+    ("🚀", "10", "Complex Skills"),
+]
+
+
+def act_chip(icon: str, num: str, title: str, color: str = "#009de0") -> str:
+    return (
+        f'<div style="text-align:center; padding:0.75rem 0.5rem;'
+        f" background:rgba(128,128,128,0.06); border:1px solid rgba(128,128,128,0.15);"
+        f' border-radius:10px; height:100%;">'
+        f'<div style="font-size:1.6em; line-height:1.2;">{icon}</div>'
+        f'<div style="font-size:0.75em; color:{color}; font-weight:600; margin:2px 0;">Act {num}</div>'
+        f'<div style="font-size:0.82em; line-height:1.3;">{title}</div>'
+        f"</div>"
+    )
+
+
+st.markdown("**🔧 RAG Service** — acts 1–5")
+cols = st.columns(5)
+for col, (icon, num, title) in zip(cols, rag_acts, strict=False):
+    with col:
+        st.markdown(act_chip(icon, num, title, "#009de0"), unsafe_allow_html=True)
+
+st.markdown(
+    "<div style='margin-top:1rem;'><strong>🐾 OpenClaw</strong> — acts 6–10</div>",
+    unsafe_allow_html=True,
+)
+cols2 = st.columns(5)
+for col, (icon, num, title) in zip(cols2, oc_acts, strict=False):
+    with col:
+        st.markdown(act_chip(icon, num, title, "#f59e0b"), unsafe_allow_html=True)
 
 st.divider()
 
