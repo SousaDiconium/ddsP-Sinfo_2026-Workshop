@@ -292,7 +292,7 @@ def query_document_table(
     documents = ai_service.search_documents_table(table=table_name, query=query.query, top_k=query.top_k)
     answers = [
         KnowledgeAnswerDTO(
-            content=document.content,
+            content=document.content or "NO CONTENT",
             source=SourceDTO(
                 title=document.meta.get("source", "Unknown Source"),
                 link=document.meta.get("source", "Unknown Source"),

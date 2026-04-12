@@ -354,7 +354,7 @@ else:
         else:
             with st.spinner("Searching through the knowledge base..."):
                 try:
-                    results = api.query_table(query_table_name, query_text)
+                    results = api.query_table(query_table_name, query_text, top_k)
                 except Exception as exc:
                     st.error(f"Query failed: {exc}")
                     results = []
