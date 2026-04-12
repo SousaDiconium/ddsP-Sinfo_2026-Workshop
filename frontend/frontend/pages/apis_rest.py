@@ -69,7 +69,7 @@ with rest_col1:
         """
         <div class="card" style="text-align: center;">
             <div style="font-size: 1.8em;">📥</div>
-            <h4>GET</h4>
+            <p style="font-size: 1.2em; color:#009de0; font-weight:600; margin-bottom:0;">GET</p>
             <p>Read / retrieve data</p>
         </div>
         """,
@@ -80,7 +80,7 @@ with rest_col2:
         """
         <div class="card" style="text-align: center;">
             <div style="font-size: 1.8em;">📤</div>
-            <h4>POST</h4>
+            <p style="font-size: 1.2em; color:#009de0; font-weight:600; margin-bottom:0;">POST</p>
             <p>Create new data</p>
         </div>
         """,
@@ -91,7 +91,7 @@ with rest_col3:
         """
         <div class="card" style="text-align: center;">
             <div style="font-size: 1.8em;">✏️</div>
-            <h4>PUT / PATCH</h4>
+            <p style="font-size: 1.2em; color:#009de0; font-weight:600; margin-bottom:0;">PUT / PATCH</p>
             <p>Update existing data</p>
         </div>
         """,
@@ -102,7 +102,7 @@ with rest_col4:
         """
         <div class="card" style="text-align: center;">
             <div style="font-size: 1.8em;">🗑️</div>
-            <h4>DELETE</h4>
+            <p style="font-size: 1.2em; color:#009de0; font-weight:600; margin-bottom:0;">DELETE</p>
             <p>Remove data</p>
         </div>
         """,
@@ -180,20 +180,20 @@ st.markdown(
       <!-- User -->
       <circle cx="80"  cy="155" r="42" class="nc"/>
       <text   x="80"  y="155"  class="ico">👤</text>
-      <text   x="80"  y="210"  class="nt">User</text>
-      <text   x="80"  y="226"  class="ns">Browser / CLI</text>
+      <text   x="80"  y="225"  class="nt">User</text>
+      <text   x="80"  y="240"  class="ns">Browser / CLI</text>
 
       <!-- Frontend App -->
       <circle cx="255" cy="155" r="42" class="nc"/>
       <text   x="255" y="155"  class="ico">🖥️</text>
-      <text   x="255" y="210"  class="nt">Frontend App</text>
-      <text   x="255" y="226"  class="ns">This Dashboard</text>
+      <text   x="255" y="225"  class="nt">Frontend App</text>
+      <text   x="255" y="240"  class="ns">This Dashboard</text>
 
       <!-- REST API -->
       <circle cx="430" cy="155" r="42" class="nc"/>
       <text   x="430" y="155"  class="ico">⚙️</text>
-      <text   x="430" y="210"  class="nt">REST API</text>
-      <text   x="430" y="226"  class="ns">knowledge_service</text>
+      <text   x="430" y="225"  class="nt">REST API</text>
+      <text   x="430" y="240"  class="ns">knowledge_service</text>
 
       <!-- ── Pill-shaped backend service nodes ── -->
       <!-- Database -->

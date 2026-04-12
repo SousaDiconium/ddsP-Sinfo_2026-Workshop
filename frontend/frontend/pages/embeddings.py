@@ -83,47 +83,61 @@ st.markdown(
 st.markdown(
     """
     <div style="overflow-x: auto; padding: 16px 0 4px;">
-    <svg viewBox="0 0 530 140" xmlns="http://www.w3.org/2000/svg"
+    <svg viewBox="0 0 530 205" xmlns="http://www.w3.org/2000/svg"
          style="width:100%; max-width:560px; display:block; margin:0 auto; font-family:sans-serif;">
       <defs>
         <marker id="p2ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
         </marker>
         <style>
-          @keyframes p2flow { to { stroke-dashoffset: -13; } }
-          .p2fl { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
-                  animation: p2flow 0.5s linear infinite; }
-          .p2nd { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
-          .p2nc { fill:rgba(0,157,224,.12); stroke:#009de0; stroke-width:1.5; }
-          .p2t1 { font-size:20px; text-anchor:middle; dominant-baseline:middle; font-weight:700; }
-          .p2t2 { font-size:15px; text-anchor:middle; dominant-baseline:middle; font-weight:600; }
-          .p2t3 { font-size:10px; text-anchor:middle; dominant-baseline:middle; opacity:.60; font-style:italic; }
+          @keyframes p2flow   { to { stroke-dashoffset: -13; } }
+          @keyframes p2glow-a { 0%,100% { opacity:.12; } 50% { opacity:.40; } }
+          @keyframes p2glow-b { 0%,100% { opacity:.05; } 50% { opacity:.18; } }
+          .p2fl   { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                    animation: p2flow 0.5s linear infinite; }
+          .p2gnc  { fill:rgba(0,157,224,.22); stroke:none; animation: p2glow-a 3s ease-in-out infinite; }
+          .p2gnc2 { fill:rgba(0,157,224,.09); stroke:none; animation: p2glow-b 3s ease-in-out infinite; }
+          .p2gnd  { fill:rgba(0,200,150,.22); stroke:none; animation: p2glow-a 3s ease-in-out infinite; }
+          .p2gnd2 { fill:rgba(0,200,150,.09); stroke:none; animation: p2glow-b 3s ease-in-out infinite; }
+          .p2nc   { fill:rgba(0,157,224,.15); stroke:#009de0; stroke-width:2; }
+          .p2nd   { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:2; }
+          .p2nt   { font-size:15px; fill:#009de0; text-anchor:middle; font-weight:600; }
+          .p2ns   { font-size:12px; fill:#009de0; text-anchor:middle; opacity:.65; font-style:italic; }
+          .p2dt   { font-size:15px; fill:#00c896; text-anchor:middle; font-weight:600; }
+          .p2ds   { font-size:12px; fill:#00c896; text-anchor:middle; opacity:.65; font-style:italic; }
+          .p2ico  { font-size:26px; text-anchor:middle; dominant-baseline:middle; }
         </style>
       </defs>
 
-      <!-- Node 1: Input Text (data node, green) -->
-      <rect x="15"  y="18" width="140" height="90" rx="10" class="p2nd"/>
-      <text x="85"  y="44"  class="p2t1" fill="#00c896">📝</text>
-      <text x="85"  y="72"  class="p2t2" fill="#00c896">Input Text</text>
-      <text x="85"  y="92"  class="p2t3" fill="#00c896">str · plain text</text>
+      <!-- ── Node 1: Input Text (data, green) ── -->
+      <circle cx="90"  cy="95" r="64" class="p2gnd2" style="animation-delay:0s;"/>
+      <circle cx="90"  cy="95" r="53" class="p2gnd"  style="animation-delay:0s;"/>
+      <circle cx="90"  cy="95" r="42" class="p2nd"/>
+      <text   x="90"  y="95"  class="p2ico">📝</text>
+      <text   x="90"  y="158" class="p2dt">Input Text</text>
+      <text   x="90"  y="175" class="p2ds">str · plain text</text>
 
       <!-- Arrow 1 -->
-      <path d="M 155,63 L 195,63" class="p2fl" marker-end="url(#p2ah)"/>
+      <path d="M 132,95 L 223,95" class="p2fl" marker-end="url(#p2ah)"/>
 
-      <!-- Node 2: Text Embedder (component, blue) -->
-      <rect x="195" y="18" width="140" height="90" rx="10" class="p2nc"/>
-      <text x="265" y="44"  class="p2t1" fill="#009de0">🤖</text>
-      <text x="265" y="72"  class="p2t2" fill="#009de0">Text Embedder</text>
-      <text x="265" y="92"  class="p2t3" fill="#009de0">AzureOpenAITextEmbedder</text>
+      <!-- ── Node 2: Text Embedder (component, blue) ── -->
+      <circle cx="265" cy="95" r="64" class="p2gnc2" style="animation-delay:1s;"/>
+      <circle cx="265" cy="95" r="53" class="p2gnc"  style="animation-delay:1s;"/>
+      <circle cx="265" cy="95" r="42" class="p2nc"/>
+      <text   x="265" y="95"  class="p2ico">🤖</text>
+      <text   x="265" y="158" class="p2nt">Text Embedder</text>
+      <text   x="265" y="175" class="p2ns">AzureOpenAITextEmbedder</text>
 
       <!-- Arrow 2 -->
-      <path d="M 335,63 L 375,63" class="p2fl" marker-end="url(#p2ah)"/>
+      <path d="M 307,95 L 398,95" class="p2fl" marker-end="url(#p2ah)"/>
 
-      <!-- Node 3: Embedding Vector (data node, green) -->
-      <rect x="375" y="18" width="140" height="90" rx="10" class="p2nd"/>
-      <text x="445" y="44"  class="p2t1" fill="#00c896">🔢</text>
-      <text x="445" y="72"  class="p2t2" fill="#00c896">Embedding Vector</text>
-      <text x="445" y="92"  class="p2t3" fill="#00c896">list[float] · 3 072 dims</text>
+      <!-- ── Node 3: Embedding Vector (data, green) ── -->
+      <circle cx="440" cy="95" r="64" class="p2gnd2" style="animation-delay:2s;"/>
+      <circle cx="440" cy="95" r="53" class="p2gnd"  style="animation-delay:2s;"/>
+      <circle cx="440" cy="95" r="42" class="p2nd"/>
+      <text   x="440" y="95"  class="p2ico">🔢</text>
+      <text   x="440" y="158" class="p2dt">Embedding Vector</text>
+      <text   x="440" y="175" class="p2ds">list[float] · 3 072 dims</text>
     </svg>
     </div>
     """,

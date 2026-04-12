@@ -34,46 +34,73 @@ st.subheader("🔗 Skill Dependency Chain")
 st.markdown(
     """
     <div style="overflow-x: auto; margin: 1rem 0;">
-    <svg viewBox="0 0 680 100" width="100%" style="max-width:680px; display:block; margin:auto; font-family:sans-serif;">
+    <svg viewBox="0 0 680 205" width="100%" style="max-width:680px; display:block; margin:auto; font-family:sans-serif;">
       <defs>
+        <marker id="dep-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
+        </marker>
+        <marker id="dep-arr-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#00c896"/>
+        </marker>
         <style>
-          .dep-flow { stroke-dasharray: 6 4; animation: dep-dash 0.6s linear infinite; }
-          @keyframes dep-dash { to { stroke-dashoffset: -10; } }
+          @keyframes dep-flow   { to { stroke-dashoffset: -13; } }
+          @keyframes dep-glow-a { 0%,100% { opacity:.12; } 50% { opacity:.40; } }
+          @keyframes dep-glow-b { 0%,100% { opacity:.05; } 50% { opacity:.18; } }
+          .dep-fl  { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                     animation: dep-flow 0.5s linear infinite; }
+          .dep-fl2 { stroke:#00c896; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                     animation: dep-flow 0.5s linear infinite 0.2s; }
+          .dep-gr  { fill:rgba(0,157,224,.22); stroke:none; animation: dep-glow-a 3s ease-in-out infinite; }
+          .dep-gr2 { fill:rgba(0,157,224,.09); stroke:none; animation: dep-glow-b 3s ease-in-out infinite; }
+          .dep-nc  { fill:rgba(0,157,224,.15); stroke:#009de0; stroke-width:2; }
+          .dep-pc  { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
+          .dep-nt  { font-size:15px; fill:#009de0; text-anchor:middle; font-weight:600; }
+          .dep-ns  { font-size:11px; fill:#009de0; text-anchor:middle; opacity:.65; }
+          .dep-pt  { font-size:14px; fill:#00c896; text-anchor:start; font-weight:600; dominant-baseline:middle; }
+          .dep-ps  { font-size:11px; fill:#00c896; text-anchor:start; opacity:.70; dominant-baseline:middle; }
+          .dep-ico { font-size:26px; text-anchor:middle; dominant-baseline:middle; }
+          .dep-ico2{ font-size:19px; text-anchor:middle; dominant-baseline:middle; }
         </style>
-        <marker id="dep-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#009de0"/>
-        </marker>
-        <marker id="dep-arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#4caf50"/>
-        </marker>
       </defs>
 
-      <!-- fenix-login -->
-      <rect x="10" y="30" width="140" height="44" rx="10" fill="#1a3a4a" stroke="#009de0" stroke-width="2"/>
-      <text x="80" y="50" text-anchor="middle" font-size="14" fill="#e0e0e0" font-weight="bold">🔐 fenix-login</text>
-      <text x="80" y="66" text-anchor="middle" font-size="11" fill="#aaa">user-invocable</text>
+      <!-- ── fenix-login glow + circle ── -->
+      <circle cx="90"  cy="95" r="60" class="dep-gr2" style="animation-delay:0s;"/>
+      <circle cx="90"  cy="95" r="48" class="dep-gr"  style="animation-delay:0s;"/>
+      <circle cx="90"  cy="95" r="40" class="dep-nc"/>
+      <text   x="90"  y="95"  class="dep-ico">🔐</text>
+      <text   x="90"  y="152" class="dep-nt">fenix-login</text>
+      <text   x="90"  y="168" class="dep-ns">user-invocable</text>
 
-      <!-- arrow -->
-      <line x1="152" y1="52" x2="208" y2="52" stroke="#009de0" stroke-width="2" marker-end="url(#dep-arr)" class="dep-flow"/>
+      <!-- Arrow login → browser -->
+      <path d="M 130,95 L 228,95" class="dep-fl" marker-end="url(#dep-arr)"/>
 
-      <!-- fenix-browser -->
-      <rect x="210" y="30" width="150" height="44" rx="10" fill="#1a3a4a" stroke="#009de0" stroke-width="2"/>
-      <text x="285" y="50" text-anchor="middle" font-size="14" fill="#e0e0e0" font-weight="bold">🌐 fenix-browser</text>
-      <text x="285" y="66" text-anchor="middle" font-size="11" fill="#aaa">user-invocable</text>
+      <!-- ── fenix-browser glow + circle ── -->
+      <circle cx="268" cy="95" r="60" class="dep-gr2" style="animation-delay:1s;"/>
+      <circle cx="268" cy="95" r="48" class="dep-gr"  style="animation-delay:1s;"/>
+      <circle cx="268" cy="95" r="40" class="dep-nc"/>
+      <text   x="268" y="95"  class="dep-ico">🌐</text>
+      <text   x="268" y="152" class="dep-nt">fenix-browser</text>
+      <text   x="268" y="168" class="dep-ns">user-invocable</text>
 
-      <!-- fork arrows -->
-      <line x1="362" y1="52" x2="418" y2="35" stroke="#4caf50" stroke-width="2" marker-end="url(#dep-arr-g)" class="dep-flow"/>
-      <line x1="362" y1="52" x2="418" y2="68" stroke="#4caf50" stroke-width="2" marker-end="url(#dep-arr-g)" class="dep-flow"/>
+      <!-- Fork trunk -->
+      <path d="M 308,95 L 378,95" class="dep-fl"/>
+      <!-- Fork dot -->
+      <circle cx="378" cy="95" r="4" fill="#009de0"/>
+      <!-- Fork branches → pills -->
+      <path d="M 378,95 L 378,58 L 418,58"  class="dep-fl2" marker-end="url(#dep-arr-g)"/>
+      <path d="M 378,95 L 378,133 L 418,133" class="dep-fl2" marker-end="url(#dep-arr-g)"/>
 
-      <!-- knowledge-ingest -->
-      <rect x="420" y="14" width="148" height="38" rx="8" fill="#1a2a1a" stroke="#4caf50" stroke-width="2"/>
-      <text x="494" y="30" text-anchor="middle" font-size="12" fill="#e0e0e0">📥 knowledge-ingest</text>
-      <text x="494" y="44" text-anchor="middle" font-size="10" fill="#aaa">auto-triggered</text>
+      <!-- ── knowledge-ingest pill ── -->
+      <rect x="418" y="36"  width="240" height="44" rx="22" class="dep-pc"/>
+      <text x="446" y="58"  class="dep-ico2">📥</text>
+      <text x="470" y="52"  class="dep-pt">knowledge-ingest</text>
+      <text x="470" y="70"  class="dep-ps">auto-triggered</text>
 
-      <!-- knowledge-query -->
-      <rect x="420" y="56" width="148" height="38" rx="8" fill="#1a2a1a" stroke="#4caf50" stroke-width="2"/>
-      <text x="494" y="72" text-anchor="middle" font-size="12" fill="#e0e0e0">🔍 knowledge-query</text>
-      <text x="494" y="86" text-anchor="middle" font-size="10" fill="#aaa">auto-triggered</text>
+      <!-- ── knowledge-query pill ── -->
+      <rect x="418" y="111" width="240" height="44" rx="22" class="dep-pc"/>
+      <text x="446" y="133" class="dep-ico2">🔍</text>
+      <text x="470" y="127" class="dep-pt">knowledge-query</text>
+      <text x="470" y="145" class="dep-ps">auto-triggered</text>
     </svg>
     </div>
     """,  # noqa: E501
@@ -209,37 +236,4 @@ st.markdown(
     All dependencies are installed when you run `uv sync --all-packages` from the repository root.
     No extra setup needed.
     """
-)
-
-st.divider()
-
-# ---------------------------------------------------------------------------
-# Closing
-# ---------------------------------------------------------------------------
-st.markdown(
-    """
-    <div style="
-        padding: 2rem;
-        background: linear-gradient(135deg, #0d1f2d 0%, #091520 100%);
-        border: 1px solid #009de0;
-        border-radius: 14px;
-        text-align: center;
-        margin: 1rem 0;
-    ">
-        <div style="font-size: 2.5em; margin-bottom: 0.75rem;">🎉</div>
-        <h2 style="color: #009de0; margin: 0 0 1rem;">You've built a personal AI agent.</h2>
-        <p style="color: #d1d5db; font-size: 1.05em; line-height: 1.8; max-width: 600px; margin: 0 auto;">
-            It can <strong>browse your university portal</strong>,
-            <strong>learn from documents</strong>,
-            <strong>answer questions</strong> using semantic search,
-            and <strong>manage your knowledge base</strong> —
-            all running locally on your machine, with no cloud dependency on your data.
-        </p>
-        <p style="color: #aaa; font-size: 0.95em; margin-top: 1rem;">
-            This is just the beginning. Skills are composable — the next one you build
-            can do anything your machine can do.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
 )

@@ -45,49 +45,69 @@ st.markdown(
 st.markdown(
     """
     <div style="overflow-x: auto; margin: 1.5rem 0;">
-    <svg viewBox="0 0 700 140" width="100%" style="max-width:700px; display:block; margin:auto; font-family:sans-serif;">
+    <svg viewBox="0 0 860 255" width="100%" style="max-width:860px; display:block; margin:auto; font-family:sans-serif;">
       <defs>
-        <style>
-          .oc-flow { stroke-dasharray: 6 4; animation: oc-dash 0.6s linear infinite; }
-          @keyframes oc-dash { to { stroke-dashoffset: -10; } }
-          .oc-node { rx: 10; ry: 10; }
-        </style>
-        <marker id="oc-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#009de0"/>
+        <marker id="oc-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
         </marker>
+        <style>
+          @keyframes oc-flow   { to { stroke-dashoffset: -13; } }
+          @keyframes oc-glow-a { 0%,100% { opacity:.12; } 50% { opacity:.40; } }
+          @keyframes oc-glow-b { 0%,100% { opacity:.05; } 50% { opacity:.18; } }
+          .oc-fl  { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                    animation: oc-flow 0.5s linear infinite; }
+          .oc-gr  { fill:rgba(0,157,224,.22); stroke:none; animation: oc-glow-a 3s ease-in-out infinite; }
+          .oc-gr2 { fill:rgba(0,157,224,.09); stroke:none; animation: oc-glow-b 3s ease-in-out infinite; }
+          .oc-grs { fill:rgba(0,200,150,.22); stroke:none; animation: oc-glow-a 3s ease-in-out infinite; }
+          .oc-gr2s{ fill:rgba(0,200,150,.09); stroke:none; animation: oc-glow-b 3s ease-in-out infinite; }
+          .oc-nc  { fill:rgba(0,157,224,.15); stroke:#009de0; stroke-width:2; }
+          .oc-pc  { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
+          .oc-nt  { font-size:15px; fill:#009de0; text-anchor:middle; font-weight:600; }
+          .oc-ns  { font-size:11px; fill:#009de0; text-anchor:middle; opacity:.65; }
+          .oc-pt  { font-size:15px; fill:#00c896; text-anchor:start; font-weight:600; dominant-baseline:middle; }
+          .oc-ps  { font-size:11px; fill:#00c896; text-anchor:start; opacity:.70; dominant-baseline:middle; }
+          .oc-ico { font-size:26px; text-anchor:middle; dominant-baseline:middle; }
+          .oc-ico2{ font-size:21px; text-anchor:middle; dominant-baseline:middle; }
+        </style>
       </defs>
 
-      <!-- User -->
-      <circle cx="60" cy="70" r="30" fill="#1a3a4a" stroke="#009de0" stroke-width="2"/>
-      <text x="60" y="70" text-anchor="middle" dominant-baseline="central" font-size="20">👤</text>
-      <text x="60" y="115" text-anchor="middle" font-size="14" fill="#aaa">You</text>
+      <!-- ── Glow rings ── -->
+      <circle cx="80"  cy="120" r="64" class="oc-gr2" style="animation-delay:0s;"/>
+      <circle cx="80"  cy="120" r="53" class="oc-gr"  style="animation-delay:0s;"/>
+      <circle cx="255" cy="120" r="64" class="oc-gr2" style="animation-delay:1s;"/>
+      <circle cx="255" cy="120" r="53" class="oc-gr"  style="animation-delay:1s;"/>
+      <circle cx="430" cy="120" r="64" class="oc-gr2" style="animation-delay:2s;"/>
+      <circle cx="430" cy="120" r="53" class="oc-gr"  style="animation-delay:2s;"/>
 
-      <!-- Arrow user -> CLI -->
-      <line x1="92" y1="70" x2="148" y2="70" stroke="#009de0" stroke-width="2" marker-end="url(#oc-arr)" class="oc-flow"/>
+      <!-- ── Flow lines ── -->
+      <path d="M 122,120 L 213,120" class="oc-fl" marker-end="url(#oc-arr)"/>
+      <path d="M 297,120 L 388,120" class="oc-fl" marker-end="url(#oc-arr)"/>
+      <path d="M 472,120 L 588,120" class="oc-fl" marker-end="url(#oc-arr)"/>
+
+      <!-- ── Circle nodes ── -->
+      <!-- You -->
+      <circle cx="80"  cy="120" r="42" class="oc-nc"/>
+      <text   x="80"  y="120" class="oc-ico">👤</text>
+      <text   x="80"  y="190" class="oc-nt">You</text>
+      <text   x="80"  y="207" class="oc-ns">User / Developer</text>
 
       <!-- OpenClaw CLI -->
-      <rect x="150" y="42" width="120" height="56" rx="10" fill="#1a3a4a" stroke="#009de0" stroke-width="2"/>
-      <text x="210" y="64" text-anchor="middle" font-size="18">🐾</text>
-      <text x="210" y="83" text-anchor="middle" font-size="15" fill="#e0e0e0" font-weight="bold">OpenClaw CLI</text>
-      <text x="210" y="115" text-anchor="middle" font-size="13" fill="#aaa">chat / start / list</text>
+      <circle cx="255" cy="120" r="42" class="oc-nc"/>
+      <text   x="255" y="120" class="oc-ico">🐾</text>
+      <text   x="255" y="190" class="oc-nt">OpenClaw CLI</text>
+      <text   x="255" y="207" class="oc-ns">chat / start / list</text>
 
-      <!-- Arrow CLI -> Agent -->
-      <line x1="272" y1="70" x2="328" y2="70" stroke="#009de0" stroke-width="2" marker-end="url(#oc-arr)" class="oc-flow"/>
+      <!-- Agent (LLM) -->
+      <circle cx="430" cy="120" r="42" class="oc-nc"/>
+      <text   x="430" y="120" class="oc-ico">🧠</text>
+      <text   x="430" y="190" class="oc-nt">Agent (LLM)</text>
+      <text   x="430" y="207" class="oc-ns">workspace + identity</text>
 
-      <!-- Agent -->
-      <rect x="330" y="42" width="120" height="56" rx="10" fill="#1a3a4a" stroke="#009de0" stroke-width="2"/>
-      <text x="390" y="64" text-anchor="middle" font-size="18">🧠</text>
-      <text x="390" y="83" text-anchor="middle" font-size="15" fill="#e0e0e0" font-weight="bold">Agent (LLM)</text>
-      <text x="390" y="115" text-anchor="middle" font-size="13" fill="#aaa">workspace + skills</text>
-
-      <!-- Arrow Agent -> Skills -->
-      <line x1="452" y1="70" x2="508" y2="70" stroke="#009de0" stroke-width="2" marker-end="url(#oc-arr)" class="oc-flow"/>
-
-      <!-- Skills -->
-      <rect x="510" y="42" width="170" height="56" rx="10" fill="#1a2a1a" stroke="#4caf50" stroke-width="2"/>
-      <text x="595" y="64" text-anchor="middle" font-size="18">🛠️</text>
-      <text x="595" y="83" text-anchor="middle" font-size="15" fill="#e0e0e0" font-weight="bold">Skills &amp; Tools</text>
-      <text x="595" y="115" text-anchor="middle" font-size="13" fill="#aaa">APIs · browser · scripts</text>
+      <!-- ── Skills pill (backend service style) ── -->
+      <rect x="588" y="93" width="240" height="54" rx="27" class="oc-pc"/>
+      <text x="614" y="120" class="oc-ico2">🛠️</text>
+      <text x="652" y="110" class="oc-pt">Skills &amp; Tools</text>
+      <text x="652" y="133" class="oc-ps">APIs · browser · scripts</text>
     </svg>
     </div>
     """,  # noqa: E501

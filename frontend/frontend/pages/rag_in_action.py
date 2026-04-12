@@ -25,7 +25,7 @@ st.markdown(
 st.markdown(
     """
     <div style="overflow-x: auto; padding: 16px 0 8px;">
-    <svg viewBox="0 0 600 395" xmlns="http://www.w3.org/2000/svg"
+    <svg viewBox="0 0 600 415" xmlns="http://www.w3.org/2000/svg"
          style="width:100%; max-width:660px; display:block; margin:0 auto; font-family:sans-serif;">
       <defs>
         <marker id="rfah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -38,99 +38,118 @@ st.markdown(
           <polygon points="0 0, 8 3, 0 6" fill="rgba(100,100,100,.5)"/>
         </marker>
         <style>
-          @keyframes rfflow  { to { stroke-dashoffset: -13; } }
-          @keyframes rfflow2 { to { stroke-dashoffset: -13; } }
+          @keyframes rfflow   { to { stroke-dashoffset: -13; } }
+          @keyframes rfglow-a { 0%,100% { opacity:.14; } 50% { opacity:.42; } }
+          @keyframes rfglow-b { 0%,100% { opacity:.06; } 50% { opacity:.20; } }
           .rffl  { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
                    animation: rfflow 0.5s linear infinite; }
           .rffl2 { stroke:#00c896; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
-                   animation: rfflow2 0.5s linear infinite 0.2s; }
+                   animation: rfflow 0.5s linear infinite 0.2s; }
           .rffl3 { stroke:rgba(120,120,120,.4); stroke-width:2; stroke-dasharray:6 4; fill:none; }
           .p1n   { fill:rgba(0,200,150,.10); stroke:#00c896; stroke-width:1.5; opacity:.85; }
           .p2n   { fill:rgba(0,157,224,.13); stroke:#009de0; stroke-width:1.5; }
           .p2nd  { fill:rgba(120,120,120,.07); stroke:rgba(120,120,120,.4); stroke-width:1.2; }
           .ps1   { fill:rgba(0,200,150,.05); stroke:rgba(0,200,150,.25); stroke-width:1; }
           .ps2   { fill:rgba(0,157,224,.05); stroke:rgba(0,157,224,.25); stroke-width:1; }
-          .rft1  { font-size:18px; text-anchor:middle; dominant-baseline:middle; font-weight:700; }
-          .rft2  { font-size:13px; text-anchor:middle; dominant-baseline:middle; font-weight:600; }
+          .rfg1  { stroke:none; animation: rfglow-a 3s ease-in-out infinite; }
+          .rfg2  { stroke:none; animation: rfglow-b 3s ease-in-out infinite; }
+          .rft2  { font-size:15px; text-anchor:middle; dominant-baseline:middle; font-weight:600; }
           .rfph  { font-size:10px; font-weight:700; opacity:.60; }
           .rflbl { font-size:9px;  text-anchor:middle; fill:#009de0; opacity:.65; }
           .rflb2 { font-size:9px;  text-anchor:middle; fill:#00c896; opacity:.65; }
           .rfldim{ font-size:9px;  text-anchor:middle; fill:#888; opacity:.55; font-style:italic; }
+          .rfemi { font-size:18px; text-anchor:middle; dominant-baseline:middle; }
         </style>
       </defs>
 
       <!-- Phase strip backgrounds -->
-      <rect x="8" y="8"   width="584" height="112" rx="10" class="ps1"/>
-      <rect x="8" y="132" width="584" height="255" rx="10" class="ps2"/>
+      <rect x="8" y="8"   width="584" height="118" rx="10" class="ps1"/>
+      <rect x="8" y="140" width="584" height="268" rx="10" class="ps2"/>
 
       <!-- Phase labels -->
-      <text x="22" y="27" class="rfph" fill="#00c896">📦  PHASE 1 — Build Knowledge  (offline · done in Act 3)</text>
-      <text x="22" y="151" class="rfph" fill="#009de0">🔍  PHASE 2 — Query &amp; Generate  (runtime · this page)</text>
+      <text x="22" y="28" class="rfph" fill="#00c896">📦  PHASE 1 — Build Knowledge  (offline · done in Act 3)</text>
+      <text x="22" y="160" class="rfph" fill="#009de0">🔍  PHASE 2 — Query &amp; Generate  (runtime · this page)</text>
 
-      <!-- ── Phase 1 nodes (cy=68) ── -->
-      <rect x="20"  y="38" width="100" height="60" rx="8" class="p1n"/>
-      <text x="70"  y="60" class="rft1" fill="#00c896">📄</text>
-      <text x="70"  y="80" class="rft2" fill="#00c896">Docs</text>
+      <!-- ── Phase 1 nodes (cy=75) ── -->
+      <!-- P1 Node 1: Docs -->
+      <rect x="14"  y="30" width="8" height="8" class="rfg2" style="fill:rgba(0,200,150,.25); animation-delay:0s;"/>
+      <rect x="20"  y="38" width="100" height="64" rx="10" style="fill:rgba(0,200,150,.18); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:0s;"/>
+      <rect x="20"  y="38" width="100" height="64" rx="10" class="p1n"/>
+      <text x="70"  y="62"  class="rfemi" fill="#00c896">📄</text>
+      <text x="70"  y="84"  class="rft2"  fill="#00c896">Docs</text>
 
-      <path d="M 120,68 L 148,68" class="rffl2" marker-end="url(#rfah2)"/>
+      <path d="M 120,70 L 148,70" class="rffl2" marker-end="url(#rfah2)"/>
 
-      <rect x="148" y="38" width="110" height="60" rx="8" class="p1n"/>
-      <text x="203" y="60" class="rft1" fill="#00c896">✂️</text>
-      <text x="203" y="80" class="rft2" fill="#00c896">Splitter</text>
+      <!-- P1 Node 2: Splitter -->
+      <rect x="148" y="38" width="110" height="64" rx="10" style="fill:rgba(0,200,150,.18); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:0.8s;"/>
+      <rect x="148" y="38" width="110" height="64" rx="10" class="p1n"/>
+      <text x="203" y="62"  class="rfemi" fill="#00c896">✂️</text>
+      <text x="203" y="84"  class="rft2"  fill="#00c896">Splitter</text>
 
-      <path d="M 258,68 L 286,68" class="rffl2" marker-end="url(#rfah2)"/>
+      <path d="M 258,70 L 286,70" class="rffl2" marker-end="url(#rfah2)"/>
 
-      <rect x="286" y="38" width="120" height="60" rx="8" class="p1n"/>
-      <text x="346" y="60" class="rft1" fill="#00c896">🤖</text>
-      <text x="346" y="80" class="rft2" fill="#00c896">Doc Embedder</text>
+      <!-- P1 Node 3: Doc Embedder -->
+      <rect x="286" y="38" width="120" height="64" rx="10" style="fill:rgba(0,200,150,.18); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:1.6s;"/>
+      <rect x="286" y="38" width="120" height="64" rx="10" class="p1n"/>
+      <text x="346" y="62"  class="rfemi" fill="#00c896">🤖</text>
+      <text x="346" y="84"  class="rft2"  fill="#00c896">Doc Embedder</text>
 
-      <path d="M 406,68 L 429,68" class="rffl2" marker-end="url(#rfah2)"/>
+      <path d="M 406,70 L 429,70" class="rffl2" marker-end="url(#rfah2)"/>
 
-      <rect x="429" y="38" width="115" height="60" rx="8" class="p1n"/>
-      <text x="486" y="57" class="rft1" fill="#00c896">🗄️</text>
-      <text x="486" y="78" class="rft2" fill="#00c896">Vector DB</text>
+      <!-- P1 Node 4: Vector DB -->
+      <rect x="429" y="38" width="155" height="64" rx="10" style="fill:rgba(0,200,150,.18); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:2.4s;"/>
+      <rect x="429" y="38" width="155" height="64" rx="10" class="p1n"/>
+      <text x="506" y="62"  class="rfemi" fill="#00c896">🗄️</text>
+      <text x="506" y="84"  class="rft2"  fill="#00c896">Vector DB</text>
 
       <!-- Vertical connector: Vector DB bottom → Search top -->
-      <line x1="486" y1="98" x2="486" y2="172" class="rffl2"/>
-      <text x="502" y="135" class="rflb2">context</text>
+      <line x1="506" y1="102" x2="506" y2="178" class="rffl2"/>
+      <text x="522" y="140" class="rflb2">context</text>
 
-      <!-- ── Phase 2 nodes (row 1, cy=202) ── -->
-      <rect x="20"  y="172" width="110" height="60" rx="8" class="p2n"/>
-      <text x="75"  y="194" class="rft1" fill="#009de0">❓</text>
-      <text x="75"  y="214" class="rft2" fill="#009de0">Question</text>
+      <!-- ── Phase 2 Row 1 (cy=210) ── -->
+      <!-- P2 Node 1: Question -->
+      <rect x="20"  y="178" width="110" height="64" rx="10" style="fill:rgba(0,157,224,.20); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:0s;"/>
+      <rect x="20"  y="178" width="110" height="64" rx="10" class="p2n"/>
+      <text x="75"  y="202"  class="rfemi" fill="#009de0">❓</text>
+      <text x="75"  y="224"  class="rft2"  fill="#009de0">Question</text>
 
-      <path d="M 130,202 L 153,202" class="rffl" marker-end="url(#rfah)"/>
+      <path d="M 130,210 L 153,210" class="rffl" marker-end="url(#rfah)"/>
 
-      <rect x="153" y="172" width="115" height="60" rx="8" class="p2n"/>
-      <text x="210" y="194" class="rft1" fill="#009de0">🤖</text>
-      <text x="210" y="214" class="rft2" fill="#009de0">Embed Query</text>
+      <!-- P2 Node 2: Embed Query -->
+      <rect x="153" y="178" width="120" height="64" rx="10" style="fill:rgba(0,157,224,.20); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:0.8s;"/>
+      <rect x="153" y="178" width="120" height="64" rx="10" class="p2n"/>
+      <text x="213" y="202"  class="rfemi" fill="#009de0">🤖</text>
+      <text x="213" y="224"  class="rft2"  fill="#009de0">Embed Query</text>
 
       <!-- Long arrow → Search DB -->
-      <path d="M 268,202 L 428,202" class="rffl" marker-end="url(#rfah)"/>
-      <text x="348" y="192" class="rflbl">query vector →</text>
+      <path d="M 273,210 L 446,210" class="rffl" marker-end="url(#rfah)"/>
+      <text x="360" y="200" class="rflbl">query vector →</text>
 
-      <rect x="428" y="172" width="115" height="60" rx="8" class="p2n"/>
-      <text x="486" y="194" class="rft1" fill="#009de0">🔍</text>
-      <text x="486" y="214" class="rft2" fill="#009de0">Search DB</text>
+      <!-- P2 Node 3: Search DB -->
+      <rect x="446" y="178" width="130" height="64" rx="10" style="fill:rgba(0,157,224,.20); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:1.6s;"/>
+      <rect x="446" y="178" width="130" height="64" rx="10" class="p2n"/>
+      <text x="511" y="202"  class="rfemi" fill="#009de0">🔍</text>
+      <text x="511" y="224"  class="rft2"  fill="#009de0">Search DB</text>
 
       <!-- Arrow down → Chunks -->
-      <path d="M 486,232 L 486,260" class="rffl" marker-end="url(#rfah)"/>
+      <path d="M 511,242 L 511,270" class="rffl" marker-end="url(#rfah)"/>
 
-      <!-- Chunks (cy=290) -->
-      <rect x="390" y="260" width="190" height="60" rx="8" class="p2n"/>
-      <text x="485" y="282" class="rft1" fill="#009de0">📋</text>
-      <text x="485" y="302" class="rft2" fill="#009de0">Top-K Chunks</text>
+      <!-- P2 Node 4: Top-K Chunks -->
+      <rect x="390" y="270" width="238" height="64" rx="10" style="fill:rgba(0,157,224,.20); stroke:none; animation: rfglow-b 3s ease-in-out infinite; animation-delay:2.4s;"/>
+      <rect x="390" y="270" width="238" height="64" rx="10" class="p2n"/>
+      <text x="509" y="294"  class="rfemi" fill="#009de0">📋</text>
+      <text x="509" y="316"  class="rft2"  fill="#009de0">Top-K Chunks</text>
 
       <!-- Arrow down → LLM (dim) -->
-      <path d="M 485,320 L 485,338" class="rffl3" marker-end="url(#rfah3)"/>
+      <path d="M 509,334 L 509,352" class="rffl3" marker-end="url(#rfah3)"/>
 
       <!-- LLM + Answer (dim, future) -->
-      <rect x="390" y="338" width="190" height="38" rx="8" class="p2nd"/>
-      <text x="485" y="353" class="rft2" fill="#888">🤖  LLM → 💬 Answer</text>
-      <text x="485" y="370" class="rfldim">beyond today's scope</text>
+      <rect x="390" y="352" width="238" height="42" rx="8" class="p2nd"/>
+      <text x="509" y="368"  class="rft2"  fill="#888">🤖  LLM → 💬 Answer</text>
+      <text x="509" y="386"  class="rfldim">beyond today's scope</text>
     </svg>
     </div>
-    """,
+    """,  # noqa: E501
     unsafe_allow_html=True,
 )
 
@@ -227,59 +246,75 @@ st.markdown(
 st.markdown(
     """
     <div style="overflow-x: auto; padding: 16px 0 4px;">
-    <svg viewBox="0 0 700 165" xmlns="http://www.w3.org/2000/svg"
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg"
          style="width:100%; max-width:740px; display:block; margin:0 auto; font-family:sans-serif;">
       <defs>
         <marker id="p5ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
         </marker>
         <style>
-          @keyframes p5flow { to { stroke-dashoffset: -13; } }
-          .p5fl { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
-                  animation: p5flow 0.5s linear infinite; }
-          .p5nd { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
-          .p5nc { fill:rgba(0,157,224,.12); stroke:#009de0; stroke-width:1.5; }
-          .p5t1 { font-size:20px; text-anchor:middle; dominant-baseline:middle; font-weight:700; }
-          .p5t2 { font-size:15px; text-anchor:middle; dominant-baseline:middle; font-weight:600; }
-          .p5t3 { font-size:10px; text-anchor:middle; dominant-baseline:middle; opacity:.60; font-style:italic; }
-          .p5lbl{ font-size:10px; text-anchor:middle; fill:#009de0; opacity:.55; }
+          @keyframes p5flow   { to { stroke-dashoffset: -13; } }
+          @keyframes p5glow-a { 0%,100% { opacity:.12; } 50% { opacity:.40; } }
+          @keyframes p5glow-b { 0%,100% { opacity:.05; } 50% { opacity:.18; } }
+          .p5fl   { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                    animation: p5flow 0.5s linear infinite; }
+          .p5gnc  { fill:rgba(0,157,224,.22); stroke:none; animation: p5glow-a 3s ease-in-out infinite; }
+          .p5gnc2 { fill:rgba(0,157,224,.09); stroke:none; animation: p5glow-b 3s ease-in-out infinite; }
+          .p5gnd  { fill:rgba(0,200,150,.22); stroke:none; animation: p5glow-a 3s ease-in-out infinite; }
+          .p5gnd2 { fill:rgba(0,200,150,.09); stroke:none; animation: p5glow-b 3s ease-in-out infinite; }
+          .p5nc   { fill:rgba(0,157,224,.15); stroke:#009de0; stroke-width:2; }
+          .p5nd   { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:2; }
+          .p5nt   { font-size:15px; fill:#009de0; text-anchor:middle; font-weight:600; }
+          .p5ns   { font-size:12px; fill:#009de0; text-anchor:middle; opacity:.65; font-style:italic; }
+          .p5dt   { font-size:15px; fill:#00c896; text-anchor:middle; font-weight:600; }
+          .p5ds   { font-size:12px; fill:#00c896; text-anchor:middle; opacity:.65; font-style:italic; }
+          .p5lbl  { font-size:11px; text-anchor:middle; fill:#009de0; opacity:.55; }
+          .p5ico  { font-size:26px; text-anchor:middle; dominant-baseline:middle; }
         </style>
       </defs>
 
-      <!-- Node 1: Query Text (data, green) -->
-      <rect x="10"  y="18" width="140" height="90" rx="10" class="p5nd"/>
-      <text x="80"  y="44"  class="p5t1" fill="#00c896">❓</text>
-      <text x="80"  y="72"  class="p5t2" fill="#00c896">Query Text</text>
-      <text x="80"  y="92"  class="p5t3" fill="#00c896">str · your question</text>
+      <!-- ── Node 1: Query Text (data, green) ── -->
+      <circle cx="80"  cy="90" r="60" class="p5gnd2" style="animation-delay:0s;"/>
+      <circle cx="80"  cy="90" r="48" class="p5gnd"  style="animation-delay:0s;"/>
+      <circle cx="80"  cy="90" r="40" class="p5nd"/>
+      <text   x="80"  y="90"  class="p5ico">❓</text>
+      <text   x="80"  y="148" class="p5dt">Query Text</text>
+      <text   x="80"  y="165" class="p5ds">str · your question</text>
 
       <!-- Arrow 1 -->
-      <path d="M 150,63 L 185,63" class="p5fl" marker-end="url(#p5ah)"/>
+      <path d="M 120,90 L 218,90" class="p5fl" marker-end="url(#p5ah)"/>
 
-      <!-- Node 2: Text Embedder (component, blue) -->
-      <rect x="185" y="18" width="155" height="90" rx="10" class="p5nc"/>
-      <text x="262" y="44"  class="p5t1" fill="#009de0">🤖</text>
-      <text x="262" y="72"  class="p5t2" fill="#009de0">Text Embedder</text>
-      <text x="262" y="92"  class="p5t3" fill="#009de0">AzureOpenAITextEmbedder</text>
-      <text x="262" y="120" class="p5lbl">→ query vector</text>
+      <!-- ── Node 2: Text Embedder (component, blue) ── -->
+      <circle cx="258" cy="90" r="60" class="p5gnc2" style="animation-delay:0.8s;"/>
+      <circle cx="258" cy="90" r="48" class="p5gnc"  style="animation-delay:0.8s;"/>
+      <circle cx="258" cy="90" r="40" class="p5nc"/>
+      <text   x="258" y="90"  class="p5ico">🤖</text>
+      <text   x="258" y="148" class="p5nt">Text Embedder</text>
+      <text   x="258" y="165" class="p5ns">AzureOpenAITextEmbedder</text>
+      <text   x="258" y="182" class="p5lbl">→ query vector</text>
 
       <!-- Arrow 2 -->
-      <path d="M 340,63 L 375,63" class="p5fl" marker-end="url(#p5ah)"/>
+      <path d="M 298,90 L 413,90" class="p5fl" marker-end="url(#p5ah)"/>
 
-      <!-- Node 3: Retriever (component, blue) -->
-      <rect x="375" y="18" width="160" height="90" rx="10" class="p5nc"/>
-      <text x="455" y="44"  class="p5t1" fill="#009de0">🔍</text>
-      <text x="455" y="72"  class="p5t2" fill="#009de0">Embedding Retriever</text>
-      <text x="455" y="92"  class="p5t3" fill="#009de0">PgvectorEmbeddingRetriever</text>
-      <text x="455" y="120" class="p5lbl">cosine similarity search</text>
+      <!-- ── Node 3: Embedding Retriever (component, blue) ── -->
+      <circle cx="453" cy="90" r="60" class="p5gnc2" style="animation-delay:1.6s;"/>
+      <circle cx="453" cy="90" r="48" class="p5gnc"  style="animation-delay:1.6s;"/>
+      <circle cx="453" cy="90" r="40" class="p5nc"/>
+      <text   x="453" y="90"  class="p5ico">🔍</text>
+      <text   x="453" y="148" class="p5nt">Embedding Retriever</text>
+      <text   x="453" y="165" class="p5ns">PgvectorEmbeddingRetriever</text>
+      <text   x="453" y="182" class="p5lbl">cosine similarity search</text>
 
       <!-- Arrow 3 -->
-      <path d="M 535,63 L 565,63" class="p5fl" marker-end="url(#p5ah)"/>
+      <path d="M 493,90 L 578,90" class="p5fl" marker-end="url(#p5ah)"/>
 
-      <!-- Node 4: Top-K Chunks (data, green) -->
-      <rect x="565" y="18" width="125" height="90" rx="10" class="p5nd"/>
-      <text x="627" y="44"  class="p5t1" fill="#00c896">📄</text>
-      <text x="627" y="72"  class="p5t2" fill="#00c896">Top-K Chunks</text>
-      <text x="627" y="92"  class="p5t3" fill="#00c896">list[Document]</text>
+      <!-- ── Node 4: Top-K Chunks (data, green) ── -->
+      <circle cx="618" cy="90" r="60" class="p5gnd2" style="animation-delay:2.4s;"/>
+      <circle cx="618" cy="90" r="48" class="p5gnd"  style="animation-delay:2.4s;"/>
+      <circle cx="618" cy="90" r="40" class="p5nd"/>
+      <text   x="618" y="90"  class="p5ico">📄</text>
+      <text   x="618" y="148" class="p5dt">Top-K Chunks</text>
+      <text   x="618" y="165" class="p5ds">list[Document]</text>
     </svg>
     </div>
     """,
@@ -312,7 +347,9 @@ else:
                 f"""
                 <div class="card" style="text-align: center;">
                     <div style="font-size: 1.5em;">🗃️</div>
-                    <h4>{table.get("source", "Unknown")}</h4>
+                    <p style="font-size: 1.2em; color:#009de0; font-weight:600; margin-bottom:0;">
+                        {table.get("source", "Unknown")}
+                    </p>
                     <p style="font-size: 1.5em; font-weight: bold; margin: 0;">{count}</p>
                     <p class="text-muted" style="font-size: 0.85em;">chunks</p>
                 </div>

@@ -185,20 +185,23 @@ st.divider()
 # BIG CAUTION SECTION — using Streamlit components for reliable rendering
 # ---------------------------------------------------------------------------
 st.markdown(
-    "<div style='border:2px solid #f59e0b; border-radius:14px; padding:1.5rem 1.5rem 1rem;"
-    " background:rgba(245,158,11,0.04); margin:0.5rem 0;'>"
-    "<div style='display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;'>"
-    "<span style='font-size:2em;'>⚠️</span>"
-    "<h2 style='margin:0; color:#fbbf24; font-size:1.5em;'>Before We Go Further — A Word on Trust</h2>"
-    "</div>"
-    "<p style='color:#fde68a; font-size:1.05em; line-height:1.7; margin-bottom:0;'>"
-    "We've been working with AI in a controlled, corporate-adjacent context — a service we built,"
-    " running locally, with known inputs and outputs. OpenClaw is different."
-    " <strong>This is where AI gets personal.</strong>"
-    "</p>"
-    "</div>",
+    """
+    <h2 style='margin:0; color:#fbbf24; font-size:1.5em;'>
+        ⚠️ Before We Go Further — A Word on Trust
+    </h2>
+    <p style='color:#fde68a; font-size:1.05em; line-height:1.7; margin-bottom:0;'>
+        We've been working with AI in a controlled, corporate-adjacent context — a service we built,
+        running locally, with known inputs and outputs.
+    </p>
+    <p style='color:#fde68a; font-size:1.05em; line-height:1.7; margin-bottom:0;'>
+        OpenClaw is different.
+        <strong>This is where AI gets personal.</strong>
+    </p>
+    """,
     unsafe_allow_html=True,
 )
+
+st.markdown("<div style='height:0.5rem;'></div>", unsafe_allow_html=True)
 
 c1, c2 = st.columns(2)
 with c1:

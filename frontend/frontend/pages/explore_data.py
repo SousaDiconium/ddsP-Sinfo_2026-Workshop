@@ -49,11 +49,11 @@ for idx, table in enumerate(tables):
             f"""
             <div class="card" style="text-align: center;">
                 <div style="font-size: 2em;">🗃️</div>
-                <h4>{table.get("source", "Unknown")}</h4>
+                <p style="font-size: 1.2em; color:#009de0; font-weight:600; margin-bottom:0;">{table.get("source", "Unknown")}</p>
                 <p style="font-size: 2em; font-weight: bold; margin: 0;">{count}</p>
                 <p class="text-muted" style="font-size: 0.85em;">chunks indexed</p>
             </div>
-            """,
+            """,  # noqa: E501
             unsafe_allow_html=True,
         )
 

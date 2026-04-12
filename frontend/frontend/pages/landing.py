@@ -61,14 +61,17 @@ def act_chip(icon: str, num: str, title: str, color: str = "#009de0") -> str:
     )
 
 
-st.markdown("**🔧 RAG Service** — acts 1–5")
+st.markdown(
+    "<div style='margin-top:1rem; margin-bottom:1rem;'><strong>🔧 RAG Service</strong> — acts 1–5</div>",
+    unsafe_allow_html=True,
+)
 cols = st.columns(5)
 for col, (icon, num, title) in zip(cols, rag_acts, strict=False):
     with col:
         st.markdown(act_chip(icon, num, title, "#009de0"), unsafe_allow_html=True)
 
 st.markdown(
-    "<div style='margin-top:1rem;'><strong>🐾 OpenClaw</strong> — acts 6–10</div>",
+    "<div style='margin-top:1rem; margin-bottom:1rem;'><strong>🐾 OpenClaw</strong> — acts 6–10</div>",
     unsafe_allow_html=True,
 )
 cols2 = st.columns(5)
@@ -76,13 +79,36 @@ for col, (icon, num, title) in zip(cols2, oc_acts, strict=False):
     with col:
         st.markdown(act_chip(icon, num, title, "#f59e0b"), unsafe_allow_html=True)
 
-st.divider()
-
 st.markdown(
     """
-    <div style="text-align: center; opacity: 0.6; font-size: 0.9em;">
+    <div style="text-align: center; opacity: 0.6; font-size: 0.9em; padding-top: 2rem;">
         Use the sidebar to navigate between acts &nbsp;👈
     </div>
     """,
+    unsafe_allow_html=True,
+)
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Workshop overview — big feature box
+# ---------------------------------------------------------------------------
+
+st.markdown(
+    "<div style='padding:2rem; background:rgba(0,157,224,0.05); border:1px solid rgba(0,157,224,0.3);"
+    " border-radius:14px; text-align:center; margin:0.5rem 0;'>"
+    "<div style='font-size:2.2em; margin-bottom:0.5rem;'>🎉</div>"
+    "<h2 style='color:#009de0; margin:0 0 0.75rem; font-size:1.4em;'>By the end of this workshop, you will have built a personal AI agent.</h2>"  # noqa: E501
+    "<p style='color:#d1d5db; font-size:1em; line-height:1.8; max-width:600px; margin:0 auto;'>"
+    "It will be able to <strong>browse your university portal</strong>, "
+    "<strong>learn from documents</strong>, "
+    "<strong>answer questions</strong> using semantic search, "
+    "and <strong>manage your knowledge base</strong> — "
+    "all running locally on your machine, with no cloud dependency on your data."
+    "</p>"
+    "<p style='color:#aaa; font-size:0.9em; margin-top:0.75rem;'>"
+    "Skills are composable — every one you build can do anything your machine can do."
+    "</p>"
+    "</div>",
     unsafe_allow_html=True,
 )

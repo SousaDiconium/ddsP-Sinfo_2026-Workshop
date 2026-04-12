@@ -41,68 +41,83 @@ st.markdown(
 st.markdown(
     """
     <div style="overflow-x: auto; padding: 16px 0 4px;">
-    <svg viewBox="0 0 870 165" xmlns="http://www.w3.org/2000/svg"
+    <svg viewBox="0 0 870 190" xmlns="http://www.w3.org/2000/svg"
          style="width:100%; max-width:920px; display:block; margin:0 auto; font-family:sans-serif;">
       <defs>
         <marker id="p3ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
         </marker>
         <style>
-          @keyframes p3flow { to { stroke-dashoffset: -13; } }
-          .p3fl { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
-                  animation: p3flow 0.5s linear infinite; }
-          .p3nd { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
-          .p3nc { fill:rgba(0,157,224,.12); stroke:#009de0; stroke-width:1.5; }
-          .p3t1 { font-size:20px; text-anchor:middle; dominant-baseline:middle; font-weight:700; }
-          .p3t2 { font-size:15px; text-anchor:middle; dominant-baseline:middle; font-weight:600; }
-          .p3t3 { font-size:10px; text-anchor:middle; dominant-baseline:middle; opacity:.60; font-style:italic; }
-          .p3lbl{ font-size:10px; text-anchor:middle; fill:#009de0; opacity:.55; }
+          @keyframes p3flow   { to { stroke-dashoffset: -13; } }
+          @keyframes p3glow-a { 0%,100% { opacity:.12; } 50% { opacity:.40; } }
+          @keyframes p3glow-b { 0%,100% { opacity:.05; } 50% { opacity:.18; } }
+          .p3fl   { stroke:#009de0; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                    animation: p3flow 0.5s linear infinite; }
+          .p3gnc  { fill:rgba(0,157,224,.22); stroke:none; animation: p3glow-a 3s ease-in-out infinite; }
+          .p3gnc2 { fill:rgba(0,157,224,.09); stroke:none; animation: p3glow-b 3s ease-in-out infinite; }
+          .p3gnd  { fill:rgba(0,200,150,.22); stroke:none; animation: p3glow-a 3s ease-in-out infinite; }
+          .p3gnd2 { fill:rgba(0,200,150,.09); stroke:none; animation: p3glow-b 3s ease-in-out infinite; }
+          .p3nc   { fill:rgba(0,157,224,.15); stroke:#009de0; stroke-width:2; }
+          .p3nd   { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:2; }
+          .p3nt   { font-size:15px; fill:#009de0; text-anchor:middle; font-weight:600; }
+          .p3ns   { font-size:12px; fill:#009de0; text-anchor:middle; opacity:.65; font-style:italic; }
+          .p3dt   { font-size:15px; fill:#00c896; text-anchor:middle; font-weight:600; }
+          .p3ds   { font-size:12px; fill:#00c896; text-anchor:middle; opacity:.65; font-style:italic; }
+          .p3ico  { font-size:26px; text-anchor:middle; dominant-baseline:middle; }
         </style>
       </defs>
 
-      <!-- Node 1: Documents (data, green) -->
-      <rect x="10"  y="18" width="140" height="90" rx="10" class="p3nd"/>
-      <text x="80"  y="44"  class="p3t1" fill="#00c896">📄</text>
-      <text x="80"  y="72"  class="p3t2" fill="#00c896">Raw Documents</text>
-      <text x="80"  y="92"  class="p3t3" fill="#00c896">list[Document]</text>
+      <!-- ── Node 1: Raw Documents (data, green) ── -->
+      <circle cx="80"  cy="85" r="60" class="p3gnd2" style="animation-delay:0s;"/>
+      <circle cx="80"  cy="85" r="48" class="p3gnd"  style="animation-delay:0s;"/>
+      <circle cx="80"  cy="85" r="38" class="p3nd"/>
+      <text   x="80"  y="85"  class="p3ico">📄</text>
+      <text   x="80"  y="142" class="p3dt">Raw Documents</text>
+      <text   x="80"  y="159" class="p3ds">list[Document]</text>
 
       <!-- Arrow 1 -->
-      <path d="M 150,63 L 185,63" class="p3fl" marker-end="url(#p3ah)"/>
+      <path d="M 118,85 L 207,85" class="p3fl" marker-end="url(#p3ah)"/>
 
-      <!-- Node 2: DocumentSplitter (component, blue) -->
-      <rect x="185" y="18" width="140" height="90" rx="10" class="p3nc"/>
-      <text x="255" y="44"  class="p3t1" fill="#009de0">✂️</text>
-      <text x="255" y="72"  class="p3t2" fill="#009de0">Document Splitter</text>
-      <text x="255" y="92"  class="p3t3" fill="#009de0">DocumentSplitter</text>
-      <text x="255" y="120" class="p3lbl">100 words · 30 overlap</text>
+      <!-- ── Node 2: Document Splitter (component, blue) ── -->
+      <circle cx="245" cy="85" r="60" class="p3gnc2" style="animation-delay:0.8s;"/>
+      <circle cx="245" cy="85" r="48" class="p3gnc"  style="animation-delay:0.8s;"/>
+      <circle cx="245" cy="85" r="38" class="p3nc"/>
+      <text   x="245" y="85"  class="p3ico">✂️</text>
+      <text   x="245" y="142" class="p3nt">Doc Splitter</text>
+      <text   x="245" y="159" class="p3ns">DocumentSplitter</text>
 
       <!-- Arrow 2 -->
-      <path d="M 325,63 L 360,63" class="p3fl" marker-end="url(#p3ah)"/>
+      <path d="M 283,85 L 392,85" class="p3fl" marker-end="url(#p3ah)"/>
 
-      <!-- Node 3: DocumentEmbedder (component, blue) -->
-      <rect x="360" y="18" width="155" height="90" rx="10" class="p3nc"/>
-      <text x="437" y="44"  class="p3t1" fill="#009de0">🤖</text>
-      <text x="437" y="72"  class="p3t2" fill="#009de0">Document Embedder</text>
-      <text x="437" y="92"  class="p3t3" fill="#009de0">AzureOpenAIDocumentEmbedder</text>
-      <text x="437" y="120" class="p3lbl">3 072 dims per chunk</text>
+      <!-- ── Node 3: Document Embedder (component, blue) ── -->
+      <circle cx="430" cy="85" r="60" class="p3gnc2" style="animation-delay:1.6s;"/>
+      <circle cx="430" cy="85" r="48" class="p3gnc"  style="animation-delay:1.6s;"/>
+      <circle cx="430" cy="85" r="38" class="p3nc"/>
+      <text   x="430" y="85"  class="p3ico">🤖</text>
+      <text   x="430" y="142" class="p3nt">Doc Embedder</text>
+      <text   x="430" y="159" class="p3ns">AzureOpenAIDocumentEmbedder</text>
 
       <!-- Arrow 3 -->
-      <path d="M 515,63 L 545,63" class="p3fl" marker-end="url(#p3ah)"/>
+      <path d="M 468,85 L 577,85" class="p3fl" marker-end="url(#p3ah)"/>
 
-      <!-- Node 4: DocumentWriter (component, blue) -->
-      <rect x="545" y="18" width="140" height="90" rx="10" class="p3nc"/>
-      <text x="615" y="44"  class="p3t1" fill="#009de0">💾</text>
-      <text x="615" y="72"  class="p3t2" fill="#009de0">Document Writer</text>
-      <text x="615" y="92"  class="p3t3" fill="#009de0">DocumentWriter</text>
+      <!-- ── Node 4: Document Writer (component, blue) ── -->
+      <circle cx="615" cy="85" r="60" class="p3gnc2" style="animation-delay:2.4s;"/>
+      <circle cx="615" cy="85" r="48" class="p3gnc"  style="animation-delay:2.4s;"/>
+      <circle cx="615" cy="85" r="38" class="p3nc"/>
+      <text   x="615" y="85"  class="p3ico">💾</text>
+      <text   x="615" y="142" class="p3nt">Doc Writer</text>
+      <text   x="615" y="159" class="p3ns">DocumentWriter</text>
 
       <!-- Arrow 4 -->
-      <path d="M 685,63 L 720,63" class="p3fl" marker-end="url(#p3ah)"/>
+      <path d="M 653,85 L 762,85" class="p3fl" marker-end="url(#p3ah)"/>
 
-      <!-- Node 5: pgvector store (data/storage, green) -->
-      <rect x="720" y="18" width="140" height="90" rx="10" class="p3nd"/>
-      <text x="790" y="44"  class="p3t1" fill="#00c896">🗄️</text>
-      <text x="790" y="72"  class="p3t2" fill="#00c896">pgvector Store</text>
-      <text x="790" y="92"  class="p3t3" fill="#00c896">PgvectorDocumentStore</text>
+      <!-- ── Node 5: pgvector Store (data, green) ── -->
+      <circle cx="800" cy="85" r="60" class="p3gnd2" style="animation-delay:3.2s;"/>
+      <circle cx="800" cy="85" r="48" class="p3gnd"  style="animation-delay:3.2s;"/>
+      <circle cx="800" cy="85" r="38" class="p3nd"/>
+      <text   x="800" y="85"  class="p3ico">🗄️</text>
+      <text   x="800" y="142" class="p3dt">pgvector Store</text>
+      <text   x="800" y="159" class="p3ds">PgvectorDocumentStore</text>
     </svg>
     </div>
     """,
