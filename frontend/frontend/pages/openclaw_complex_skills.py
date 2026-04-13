@@ -123,7 +123,7 @@ with col1:
             (fenix.tecnico.ulisboa.pt) using OpenClaw's browser automation.</p>
             <p><strong>How it works:</strong></p>
             <ol style="padding-left: 1.2rem; margin: 0.5rem 0;">
-                <li>Runs <code>openclaw browser --browser-profile fenix start</code> to launch
+                <li>Runs <code>openclaw browser --browser-profile chrome start</code> to launch
                     or attach to a dedicated Chrome session.</li>
                 <li>Opens the Fenix login page in that profile.</li>
                 <li>Asks the user to log in manually in the browser window.</li>

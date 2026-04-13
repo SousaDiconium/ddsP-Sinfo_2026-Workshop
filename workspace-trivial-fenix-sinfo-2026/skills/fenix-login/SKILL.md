@@ -12,18 +12,18 @@ This skill launches a dedicated browser session for Fenix using OpenClaw, allowi
 ## Procedure
 
 1. **Start/Open Browser Profile**
-	- Run: `openclaw browser --browser-profile fenix start`
+	- Run: `openclaw browser --browser-profile openclaw start`
 	- This launches or attaches to a dedicated Chrome session for Fenix.
 
 2. **Open Fenix Login Page**
-	- Run: `openclaw browser --browser-profile fenix open https://fenix.tecnico.ulisboa.pt/login.do`
+	- Run: `openclaw browser --browser-profile openclaw open https://fenix.tecnico.ulisboa.pt/login.do`
 	- The login page will appear in the browser.
 
 3. **Ask User to Log In**
 	- Prompt the user: "Please log in to Fenix in the browser window that opened. Let me know when you see your Fenix homepage."
 
 4. **Verify Login**
-	- Optionally, run: `openclaw browser --browser-profile fenix snapshot --json`
+	- Optionally, run: `openclaw browser --browser-profile openclaw snapshot --json`
 	- Parse the HTML to check for the presence of the Fenix homepage (not the login form).
 	- If not logged in, prompt the user to try again.
 
@@ -31,6 +31,6 @@ This skill launches a dedicated browser session for Fenix using OpenClaw, allowi
 	- Once logged in, the browser profile remains authenticated for all subsequent Fenix actions (course listing, navigation, etc.).
 
 ## Notes
-- The browser session is isolated to the `fenix` profile and persists until closed.
+- The browser session is isolated to the `openclaw` profile and persists until closed.
 - No cookies or credentials are exposed to the agent — all actions happen in-browser.
 - If the session expires, simply re-run this skill to log in again.
