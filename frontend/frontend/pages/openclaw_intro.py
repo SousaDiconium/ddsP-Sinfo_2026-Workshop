@@ -165,10 +165,11 @@ st.divider()
 st.subheader("⌨️ Essential Commands")
 
 commands = [
-    ("openclaw list", "List all configured agents and their status"),
-    ("openclaw start", "Start the default agent (opens a chat session)"),
-    ("openclaw start --agent &lt;id&gt;", "Start a specific agent by ID"),
-    ("openclaw chat", "Attach to an existing agent session"),
+    ("openclaw onboard", "Initialize a new OpenClaw workspace in the current directory"),
+    ("openclaw config", "Run the interactive configuration wizard"),
+    ("openclaw agents", "List all agents and associated workspaces"),
+    ("openclaw tui", "Launch the terminal user interface for live agent interaction and debugging"),
+    ("openclaw dashboard", "Open the local web dashboard in your browser"),
     ("openclaw gateway restart", "Restart the gateway daemon — run this when config changes aren't picked up"),
     ("openclaw browser --browser-profile &lt;name&gt; start", "Launch a named browser profile for automation"),
     ("openclaw browser --browser-profile &lt;name&gt; open &lt;url&gt;", "Open a URL in the named browser profile"),

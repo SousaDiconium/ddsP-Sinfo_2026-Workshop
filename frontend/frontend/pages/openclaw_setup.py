@@ -8,232 +8,158 @@ st.markdown(
         ⚙️ Configure <span style="color: #009de0;">OpenClaw</span>
     </h1>
     <p style="font-size: 1.1em; margin-top: 4px;" class="text-muted">
-        Wire up the Azure models and register the Trivial Fenix agent on your machine.
+        Wire up the Azure model and register the Trivial Fenix agent — all through the
+        <code>openclaw onbooard</code> or <code>openclaw config</code> wizard.
     </p>
     """,
     unsafe_allow_html=True,
 )
 
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Step 1 — Install the right version
+# ---------------------------------------------------------------------------
+st.subheader("Step 1 — Install OpenClaw 2026.4.9")
+
 st.markdown(
     """
-    Two config files need to be updated. We'll configure the same three Azure-hosted models in both:
-    - `~/.openclaw/agents/trivial-fenix-sinfo-2026/agent/models.json` — agent-level model overrides
-    - `~/.openclaw/openclaw.json` — global OpenClaw config (models + agent registration)
+    The **latest** OpenClaw release has a known issue with browser integration.
+    Make sure you have exactly version **2026.4.9** installed:
+    """
+)
 
-    Replace every `"API KEY"` placeholder with the **actual API key** provided at the workshop.
+st.code("openclaw --version", language="bash")
+
+st.markdown(
+    """
+    If you have a different version, reinstall OpenClaw to the correct version:
+    ```bash
+    openclaw update --tag 2026.4.9
+    ```
     """
 )
 
 st.divider()
 
 # ---------------------------------------------------------------------------
-# Step 1 — agent models.json
+# Step 2 — Run the config wizard
 # ---------------------------------------------------------------------------
-st.subheader("Step 1 — Agent Model Config")
+st.subheader("Step 2 — Run the Config Wizard")
 
 st.markdown(
     """
-    Edit the file at:
-    ```
-    ~/.openclaw/agents/trivial-fenix-sinfo-2026/agent/models.json
-    ```
-    Replace its contents with:
+    Run the interactive configuration wizard:
     """
 )
 
-models_json = """{
-  "providers": {
-    "azure-openai-responses": {
-      "baseUrl": "https://sinfo-2026-workshop-foundry.openai.azure.com/openai/v1",
-      "apiKey": "API KEY",
-      "authHeader": true,
-      "models": [
-        {
-          "id": "gpt-5.1-codex",
-          "name": "GPT-5.1-Codex (Azure)",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-          "contextWindow": 400000,
-          "maxTokens": 16384,
-          "compat": { "supportsStore": false }
-        },
-        {
-          "id": "gpt-5.3-codex",
-          "name": "GPT-5.3-Codex (Azure)",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-          "contextWindow": 400000,
-          "maxTokens": 16384,
-          "compat": { "supportsStore": false }
-        },
-        {
-          "id": "claude-sonnet-4-6",
-          "name": "Claude Sonnet 4-6 (Azure)",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-          "contextWindow": 400000,
-          "maxTokens": 16384,
-          "compat": { "supportsStore": false }
-        }
-      ]
-    }
-  }
-}"""
+st.code("openclaw config", language="bash")
 
-st.code(models_json, language="json")
+st.markdown(
+    """
+    When prompted, make the following selections:
 
-st.info(
-    "💡 This file overrides the model list **just for this agent**, without affecting other agents on your machine."
+    | Prompt | Selection |
+    |---|---|
+    | Where will the Gateway run? | **Local (this machine)** |
+    | Select sections to configure | **Model** |
+    | Model/auth provider | **Microsoft Foundry** |
+    | Microsoft Foundry auth method | **Microsoft Foundry (API key)** |
+    | Enter Azure OpenAI API key | *provided at the workshop* |
+    | Microsoft Foundry endpoint URL | `https://sinfo-2026-workshop-ge-west.openai.azure.com` |
+    | Default model/deployment name | `gpt-5.4` |
+    | Model family | **GPT-5 series / o-series / Codex** |
+    | Select request API | **Responses API** |
+    | Select sections to configure | **Continue** |
+    """
+)
+
+st.info("🔑 The API key will be handed out at the workshop. Don't share it or commit it to any repository.")
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Step 3 — Verify it works
+# ---------------------------------------------------------------------------
+st.subheader("Step 3 — Verify the Setup")
+
+st.markdown(
+    """
+    Launch the text UI and send a quick message to confirm the model responds:
+    """
+)
+
+st.code("openclaw tui", language="bash")
+
+st.markdown(
+    """
+    Once inside, type **`hello`** and press Enter.  
+    If you get a reply, the gateway and model are working correctly.
+    Type `/exit` to quit the TUI.
+    """
 )
 
 st.divider()
 
 # ---------------------------------------------------------------------------
-# Step 2 — global openclaw.json
+# Step 4 — Register the Trivial Fenix agent
 # ---------------------------------------------------------------------------
-st.subheader("Step 2 — Global OpenClaw Config")
+st.subheader("Step 4 — Register the Trivial Fenix Agent")
 
 st.markdown(
     """
-    Edit the file at:
-    ```
-    ~/.openclaw/openclaw.json
-    ```
-    Merge the following into the relevant sections of your existing config
-    (or replace the whole file if starting fresh):
+    Register the agent workspace that lives inside this repository.  
+    This will jump-start the agent with the right config, skills, and tools to follow along with the workshop exercises:
     """
 )
 
-openclaw_json = """{
-  "models": {
-    "providers": {
-      "azure-openai-responses": {
-        "baseUrl": "https://sinfo-2026-workshop-foundry.openai.azure.com/openai/v1",
-        "apiKey": "API KEY",
-        "authHeader": true,
-        "models": [
-          {
-            "id": "gpt-5.1-codex",
-            "name": "GPT-5.1-Codex (Azure)",
-            "reasoning": true,
-            "input": ["text", "image"],
-            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-            "contextWindow": 400000,
-            "maxTokens": 16384,
-            "compat": { "supportsStore": false }
-          },
-          {
-            "id": "gpt-5.3-codex",
-            "name": "GPT-5.3-Codex (Azure)",
-            "reasoning": true,
-            "input": ["text", "image"],
-            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-            "contextWindow": 400000,
-            "maxTokens": 16384,
-            "compat": { "supportsStore": false }
-          },
-          {
-            "id": "claude-sonnet-4-6",
-            "name": "Claude Sonnet 4-6 (Azure)",
-            "reasoning": true,
-            "input": ["text", "image"],
-            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-            "contextWindow": 400000,
-            "maxTokens": 16384,
-            "compat": { "supportsStore": false }
-          }
-        ]
-      }
-    }
-  },
-  "agents": {
-    "defaults": {
-      "model": {
-        "primary": "azure-openai-responses/gpt-5.3-codex"
-      },
-      "models": {
-        "azure-openai-responses/gpt-5.1-codex": {},
-        "azure-openai-responses/gpt-5.3-codex": {},
-        "azure-openai-responses/claude-sonnet-4-6": {}
-      },
-      "workspace": "~/.openclaw/workspace",
-      "compaction": { "mode": "safeguard" },
-      "maxConcurrent": 4,
-      "subagents": { "maxConcurrent": 8 }
-    },
-    "list": [
-      {
-        "id": "trivial-fenix-sinfo-2026",
-        "default": true,
-        "name": "trivial-fenix-sinfo-2026",
-        "workspace": "<PATH_TO_REPO>/workspace-trivial-fenix-sinfo-2026",
-        "agentDir": "~/.openclaw/agents/trivial-fenix-sinfo-2026/agent",
-        "model": "azure-openai-responses/gpt-5.3-codex",
-        "identity": {
-          "name": "Trivial-Fenix",
-          "theme": "AI assistant posing as a workshop demo companion",
-          "emoji": "🤖",
-          "avatar": "<PATH_TO_REPO>/workspace-trivial-fenix-sinfo-2026/resources/avatar.png"
-        }
-      }
-    ]
-  }
-}"""
-
-st.code(openclaw_json, language="json")
+st.code(
+    'openclaw agents add trivial-fenix-sinfo-2026 --workspace "<path-to-repo>/workspace-trivial-fenix-sinfo-2026"',
+    language="bash",
+)
 
 st.warning(
-    "⚠️ Replace `<PATH_TO_REPO>` with the absolute path to this repository on your machine "
+    "⚠️ Replace `<path-to-repo>` with the **absolute path** to the cloned repository on your machine "
     "(e.g. `/Users/yourname/Desktop/ddsP-Sinfo_2026-Workshop`)."
 )
 
 st.divider()
 
 # ---------------------------------------------------------------------------
-# Models explained
+# Step 5 — Restart the gateway
 # ---------------------------------------------------------------------------
-st.subheader("🧠 About the Models")
-
-model_rows = [
-    ("gpt-5.1-codex", "GPT-5.1-Codex (Azure)", "Fast reasoning model — great for quick tasks and tool use"),
-    ("gpt-5.3-codex", "GPT-5.3-Codex (Azure)", "Default model — balanced capability and speed"),
-    (
-        "claude-sonnet-4-6",
-        "Claude Sonnet 4-6 (Azure)",
-        "Anthropic model — strong instruction following and long context",
-    ),
-]
-
-col1, col2, col3 = st.columns(3)
-for i, (model_id, name, desc) in enumerate(model_rows):
-    with [col1, col2, col3][i]:
-        st.markdown(
-            f"""
-            <div class="card" style="height: 100%;">
-                <h4 style="margin: 0 0 4px; font-size: 1em; color: #7dd3fc;">{name}</h4>
-                <code style="font-size: 0.8em; color: #aaa;">{model_id}</code>
-                <p style="font-size: 0.9em; margin: 8px 0 0;">{desc}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+st.subheader("Step 5 — Restart the Gateway")
 
 st.markdown(
     """
-    <div style="margin-top: 1rem; padding: 0.75rem 1rem; background: #1a2a1a; border-radius: 8px;
-                border-left: 3px solid #4caf50; font-size: 0.9em; color: #aaa; line-height: 1.6;">
-        <strong style="color: #e0e0e0;">💳 Billing & Access</strong><br>
-        These models are provided by <strong style="color: #4caf50;">Diconium</strong> at
-        <strong style="color: #4caf50;">zero cost</strong> during this workshop via a shared Azure
-        OpenAI resource. Access will be <strong>revoked after the event</strong>.<br><br>
-        The good news: OpenClaw is <strong>plug-and-play with any provider</strong>. You can swap in
-        your own API keys at any time — just update the <code>baseUrl</code> and <code>apiKey</code>
-        fields. There are also student offers worth exploring — for example, OpenAI occasionally offers
-        free credits for students. Any provider supported by OpenAI-compatible APIs works.
-    </div>
-    """,
-    unsafe_allow_html=True,
+    Restart the OpenClaw gateway so it picks up the new model config and the registered agent:
+    """
+)
+
+st.code("openclaw gateway restart", language="bash")
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Step 6 — Enable the browser plugin
+# ---------------------------------------------------------------------------
+st.subheader("Step 6 — Enable the Browser Plugin")
+
+st.markdown(
+    """
+    The Trivial Fenix agent uses browser automation to scrape Fenix pages.
+    Enable the browser plugin:
+    """
+)
+
+st.code("openclaw plugins enable browser", language="bash")
+
+st.warning(
+    "🌐 The browser plugin requires a **Chromium-based browser** to be installed on your machine — "
+    "Google Chrome, Microsoft Edge, or Brave all work."
+)
+
+st.success(
+    "✅ That's it! OpenClaw is configured, the agent is registered, and the browser plugin is ready. "
+    "Head to the next section to start using the agent."
 )

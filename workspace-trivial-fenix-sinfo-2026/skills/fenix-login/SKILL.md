@@ -23,8 +23,8 @@ This skill launches a dedicated browser session for Fenix using OpenClaw, allowi
 	- Prompt the user: "Please log in to Fenix in the browser window that opened. Let me know when you see your Fenix homepage."
 
 4. **Verify Login**
-	- Optionally, run: `openclaw browser --browser-profile openclaw snapshot --json`
-	- Parse the HTML to check for the presence of the Fenix homepage (not the login form).
+	- Optionally, run: `openclaw browser --browser-profile openclaw snapshot`
+	- Parse the output to check for the presence of the Fenix homepage (not the login form).
 	- If not logged in, prompt the user to try again.
 
 5. **Session Ready**

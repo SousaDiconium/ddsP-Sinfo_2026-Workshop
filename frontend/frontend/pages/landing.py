@@ -42,8 +42,8 @@ rag_acts = [
 
 oc_acts = [
     ("🐾", "6", "Meet OpenClaw"),
-    ("⚙️", "7", "Configure"),
-    ("📁", "8", "Workspace"),
+    ("⚙️", "7", "Configure OpenClaw"),
+    ("📁", "8", "Your Workspace"),
     ("🛠️", "9", "Simple Skills"),
     ("🚀", "10", "Complex Skills"),
 ]

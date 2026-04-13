@@ -34,9 +34,10 @@ The agent should read and interpret this tree directly. Annotations like `[ref=e
 ### General pattern for every page
 
 1. Ensure the browser is running: `openclaw browser --browser-profile openclaw start`
-2. Open the target URL: `openclaw browser --browser-profile openclaw open "<url>"`
-3. Capture the accessibility tree: `TREE=$(openclaw browser --browser-profile openclaw snapshot)`
-4. Parse the tree using the hints below — no script needed for extraction.
+2. Make sure the user is logged in (via `fenix-login` skill)
+3. Open the target URL: `openclaw browser --browser-profile openclaw open "<url>"`
+4. Capture the accessibility tree: `TREE=$(openclaw browser --browser-profile openclaw snapshot)`
+5. Parse the tree using the hints below — no script needed for extraction.
 
 ---
 
