@@ -65,7 +65,7 @@ class AIService:
         self._document_stores[table_name] = document_store
 
         return document_store
-    
+
     def get_document_embedder(self) -> AzureOpenAIDocumentEmbedder:
         """
         Create and return an AzureOpenAIDocumentEmbedder instance configured with the current settings.
@@ -141,7 +141,7 @@ class AIService:
         document_store = self._document_stores[table]
 
         return PgvectorEmbeddingRetriever(document_store=document_store, top_k=top_k)
-    
+
     def embed_text(self, text: str) -> list[float]:
         """
         Generate an embedding vector for a single text string.
