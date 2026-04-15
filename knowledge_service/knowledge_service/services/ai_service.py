@@ -42,6 +42,21 @@ class AIService:
         self._settings = settings
         self._document_stores = {}
 
+    def get_text_embedder(self) -> AzureOpenAITextEmbedder:
+        """
+        Create and return an AzureOpenAITextEmbedder instance configured with the current settings.
+
+        Returns:
+            AzureOpenAITextEmbedder: An instance of the text embedder.
+
+        """
+        return AzureOpenAITextEmbedder(
+            api_key=Secret.from_token(self._settings.azure_openai_embeddings_api_key),
+            api_version=self._settings.azure_openai_embeddings_api_version,
+            azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
+            azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
+        )
+
     def add_document_store(self, table_name: str, *, recreate_table: bool = False) -> PgvectorDocumentStore:
         """
         Create and add a PgvectorDocumentStore for the specified table name.
@@ -66,6 +81,16 @@ class AIService:
 
         return document_store
 
+    def get_document_splitter(self) -> DocumentSplitter:
+        """
+        Create and return a DocumentSplitter configured to split documents by words.
+
+        Returns:
+            DocumentSplitter: An instance configured with split_by="word", split_length=100, and split_overlap=30.
+
+        """
+        return DocumentSplitter(split_by="word", split_length=100, split_overlap=30)
+
     def get_document_embedder(self) -> AzureOpenAIDocumentEmbedder:
         """
         Create and return an AzureOpenAIDocumentEmbedder instance configured with the current settings.
@@ -80,16 +105,6 @@ class AIService:
             azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
             azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
         )
-
-    def get_document_splitter(self) -> DocumentSplitter:
-        """
-        Create and return a DocumentSplitter configured to split documents by words.
-
-        Returns:
-            DocumentSplitter: An instance configured with split_by="word", split_length=100, and split_overlap=30.
-
-        """
-        return DocumentSplitter(split_by="word", split_length=100, split_overlap=30)
 
     def get_document_writer(self, table: str, *, recreate_table: bool = True) -> DocumentWriter:
         """
@@ -107,21 +122,6 @@ class AIService:
         document_store = self._document_stores[table]
 
         return DocumentWriter(document_store=document_store)
-
-    def get_text_embedder(self) -> AzureOpenAITextEmbedder:
-        """
-        Create and return an AzureOpenAITextEmbedder instance configured with the current settings.
-
-        Returns:
-            AzureOpenAITextEmbedder: An instance of the text embedder.
-
-        """
-        return AzureOpenAITextEmbedder(
-            api_key=Secret.from_token(self._settings.azure_openai_embeddings_api_key),
-            api_version=self._settings.azure_openai_embeddings_api_version,
-            azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
-            azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
-        )
 
     def get_document_retriever(self, table: str, top_k: int = 5) -> PgvectorEmbeddingRetriever:
         """

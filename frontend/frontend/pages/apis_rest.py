@@ -241,7 +241,7 @@ with client_col1:
         """
         <div class="card" style="text-align:center; height:100%;">
             <div style="font-size:2em;">🌐</div>
-            <h4 style="color:#009de0; margin:8px 0 4px;">Swagger UI</h4>
+            <p style="font-size:1.5em; font-weight:600; color:#009de0; margin:8px 0 4px;">Swagger UI</p>
             <p style="font-size:0.85em;">
                 Auto-generated from the OpenAPI spec — explore and call every endpoint directly in your browser.
             </p>
@@ -259,7 +259,7 @@ with client_col2:
         """
         <div class="card" style="text-align:center; height:100%;">
             <div style="font-size:2em;">📝</div>
-            <h4 style="color:#009de0; margin:8px 0 4px;">VS Code REST Client</h4>
+            <p style="font-size:1.5em; font-weight:600; color:#009de0; margin:8px 0 4px;">VS Code REST Client</p>
             <p style="font-size:0.85em;">
                 Install the <b>REST Client</b> extension, then open any <code>.http</code> file in
                 <code>knowledge_service/requests/</code> and click <em>Send Request</em>.
@@ -273,8 +273,8 @@ with client_col3:
     st.markdown(
         """
         <div class="card" style="text-align:center; height:100%;">
-            <div style="font-size:2em;">🖱️</div>
-            <h4 style="color:#009de0; margin:8px 0 4px;">This Dashboard</h4>
+            <div style="font-size:2em;">🖥️</div>
+            <p style="font-size:1.5em; font-weight:600; color:#009de0; margin:8px 0 4px;">This Dashboard</p>
             <p style="font-size:0.85em;">
                 The button below calls <code>GET /</code> for you — same HTTP request,
                 friendlier interface.
