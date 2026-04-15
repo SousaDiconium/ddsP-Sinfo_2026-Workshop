@@ -20,8 +20,9 @@ Just run the script for your system and follow the prompts. It’s a fast way to
 3. [🐍 Python + UV](#-python--uv)
 4. [🐳 Docker](#-docker)
 5. [🦞 OpenClaw](#-openclaw)
-6. [📝 IDE (VS Code Recommended)](#-ide-vs-code-recommended)
-7. [💬 Telegram (Optional)](#-telegram-optional)
+6. [🌐 Chromium-Based Browser](#-chromium-based-browser)
+7. [📝 IDE (VS Code Recommended)](#-ide-vs-code-recommended)
+8. [💬 Telegram (Optional)](#-telegram-optional)
 
 ---
 
@@ -125,6 +126,26 @@ Just run the script for your system and follow the prompts. It’s a fast way to
 - **🚀 How do I use it?**  
 	- We’ll finish the setup together during the workshop.
 	- You’ll use OpenClaw to run agents and connect to other tools—no need to worry about details yet!
+
+---
+
+## 🌐 Chromium-Based Browser
+
+- **📦 What is it?**  
+	A web browser built on the Chromium engine. OpenClaw can only interact with Chromium-based browsers, so you need one installed. Any of the following will work: **Google Chrome**, **Brave**, **Microsoft Edge**, or **Chromium**.
+
+- **🛠️ How do I install it?**  
+	You likely already have one! If not, pick any:
+	- **Google Chrome:** [https://www.google.com/chrome/](https://www.google.com/chrome/)
+	- **Brave:** [https://brave.com/](https://brave.com/)
+	- **Microsoft Edge:** [https://www.microsoft.com/edge](https://www.microsoft.com/edge) *(pre-installed on Windows 10/11)*
+	- **Chromium:** [https://www.chromium.org/getting-involved/download-chromium/](https://www.chromium.org/getting-involved/download-chromium/)
+
+- **🔎 How do I check it worked?**  
+	Open your browser of choice and confirm it loads a webpage.
+
+- **🚀 How do I use it?**  
+	OpenClaw will use your Chromium-based browser to interact with web services and automations during the workshop. No extra config needed—just have it installed!
 
 ---
 

@@ -88,6 +88,39 @@ if (Get-Command code -ErrorAction SilentlyContinue) {
     }
 }
 
+# --- Chromium-Based Browser ---
+Write-Section "🌐 Chromium-Based Browser"
+$chromiumFound = $false
+$chromePaths = @(
+    "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe",
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+    "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe"
+)
+$bravePaths = @(
+    "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\Application\brave.exe",
+    "$env:ProgramFiles\BraveSoftware\Brave-Browser\Application\brave.exe"
+)
+$edgePaths = @(
+    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
+    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe"
+)
+$chromiumPaths = @(
+    "$env:LOCALAPPDATA\Chromium\Application\chrome.exe"
+)
+foreach ($path in $chromePaths) { if (Test-Path $path) { $chromiumFound = $true; Write-Success "Google Chrome is installed."; break } }
+if (-not $chromiumFound) { foreach ($path in $bravePaths)   { if (Test-Path $path) { $chromiumFound = $true; Write-Success "Brave Browser is installed."; break } } }
+if (-not $chromiumFound) { foreach ($path in $edgePaths)    { if (Test-Path $path) { $chromiumFound = $true; Write-Success "Microsoft Edge is installed."; break } } }
+if (-not $chromiumFound -and (Get-Command msedge -ErrorAction SilentlyContinue)) { $chromiumFound = $true; Write-Success "Microsoft Edge is installed." }
+if (-not $chromiumFound) { foreach ($path in $chromiumPaths) { if (Test-Path $path) { $chromiumFound = $true; Write-Success "Chromium is installed."; break } } }
+if (-not $chromiumFound) {
+    Write-ErrorMsg "No Chromium-based browser found. OpenClaw requires one of: Chrome, Brave, Edge, or Chromium."
+    Write-Info "Please install one of:"
+    Write-Info "  • Google Chrome: https://www.google.com/chrome/"
+    Write-Info "  • Brave: https://brave.com/"
+    Write-Info "  • Microsoft Edge: https://www.microsoft.com/edge"
+    Write-Info "  • Chromium: https://www.chromium.org/getting-involved/download-chromium/"
+}
+
 # --- OpenClaw ---
 Write-Section "🦞 OpenClaw"
 # Check if OpenClaw is installed

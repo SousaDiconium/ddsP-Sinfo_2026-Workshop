@@ -121,6 +121,31 @@ else
   fi
 fi
 
+# --- Chromium-Based Browser ---
+print_section "🌐 Chromium-Based Browser"
+CHROMIUM_FOUND=false
+if [ -d "/Applications/Google Chrome.app" ] || command -v google-chrome &> /dev/null || command -v google-chrome-stable &> /dev/null; then
+  print_success "Google Chrome is installed."
+  CHROMIUM_FOUND=true
+elif [ -d "/Applications/Brave Browser.app" ] || command -v brave-browser &> /dev/null; then
+  print_success "Brave Browser is installed."
+  CHROMIUM_FOUND=true
+elif [ -d "/Applications/Microsoft Edge.app" ] || command -v microsoft-edge &> /dev/null; then
+  print_success "Microsoft Edge is installed."
+  CHROMIUM_FOUND=true
+elif [ -d "/Applications/Chromium.app" ] || command -v chromium &> /dev/null || command -v chromium-browser &> /dev/null; then
+  print_success "Chromium is installed."
+  CHROMIUM_FOUND=true
+fi
+if [ "$CHROMIUM_FOUND" = false ]; then
+  print_error "No Chromium-based browser found. OpenClaw requires one of: Chrome, Brave, Edge, or Chromium."
+  print_info "Please install one of:"
+  print_info "  • Google Chrome: https://www.google.com/chrome/"
+  print_info "  • Brave: https://brave.com/"
+  print_info "  • Microsoft Edge: https://www.microsoft.com/edge"
+  print_info "  • Chromium: https://www.chromium.org/getting-involved/download-chromium/"
+fi
+
 # --- OpenClaw ---
 print_section "🦞 OpenClaw"
 # Check if OpenClaw is installed
