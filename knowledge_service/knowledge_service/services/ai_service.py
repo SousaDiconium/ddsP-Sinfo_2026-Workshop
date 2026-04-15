@@ -65,17 +65,7 @@ class AIService:
         self._document_stores[table_name] = document_store
 
         return document_store
-
-    def get_document_splitter(self) -> DocumentSplitter:
-        """
-        Create and return a DocumentSplitter configured to split documents by words.
-
-        Returns:
-            DocumentSplitter: An instance configured with split_by="word", split_length=100, and split_overlap=30.
-
-        """
-        return DocumentSplitter(split_by="word", split_length=100, split_overlap=30)
-
+    
     def get_document_embedder(self) -> AzureOpenAIDocumentEmbedder:
         """
         Create and return an AzureOpenAIDocumentEmbedder instance configured with the current settings.
@@ -90,6 +80,16 @@ class AIService:
             azure_endpoint=self._settings.azure_openai_embeddings_endpoint,
             azure_deployment=self._settings.azure_openai_embeddings_deployment_name,
         )
+
+    def get_document_splitter(self) -> DocumentSplitter:
+        """
+        Create and return a DocumentSplitter configured to split documents by words.
+
+        Returns:
+            DocumentSplitter: An instance configured with split_by="word", split_length=100, and split_overlap=30.
+
+        """
+        return DocumentSplitter(split_by="word", split_length=100, split_overlap=30)
 
     def get_document_writer(self, table: str, *, recreate_table: bool = True) -> DocumentWriter:
         """
@@ -141,6 +141,27 @@ class AIService:
         document_store = self._document_stores[table]
 
         return PgvectorEmbeddingRetriever(document_store=document_store, top_k=top_k)
+    
+    def embed_text(self, text: str) -> list[float]:
+        """
+        Generate an embedding vector for a single text string.
+
+        Args:
+            text (str): The text to embed.
+
+        Returns:
+            list[float]: The embedding vector for the input text.
+
+        """
+        text_embedder = self.get_text_embedder()
+
+        pipeline = Pipeline()
+        pipeline.add_component("text_embedder", text_embedder)
+
+        result = pipeline.run({"text_embedder": {"text": text}})
+        embedding: list[float] = result["text_embedder"]["embedding"]
+
+        return embedding
 
     def process_documents(self, table: str, documents: list[Document], *, recreate_table: bool = True) -> int:
         """
@@ -169,27 +190,6 @@ class AIService:
 
         result = document_pipeline.run({"splitter": {"documents": documents}})
         return int(result.get("writer", {}).get("documents_written", 0))
-
-    def embed_text(self, text: str) -> list[float]:
-        """
-        Generate an embedding vector for a single text string.
-
-        Args:
-            text (str): The text to embed.
-
-        Returns:
-            list[float]: The embedding vector for the input text.
-
-        """
-        text_embedder = self.get_text_embedder()
-
-        pipeline = Pipeline()
-        pipeline.add_component("text_embedder", text_embedder)
-
-        result = pipeline.run({"text_embedder": {"text": text}})
-        embedding: list[float] = result["text_embedder"]["embedding"]
-
-        return embedding
 
     def search_documents_table(self, table: str, query: str, top_k: int = 5) -> list[Document]:
         """
