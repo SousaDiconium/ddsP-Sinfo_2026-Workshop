@@ -54,6 +54,7 @@ app = FastAPI(
 
 @app.get("/", summary="Welcome Message", response_model=MessageDTO, tags=["General"])
 def read_root() -> MessageDTO:
+    """Root endpoint that returns a welcome message."""
     raise HTTPException(
         status_code=501, detail="Welcome to the Knowledge Service! This endpoint is not implemented yet."
     )
