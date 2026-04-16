@@ -44,20 +44,22 @@ st.divider()
 # ---------------------------------------------------------------------------
 # Skill cards
 # ---------------------------------------------------------------------------
-st.subheader("🌤️ 1 — weather-fetcher")
+
+st.subheader("🔍 1 — knowledge-query")
 
 col1, col2 = st.columns([3, 2])
 with col1:
     st.markdown(
         """
         <div class="card">
-            <p><strong>Purpose:</strong> Fetch the current temperature for Dubai, UAE from the
-            Open-Meteo API (free, no key required).</p>
-            <p><strong>How it works:</strong> The agent calls a single URL with
-            <code>WebFetch</code>, extracts <code>current.temperature_2m</code> from the JSON
-            response, and returns the value with its unit label.</p>
-            <p><strong>Why it's a good first skill:</strong> Minimal — one HTTP call, one field
-            to extract. No auth, no side effects. Perfect for understanding the skill pattern.</p>
+            <p><strong>Purpose:</strong> Answer user questions by searching the knowledge base
+            with semantic search and synthesising a response from retrieved chunks.</p>
+            <p><strong>How it works:</strong> Lists available tables, picks the right one,
+            calls <code>POST /document-tables/{"{id}"}/knowledge</code> with the query, and
+            adaptively adjusts <code>top_k</code> based on how many chunks are needed.
+            Returns a synthesised answer with source citations.</p>
+            <p><strong>Why it matters:</strong> This is the RAG query pipeline — but now the
+            agent orchestrates it, not a form in the dashboard.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -66,11 +68,11 @@ with col2:
     st.markdown(
         """
         <div class="card" style="font-size: 0.85em;">
-            <code style="color: #7dd3fc;">name:</code> weather-fetcher<br>
+            <code style="color: #7dd3fc;">name:</code> knowledge-query<br>
             <code style="color: #7dd3fc;">user-invocable:</code> false<br>
             <code style="color: #7dd3fc;">tool used:</code> WebFetch<br>
-            <code style="color: #7dd3fc;">API:</code> api.open-meteo.com<br>
-            <code style="color: #7dd3fc;">auth:</code> none
+            <code style="color: #7dd3fc;">endpoint:</code> POST /document-tables/{"{id}"}/knowledge<br>
+            <code style="color: #7dd3fc;">adaptive:</code> top_k auto-tuned
         </div>
         """,
         unsafe_allow_html=True,
@@ -112,41 +114,7 @@ with col2:
     )
 
 st.divider()
-st.subheader("🔍 3 — knowledge-query")
-
-col1, col2 = st.columns([3, 2])
-with col1:
-    st.markdown(
-        """
-        <div class="card">
-            <p><strong>Purpose:</strong> Answer user questions by searching the knowledge base
-            with semantic search and synthesising a response from retrieved chunks.</p>
-            <p><strong>How it works:</strong> Lists available tables, picks the right one,
-            calls <code>POST /document-tables/{"{id}"}/knowledge</code> with the query, and
-            adaptively adjusts <code>top_k</code> based on how many chunks are needed.
-            Returns a synthesised answer with source citations.</p>
-            <p><strong>Why it matters:</strong> This is the RAG query pipeline — but now the
-            agent orchestrates it, not a form in the dashboard.</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-with col2:
-    st.markdown(
-        """
-        <div class="card" style="font-size: 0.85em;">
-            <code style="color: #7dd3fc;">name:</code> knowledge-query<br>
-            <code style="color: #7dd3fc;">user-invocable:</code> false<br>
-            <code style="color: #7dd3fc;">tool used:</code> WebFetch<br>
-            <code style="color: #7dd3fc;">endpoint:</code> POST /document-tables/{"{id}"}/knowledge<br>
-            <code style="color: #7dd3fc;">adaptive:</code> top_k auto-tuned
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-st.divider()
-st.subheader("🗄️ 4 — vault-management")
+st.subheader("🗄️ 3 — vault-management")
 
 col1, col2 = st.columns([3, 2])
 with col1:

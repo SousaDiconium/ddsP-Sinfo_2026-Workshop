@@ -207,33 +207,3 @@ with col2:
         """,
         unsafe_allow_html=True,
     )
-
-st.divider()
-
-# ---------------------------------------------------------------------------
-# Scripts and dependencies
-# ---------------------------------------------------------------------------
-st.subheader("📦 Scripts & Dependencies")
-
-st.markdown(
-    """
-    The `fenix-browser` skill ships with a `scripts/` folder containing Bash and Python scripts.
-    These run via `uv run python` using the workspace's own `pyproject.toml`:
-    """
-)
-
-st.code(
-    """# workspace-trivial-fenix-sinfo-2026/pyproject.toml
-dependencies = [
-    "beautifulsoup4==4.14.0",    # HTML parsing
-    "html-to-markdown==2.25.0",  # DOM snapshot → clean Markdown
-]""",
-    language="toml",
-)
-
-st.markdown(
-    """
-    All dependencies are installed when you run `uv sync --all-packages` from the repository root.
-    No extra setup needed.
-    """
-)
