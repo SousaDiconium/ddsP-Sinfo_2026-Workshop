@@ -166,20 +166,25 @@ with col1:
     st.markdown(
         """
         <div class="card">
-            <p><strong>Purpose:</strong> Browse Fenix course registrations, extract curricular
-            plans and subjects, convert pages to Markdown, and ingest them into the knowledge base.</p>
+            <p><strong>Purpose:</strong> List user's Fenix course registrations, extract curricular
+            plans and subject details, convert pages to Markdown, and ingest them into the knowledge base
+            using OpenClaw browser automation.</p>
             <p><strong>How it works:</strong></p>
             <ol style="padding-left: 1.2rem; margin: 0.5rem 0;">
-                <li>Requires <code>fenix-login</code> to have run first.</li>
-                <li>Runs <code>bash scripts/get_courses.sh</code> — opens Fenix academic path,
-                    takes a DOM snapshot, parses course registrations → JSON list.</li>
-                <li>For each course, runs <code>get_subjects.sh &lt;url&gt;</code> to parse
-                    the curricular plan.</li>
-                <li>Converts DOM snapshots to clean Markdown via
+                <li>Requires <code>fenix-login</code> to have run first (reuses authenticated session).</li>
+                <li><strong>List Courses:</strong> Opens Fenix academic path, captures accessibility tree 
+                    snapshot, parses course registrations with names, degrees, years, and plan URLs.</li>
+                <li><strong>List Subjects:</strong> For each course plan, navigates to URL and extracts
+                    subject rows grouped by curricular area (Mandatory, Electives, etc.).</li>
+                <li><strong>Extract Subject Pages:</strong> Browses individual subject pages, collects
+                    sidebar navigation links and downloadable attachments.</li>
+                <li>Converts all accessibility tree snapshots to clean Markdown using 
                     <code>convert_to_markdown.py</code>.</li>
                 <li>Calls <code>knowledge-ingest</code> to upload the Markdown to a document table.</li>
                 <li>Advises the user the table can be deleted after use.</li>
             </ol>
+            <p style="margin-top: 0.75rem;"><strong>Key feature:</strong> Uses authenticated browser
+            profile — download links (PDFs, documents) work seamlessly with authentication.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -191,17 +196,15 @@ with col2:
             <code style="color: #7dd3fc;">name:</code> fenix-browser<br>
             <code style="color: #7dd3fc;">user-invocable:</code> <strong style="color:#4caf50;">true</strong><br>
             <code style="color: #7dd3fc;">depends on:</code> fenix-login<br>
-            <code style="color: #7dd3fc;">scripts:</code> bash + Python<br>
+            <code style="color: #7dd3fc;">tool:</code> openclaw browser<br>
             <code style="color: #7dd3fc;">output:</code> Markdown → knowledge base<br>
+            <code style="color: #7dd3fc;">auth:</code> browser profile<br>
             <br>
-            <strong style="color:#aaa;">Scripts:</strong><br>
+            <strong style="color:#aaa;">Snapshots & Conversion:</strong><br>
             <code style="color: #aaa; font-size:0.9em;">
-            get_courses.sh<br>
-            get_subjects.sh<br>
-            get_subject_page.sh<br>
+            openclaw browser snapshot<br>
             convert_to_markdown.py<br>
-            parse_courses.py<br>
-            parse_subjects.py
+            knowledge-ingest POST<br>
             </code>
         </div>
         """,
