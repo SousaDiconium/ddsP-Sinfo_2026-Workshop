@@ -34,13 +34,16 @@ st.subheader("🔗 Skill Dependency Chain")
 st.markdown(
     """
     <div style="overflow-x: auto; margin: 1rem 0;">
-    <svg viewBox="0 0 680 205" width="100%" style="max-width:680px; display:block; margin:auto; font-family:sans-serif;">
+    <svg viewBox="0 0 1000 220" width="100%" style="max-width:1000px; display:block; margin:auto; font-family:sans-serif;">
       <defs>
         <marker id="dep-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#009de0"/>
         </marker>
         <marker id="dep-arr-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#00c896"/>
+        </marker>
+        <marker id="dep-arr-m" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#ff6b9d"/>
         </marker>
         <style>
           @keyframes dep-flow   { to { stroke-dashoffset: -13; } }
@@ -50,57 +53,74 @@ st.markdown(
                      animation: dep-flow 0.5s linear infinite; }
           .dep-fl2 { stroke:#00c896; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
                      animation: dep-flow 0.5s linear infinite 0.2s; }
+          .dep-fl3 { stroke:#ff6b9d; stroke-width:2.5; stroke-dasharray:8 5; fill:none;
+                     animation: dep-flow 0.5s linear infinite 0.4s; }
           .dep-gr  { fill:rgba(0,157,224,.22); stroke:none; animation: dep-glow-a 3s ease-in-out infinite; }
           .dep-gr2 { fill:rgba(0,157,224,.09); stroke:none; animation: dep-glow-b 3s ease-in-out infinite; }
           .dep-nc  { fill:rgba(0,157,224,.15); stroke:#009de0; stroke-width:2; }
           .dep-pc  { fill:rgba(0,200,150,.12); stroke:#00c896; stroke-width:1.5; }
+          .dep-mc  { fill:rgba(255,107,157,.12); stroke:#ff6b9d; stroke-width:1.5; }
           .dep-nt  { font-size:15px; fill:#009de0; text-anchor:middle; font-weight:600; }
           .dep-ns  { font-size:11px; fill:#009de0; text-anchor:middle; opacity:.65; }
           .dep-pt  { font-size:14px; fill:#00c896; text-anchor:start; font-weight:600; dominant-baseline:middle; }
           .dep-ps  { font-size:11px; fill:#00c896; text-anchor:start; opacity:.70; dominant-baseline:middle; }
+          .dep-mt  { font-size:14px; fill:#ff6b9d; text-anchor:start; font-weight:600; dominant-baseline:middle; }
+          .dep-ms  { font-size:11px; fill:#ff6b9d; text-anchor:start; opacity:.70; dominant-baseline:middle; }
           .dep-ico { font-size:26px; text-anchor:middle; dominant-baseline:middle; }
           .dep-ico2{ font-size:19px; text-anchor:middle; dominant-baseline:middle; }
         </style>
       </defs>
 
       <!-- ── fenix-login glow + circle ── -->
-      <circle cx="90"  cy="95" r="60" class="dep-gr2" style="animation-delay:0s;"/>
-      <circle cx="90"  cy="95" r="48" class="dep-gr"  style="animation-delay:0s;"/>
-      <circle cx="90"  cy="95" r="40" class="dep-nc"/>
-      <text   x="90"  y="95"  class="dep-ico">🔐</text>
-      <text   x="90"  y="152" class="dep-nt">fenix-login</text>
-      <text   x="90"  y="168" class="dep-ns">user-invocable</text>
+      <circle cx="80"  cy="95" r="50" class="dep-gr2" style="animation-delay:0s;"/>
+      <circle cx="80"  cy="95" r="40" class="dep-gr"  style="animation-delay:0s;"/>
+      <circle cx="80"  cy="95" r="35" class="dep-nc"/>
+      <text   x="80"  y="95"  class="dep-ico">🔐</text>
+      <text   x="80"  y="152" class="dep-nt">fenix-login</text>
+      <text   x="80"  y="167" class="dep-ns">user-invocable</text>
 
       <!-- Arrow login → browser -->
-      <path d="M 130,95 L 228,95" class="dep-fl" marker-end="url(#dep-arr)"/>
+      <path d="M 115,95 L 215,95" class="dep-fl" marker-end="url(#dep-arr)"/>
 
       <!-- ── fenix-browser glow + circle ── -->
-      <circle cx="268" cy="95" r="60" class="dep-gr2" style="animation-delay:1s;"/>
-      <circle cx="268" cy="95" r="48" class="dep-gr"  style="animation-delay:1s;"/>
-      <circle cx="268" cy="95" r="40" class="dep-nc"/>
-      <text   x="268" y="95"  class="dep-ico">🌐</text>
-      <text   x="268" y="152" class="dep-nt">fenix-browser</text>
-      <text   x="268" y="168" class="dep-ns">user-invocable</text>
+      <circle cx="250" cy="95" r="50" class="dep-gr2" style="animation-delay:1s;"/>
+      <circle cx="250" cy="95" r="40" class="dep-gr"  style="animation-delay:1s;"/>
+      <circle cx="250" cy="95" r="35" class="dep-nc"/>
+      <text   x="250" y="95"  class="dep-ico">🌐</text>
+      <text   x="250" y="152" class="dep-nt">fenix-browser</text>
+      <text   x="250" y="167" class="dep-ns">user-invocable</text>
 
-      <!-- Fork trunk -->
-      <path d="M 308,95 L 378,95" class="dep-fl"/>
+      <!-- Fork trunk from fenix-browser -->
+      <path d="M 285,95 L 340,95" class="dep-fl"/>
       <!-- Fork dot -->
-      <circle cx="378" cy="95" r="4" fill="#009de0"/>
-      <!-- Fork branches → pills -->
-      <path d="M 378,95 L 378,58 L 418,58"  class="dep-fl2" marker-end="url(#dep-arr-g)"/>
-      <path d="M 378,95 L 378,133 L 418,133" class="dep-fl2" marker-end="url(#dep-arr-g)"/>
+      <circle cx="340" cy="95" r="4" fill="#009de0"/>
+      <!-- Fork branches → knowledge-ingest and knowledge-query -->
+      <path d="M 340,95 L 340,55 L 395,55"  class="dep-fl2" marker-end="url(#dep-arr-g)"/>
+      <path d="M 340,95 L 340,135 L 395,135" class="dep-fl2" marker-end="url(#dep-arr-g)"/>
 
       <!-- ── knowledge-ingest pill ── -->
-      <rect x="418" y="36"  width="240" height="44" rx="22" class="dep-pc"/>
-      <text x="446" y="58"  class="dep-ico2">📥</text>
-      <text x="470" y="52"  class="dep-pt">knowledge-ingest</text>
-      <text x="470" y="70"  class="dep-ps">auto-triggered</text>
+      <rect x="395" y="33"  width="200" height="44" rx="22" class="dep-pc"/>
+      <text x="420" y="55"  class="dep-ico2">📥</text>
+      <text x="460" y="49"  class="dep-pt">knowledge-ingest</text>
+      <text x="460" y="67"  class="dep-ps">auto-triggered</text>
 
       <!-- ── knowledge-query pill ── -->
-      <rect x="418" y="111" width="240" height="44" rx="22" class="dep-pc"/>
-      <text x="446" y="133" class="dep-ico2">🔍</text>
-      <text x="470" y="127" class="dep-pt">knowledge-query</text>
-      <text x="470" y="145" class="dep-ps">auto-triggered</text>
+      <rect x="395" y="113" width="200" height="44" rx="22" class="dep-pc"/>
+      <text x="420" y="135" class="dep-ico2">🔍</text>
+      <text x="460" y="129" class="dep-pt">knowledge-query</text>
+      <text x="460" y="147" class="dep-ps">auto-triggered</text>
+
+      <!-- Connections from knowledge-ingest to exam-tester -->
+      <path d="M 595,55 L 650,55 L 650,80 L 700,80" class="dep-fl3" marker-end="url(#dep-arr-m)"/>
+      
+      <!-- Connections from knowledge-query to exam-tester -->
+      <path d="M 595,135 L 650,135 L 650,110 L 700,110" class="dep-fl3" marker-end="url(#dep-arr-m)"/>
+      
+      <!-- ── exam-tester pill ── -->
+      <rect x="700" y="75" width="240" height="60" rx="22" class="dep-mc"/>
+      <text x="728" y="102" class="dep-ico2">📝</text>
+      <text x="780" y="96"  class="dep-mt">exam-tester</text>
+      <text x="780" y="114" class="dep-ms">user-invocable</text>
     </svg>
     </div>
     """,  # noqa: E501
@@ -205,6 +225,68 @@ with col2:
             openclaw browser snapshot<br>
             convert_to_markdown.py<br>
             knowledge-ingest POST<br>
+            </code>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# exam-tester
+# ---------------------------------------------------------------------------
+st.subheader("📝 exam-tester")
+
+col1, col2 = st.columns([3, 2])
+with col1:
+    st.markdown(
+        """
+        <div class="card">
+            <p><strong>Purpose:</strong> Create an interactive, chat-based exam from an existing knowledge table.
+            The skill extracts topics, generates dynamic questions, evaluates answers against the vault content,
+            and provides a final score with topic breakdown.</p>
+            <p><strong>How it works:</strong></p>
+            <ol style="padding-left: 1.2rem; margin: 0.5rem 0;">
+                <li>User invokes: <code>exam-tester</code></li>
+                <li>Agent asks which knowledge table to use (must already exist).</li>
+                <li>Extracts main topics from vault via <code>knowledge-query</code> and presents 
+                    user with suggestions (5-7 topics).</li>
+                <li>User selects topics and specifies question count—all via chat.</li>
+                <li>For each question:
+                    <ul style="margin: 0.5rem 0 0 1rem;">
+                        <li>Claude generates a question based on selected topics + vault content.</li>
+                        <li><strong>If actual tests/exercises found:</strong> varies values/naming to avoid exact copies.</li>
+                        <li>User answers in chat.</li>
+                        <li>Agent queries vault for relevant material and evaluates answer (0-100 score with explanation).</li>
+                        <li>Shows immediate feedback and running score.</li>
+                    </ul>
+                </li>
+                <li>Final report: average score, breakdown by topic, suggestions for review.</li>
+            </ol>
+            <p style="margin-top: 0.75rem;"><strong>Key feature:</strong> Questions are varied to ensure fair testing 
+            and prevent memorization of specific examples from the material.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+with col2:
+    st.markdown(
+        """
+        <div class="card" style="font-size: 0.85em;">
+            <code style="color: #7dd3fc;">name:</code> exam-tester<br>
+            <code style="color: #7dd3fc;">user-invocable:</code> <strong style="color:#4caf50;">true</strong><br>
+            <code style="color: #7dd3fc;">depends on:</code> knowledge-query<br>
+            <code style="color: #7dd3fc;">interface:</code> chat-based<br>
+            <code style="color: #7dd3fc;">output:</code> score + feedback<br>
+            <br>
+            <strong style="color:#aaa;">Flow:</strong><br>
+            <code style="color: #aaa; font-size:0.9em;">
+            Select table<br>
+            → Select topics<br>
+            → Q&A loop<br>
+            → Vault queries<br>
+            → Final report<br>
             </code>
         </div>
         """,

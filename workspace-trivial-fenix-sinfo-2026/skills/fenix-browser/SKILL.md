@@ -125,14 +125,45 @@ Repeat for each subpage you navigate to.
 
 ### For downloaded files (PDFs, text documents)
 
-> **IMPORTANT:** Fenix download links require authentication — you **cannot** use `curl`/`wget`. Use the authenticated browser session.
+> **⚠️ Known Limitation:** OpenClaw's browser profile does not have downloads enabled by default. Files appear in Chrome's download history but don't save to disk.
+
+**Workaround:** After starting the browser, manually enable downloads via Chrome DevTools Protocol (CDP):
 
 ```bash
-# Navigate to the download URL to trigger the download
+# 1. Start the browser
+openclaw browser --browser-profile openclaw start
+
+# 2. Get the browser WebSocket URL from the output (e.g., ws://127.0.0.1:18800/devtools/browser/{browser-id})
+
+# 3. Enable downloads by sending a CDP command (requires Node.js + ws package):
+node -e "
+const WebSocket = require('ws');
+const ws = new WebSocket('ws://127.0.0.1:18800/devtools/browser/{browser-id}');
+ws.on('open', () => {
+  ws.send(JSON.stringify({
+    id: 1,
+    method: 'Browser.setDownloadBehavior',
+    params: {
+      behavior: 'allow',
+      downloadPath: '${HOME}/Downloads',
+      eventsEnabled: true
+    }
+  }));
+  setTimeout(() => ws.close(), 500);
+});
+"
+
+# 4. Now navigate to the download URL
 openclaw browser --browser-profile openclaw open "<download_url>"
+
+# 5. File appears in ~/Downloads/
 ```
 
-The browser saves the file to its default downloads directory (typically `~/Downloads/`). Then upload via the `knowledge-ingest` skill.
+Then upload the file via the `knowledge-ingest` skill.
+
+**Alternative (if CDP command fails):**
+- Ask the user to manually download files through the browser UI and provide the path
+- Or implement automatic download detection once OpenClaw adds native support
 
 ### After browsing
 
@@ -148,5 +179,6 @@ The browser saves the file to its default downloads directory (typically `~/Down
 - The browser session is isolated to the `openclaw` profile and persists until closed
 - `convert_to_markdown.py` must be run via `uv run` from the project root (uses the project virtual environment)
 - Ingestion appends to the table — browsing multiple pages builds up the knowledge base incrementally
+- **Known limitation:** Downloads are disabled by default in OpenClaw. See "For downloaded files" section above for the workaround using Chrome DevTools Protocol.
 
 
