@@ -5,7 +5,7 @@
       "name": "Knowledge Service",
       "type": "debugpy",
       "request": "launch",
-      "python": "${workspaceFolder}/.venv/bin/python",
+      "python": "${command:python.interpreterPath}",
       "module": "uvicorn",
       "args": [
         "knowledge_service.main:app",
@@ -20,7 +20,7 @@
       "name": "Frontend",
       "type": "debugpy",
       "request": "launch",
-      "python": "${workspaceFolder}/.venv/bin/python",
+      "python": "${command:python.interpreterPath}",
       "module": "streamlit",
       "args": [
         "run",
