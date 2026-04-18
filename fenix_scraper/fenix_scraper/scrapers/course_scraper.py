@@ -66,7 +66,7 @@ def _scrape_course_description(output_path: Path, course_id: str, course_url: st
 
     """
     page_url = f"{course_url}/descricao"
-    write_path = output_path / "📄 01 - Course Description.md"
+    write_path = output_path / "01-course-description.md"
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
@@ -94,7 +94,7 @@ def _scrape_announcements(output_path: Path, course_id: str, course_url: str) ->
 
     """
     page_url = f"{course_url}/anuncios"
-    write_path = output_path / "📄 02 - Announcements.md"
+    write_path = output_path / "02-announcements.md"
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
@@ -121,7 +121,7 @@ def _scrape_admission_requirements(output_path: Path, course_id: str, course_url
 
     """
     page_url = f"{course_url}/regime-de-acesso"
-    write_path = output_path / "📄 03 - Admission Requirements.md"
+    write_path = output_path / "03-admission-requirements.md"
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
@@ -148,7 +148,7 @@ def _scrape_master_transition(output_path: Path, course_id: str, course_url: str
 
     """
     page_url = f"{course_url}/transicao-para-o-mestrado"
-    write_path = output_path / "📄 04 - Master Transition.md"
+    write_path = output_path / "04-master-transition.md"
 
     soup = parse_html(page_url)
     course_name = _get_course_header(soup)
@@ -177,7 +177,7 @@ def scrape(output_path: Path, course_url: str) -> Path:
 
     """
     course_id = _get_course_id_from_url(course_url).upper()
-    course_directory = output_path / f"🗂️ Course: {course_id}"
+    course_directory = output_path / f"course-{course_id.lower()}"
     os.makedirs(course_directory, exist_ok=True)
 
     _scrape_course_description(course_directory, course_id, course_url)

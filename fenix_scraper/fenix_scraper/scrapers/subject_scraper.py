@@ -69,7 +69,7 @@ def _scrape_subject_initial_page(output_path: Path, subject_id: str, subject_url
 
     """
     page_url = f"{subject_url}/pagina-inicial"
-    write_path = output_path / "📄 01 - Initial Page.md"
+    write_path = output_path / "01-initial-page.md"
 
     soup = parse_html(page_url)
     subject_name = _get_subject_header(soup)
@@ -107,7 +107,7 @@ def _scrape_subject_sub_page(
     """
     sub_page_index, sub_page_settings = sub_page
     page_url = f"{subject_url}{sub_page_settings.url_suffix}"
-    write_path = output_path / f"📄 {sub_page_index + 2:02d} - {sub_page_settings.name}.md"
+    write_path = output_path / f"{sub_page_index + 2:02d}-{sub_page_settings.name.lower().replace(' ', '-')}.md"
 
     soup = parse_html(page_url)
     subject_name = _get_subject_header(soup)
@@ -137,10 +137,10 @@ def scrape(output_path: Path, subject_url: str, subject_subpages: list[SubjectSu
     domain_url = "/".join(subject_url.split("/")[:3])
 
     subject_id = _get_subject_id_from_url(subject_url).upper()
-    subject_directory = output_path / f"📁 Subject: {subject_id}"
+    subject_directory = output_path / f"subject-{subject_id.lower()}"
     os.makedirs(subject_directory, exist_ok=True)
 
-    attachments_directory = subject_directory / "📁 Attachments"
+    attachments_directory = subject_directory / "attachments"
     os.makedirs(attachments_directory, exist_ok=True)
 
     _scrape_subject_initial_page(subject_directory, subject_id, subject_url)

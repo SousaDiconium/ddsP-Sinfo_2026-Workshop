@@ -1,5 +1,5 @@
 # =========================================
-# 🚀 Sinfo 2026 Workshop Setup Script (Windows)
+# Sinfo 2026 Workshop Setup Script (Windows)
 # =========================================
 
 function Write-Section($msg) {
@@ -9,24 +9,24 @@ function Write-Section($msg) {
 }
 
 function Write-Success($msg) {
-    Write-Host "✔ $msg" -ForegroundColor Green
+    Write-Host "$msg" -ForegroundColor Green
 }
 
 function Write-ErrorMsg($msg) {
-    Write-Host "✖ $msg" -ForegroundColor Red
+    Write-Host "$msg" -ForegroundColor Red
 }
 
 function Write-Info($msg) {
-    Write-Host "➜ $msg" -ForegroundColor Yellow
+    Write-Host "$msg" -ForegroundColor Yellow
 }
 
 # --- Welcome ---
-Write-Section "🚀 Sinfo 2026 Workshop Setup (Windows)"
+Write-Section "Sinfo 2026 Workshop Setup (Windows)"
 Write-Host "This script will check and help you install the required tools for the workshop."
 Write-Host "You may be prompted for admin rights during installations."
 
 # --- Git ---
-Write-Section "🐙 Git"
+Write-Section "Git"
 # Check if Git is installed
 if (Get-Command git -ErrorAction SilentlyContinue) {
     Write-Success "Git is already installed."
@@ -41,7 +41,7 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 }
 
 # --- Docker ---
-Write-Section "🐳 Docker"
+Write-Section "Docker"
 # Check if Docker is installed
 if (Get-Command docker -ErrorAction SilentlyContinue) {
     Write-Success "Docker is already installed."
@@ -56,7 +56,7 @@ if (Get-Command docker -ErrorAction SilentlyContinue) {
 }
 
 # --- UV ---
-Write-Section "🐍 UV (Python + Package Manager)"
+Write-Section "UV (Python + Package Manager)"
 # Check if UV is installed
 if (Get-Command uv -ErrorAction SilentlyContinue) {
     Write-Success "UV is already installed."
@@ -73,7 +73,7 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
 }
 
 # --- VS Code ---
-Write-Section "📝 Visual Studio Code"
+Write-Section "Visual Studio Code"
 # Check if VS Code is installed
 if (Get-Command code -ErrorAction SilentlyContinue) {
     Write-Success "VS Code is already installed."
@@ -89,7 +89,7 @@ if (Get-Command code -ErrorAction SilentlyContinue) {
 }
 
 # --- Chromium-Based Browser ---
-Write-Section "🌐 Chromium-Based Browser"
+Write-Section "Chromium-Based Browser"
 $chromiumFound = $false
 $chromePaths = @(
     "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe",
@@ -122,7 +122,7 @@ if (-not $chromiumFound) {
 }
 
 # --- OpenClaw ---
-Write-Section "🦞 OpenClaw"
+Write-Section "OpenClaw"
 # Check if OpenClaw is installed
 if (Get-Command openclaw -ErrorAction SilentlyContinue) {
     Write-Success "OpenClaw is already installed."
@@ -138,6 +138,6 @@ if (Get-Command openclaw -ErrorAction SilentlyContinue) {
 }
 
 # --- Done ---
-Write-Section "✅ Setup Complete!"
+Write-Section "Setup Complete!"
 Write-Host "If you saw all green check marks, you are ready for the workshop!"
 Write-Host "If you had any issues, please ask for help during the workshop setup session."
